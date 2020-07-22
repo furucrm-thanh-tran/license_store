@@ -20,11 +20,11 @@ class CreateFeedbackTable extends Migration
 
             //foreignKey
             $table->foreignId('seller_id')
-                ->constrained('users')
+                ->constrained('managers')
                 ->onDelete('cascade');
 
-            $table->foreignId('cus_id')
-                ->constrained('customers')
+            $table->foreignId('user_id')
+                ->constrained('users')
                 ->onDelete('cascade');
 
             $table->timestamps();
