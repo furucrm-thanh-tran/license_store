@@ -19,7 +19,7 @@ class CreateFeedbackTable extends Migration
             $table->string('description');
 
             //foreignKey
-            $table->foreignId('user_id')
+            $table->foreignId('seller_id')
                 ->constrained('users')
                 ->onDelete('cascade');
 

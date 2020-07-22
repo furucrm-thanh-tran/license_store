@@ -21,12 +21,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('full_name');
             $table->string('phone');
+            $table->char('role',1);
             $table->rememberToken();
-            //foreignKey
-            $table->foreignId('role_id')
-                ->constrained('roles')
-                ->onDelete('cascade');
-
             $table->timestamps();
         });
     }
