@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+// Manager routes
+Route::prefix('manager')->group(function(){
+    Route::get('/', 'ManagerController@index')->name('manager.dashboard');
+    Route::get('/login', 'Auth\ManagerLoginController@showLoginForm')->name('manager.login');
+    Route::post('/login', 'Auth\ManagerLoginController@login')->name('manager.login.submit');
+});
+
+Route::get('admin/home', 'ManagerController@adminHome')->name('admin.home')->middleware('role');
