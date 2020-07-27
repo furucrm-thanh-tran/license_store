@@ -17,7 +17,7 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.sellermanager') }}">
             {{-- <a class="nav-link" href="/admin/sellermanager"> --}}
-                <i class="fas fa-fw fa-cog"></i>
+                <i class="fas fa-fw fa-store"></i>
                 <span>Sellers</span>
             </a>
     </li>
@@ -25,7 +25,7 @@
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.productmanager') }}">
-            <i class="fas fa-fw fa-wrench"></i>
+            <i class="fas fa-fw fa-cubes"></i>
             <span>Products</span>
         </a>
     </li>
@@ -33,7 +33,7 @@
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.transactionmanager') }}">
-            <i class="fas fa-fw fa-wrench"></i>
+            <i class="fas fa-fw fa-receipt"></i>
             <span>Trasaction</span>
         </a>
     </li>

@@ -32,3 +32,8 @@ Route::get('/admin/transactionmanager', function (){
 Route::get('/admin/productmanager', function (){
     return view('admin.product_manager');
 })->name('admin.productmanager');
+
+Route::get('/admin/license-key', function (){
+    return view('admin.license-key');
+})->name('admin.license-key');
+
