@@ -19,9 +19,8 @@ class CreateManagersTable extends Migration
             $table->string('password');
             $table->string('full_name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('phone');
-            $table->boolean('role')->nullable();
+            $table->boolean('role')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
