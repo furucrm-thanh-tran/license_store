@@ -24,7 +24,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // Manager routes
 Route::prefix('manager')->group(function(){
-    Route::get('/', 'ManagerController@index')->name('manager.dashboard');
+    Route::get('/', 'ManagerController@index')->name('seller.dashboard');
     Route::get('/login', 'Auth\ManagerLoginController@showLoginForm')->name('manager.login');
     Route::post('/login', 'Auth\ManagerLoginController@login')->name('manager.login.submit');
 });
