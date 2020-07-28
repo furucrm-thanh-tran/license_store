@@ -3,7 +3,10 @@
     <!-- Custom styles for this page -->
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<<<<<<< HEAD
     <link href="/vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
+=======
+>>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
     <style>
         .table td,
         .table thead th,
@@ -200,6 +203,7 @@
                             </span>
                             @enderror
                         </div>
+<<<<<<< HEAD
 
                         <div class="form-group">
                             <label>Choose a seller</label>
@@ -246,6 +250,8 @@
                             <label for="activation-date">Expiration date</label>
                             <input class="form-control" type="date" value="" id="expiration-date">
                         </div>
+=======
+>>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                     </div>
 
                     <!-- Modal footer -->
@@ -274,6 +280,7 @@
                 <form>
                     <div class="modal-body">
                         <div class="form-group">
+<<<<<<< HEAD
                             <label for="license-key">License key</label>
                             <input id="license-key" type="text"
                                 class="form-control @error('license-key') is-invalid @enderror" name="license-key"
@@ -317,11 +324,21 @@
                                 placeholder="Enter customer">
 
                             @error('customer')
+=======
+                            <label for="license-key2">License key</label>
+                            <input id="license-key2" type="text"
+                                class="form-control @error('license-key2') is-invalid @enderror" name="license-key2"
+                                value="{{ old('license-key2') }}" required autocomplete="license-key2" autofocus
+                                placeholder="Enter license key">
+
+                            @error('license-key2')
+>>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
+<<<<<<< HEAD
 
                         <div class="form-group">
                             <label for="activation-date">Activation date</label>
@@ -332,6 +349,8 @@
                             <label for="activation-date">Expiration date</label>
                             <input class="form-control" type="date" value="" id="expiration-date">
                         </div>
+=======
+>>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                     </div>
 
                     <!-- Modal footer -->
@@ -382,7 +401,10 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+<<<<<<< HEAD
                             <th>Title</th>
+=======
+>>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                             <th>License key</th>
                             <th>Seller</th>
                             <th>Customer</th>
@@ -393,7 +415,10 @@
                     </thead>
                     <tfoot>
                         <tr>
+<<<<<<< HEAD
                             <th>Title</th>
+=======
+>>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                             <th>License key</th>
                             <th>Seller</th>
                             <th>Customer</th>
@@ -404,7 +429,10 @@
                     </tfoot>
                     <tbody>
                         <tr>
+<<<<<<< HEAD
                             <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
+=======
+>>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                             <td>78B47-A5373-8C4A7-FB57A</td>
                             <td>System Architect</td>
                             <td>Edinburgh</td>
@@ -420,7 +448,10 @@
                             </td>
                         </tr>
                         <tr>
+<<<<<<< HEAD
                             <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
+=======
+>>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                             <td>FB4WR-32 NVD-4 RW79-XQFWH-CYQG3</td>
                             <td>Accountant</td>
                             <td>Tokyo</td>
@@ -436,7 +467,10 @@
                             </td>
                         </tr>
                         <tr>
+<<<<<<< HEAD
                             <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
+=======
+>>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                             <td>GNBB8-YVD74-QJHX6- 27 H4K-8 QHDG</td>
                             <td>Junior Technical Author</td>
                             <td>San Francisco</td>
@@ -452,7 +486,10 @@
                             </td>
                         </tr>
                         <tr>
+<<<<<<< HEAD
                             <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
+=======
+>>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                             <td>NG4HW-VH26C-733 KW-K6F98-J8CK4</td>
                             <td>Senior Javascript Developer</td>
                             <td>Edinburgh</td>
@@ -479,6 +516,7 @@
         <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
         <script src="/js/upload-img.js"></script>
         <script src="/js/bootstrap-input-spinner.js"></script>
+<<<<<<< HEAD
         <script src="/vendor/select2/dist/js/select2.min.js"></script>
 
         <!-- Page level custom scripts -->
@@ -506,4 +544,9 @@
             });
 
         </script>
+=======
+
+        <!-- Page level custom scripts -->
+        <script src="/js/demo/datatables-demo.js"></script>
+>>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
     @endsection
