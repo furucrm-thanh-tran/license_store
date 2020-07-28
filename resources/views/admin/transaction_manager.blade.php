@@ -27,7 +27,7 @@
                         <label>Choose a seller</label>
                         <select class="select2" style="width: 100%;">
                             <option value="" disabled  selected>Select your option</option>
-                            <optgroup label="Người bán được nhiều đơn nhất">
+                            <optgroup label="Người bán được nhiều license nhất">
                                 <option>Alabama</option>
                                 <option>Alaska</option>
                                 <option>California</option>
@@ -36,7 +36,7 @@
                                 <option>Texas</option>
                                 <option>Washington</option>
                             </optgroup>
-                            <optgroup label="Người có doanh thu cao nhất">
+                            <optgroup label="Người có thời gian làm việc lâu nhất">
                                 <option>Alaska</option>
                                 <option>California</option>
                                 <option>Delaware</option>
@@ -70,6 +70,7 @@
                             <th>Date of purchase</th>
                             <th>Seller</th>
                             <th>Seller email</th>
+                            <th>Status</th>
                             <th>Total money</th>
                             <th data-orderable="false"></th>
                         </tr>
@@ -81,6 +82,7 @@
                             <th>Date of purchase</th>
                             <th>Seller</th>
                             <th>Seller email</th>
+                            <th>Status</th>
                             <th>Total money</th>
                             <th></th>
                         </tr>
@@ -92,6 +94,7 @@
                             <td>2011/04/25</td>
                             <td>Edinburgh</td>
                             <td>edinburgh@gmail.com</td>
+                            <td class="text-success">Success</td>
                             <td>$320,800</td>
                             <td>
                                 <button class="btn btn-primary disabled" data-toggle="modal" data-target="#assignSeller"
@@ -104,6 +107,7 @@
                             <td>2011/07/25</td>
                             <td class="text-danger">Anonymous seller</td>
                             <td></td>
+                            <td class="text-warning">Pending...</td>
                             <td>$170,750</td>
                             <td>
                                 <button class="btn btn-primary" data-toggle="modal"
@@ -116,6 +120,7 @@
                             <td>2009/01/12</td>
                             <td>San Francisco</td>
                             <td>sanfrancisco@gmail.com</td>
+                            <td class="text-success">Success</td>
                             <td>$86,000</td>
                             <td>
                                 <button class="btn btn-primary disabled" data-toggle="modal" data-target="#assignSeller"
@@ -128,6 +133,7 @@
                             <td>2012/03/29</td>
                             <td class="text-danger">Anonymous seller</td>
                             <td></td>
+                            <td class="text-danger">Fail</td>
                             <td>$433,060</td>
                             <td>
                                 <button class="btn btn-primary" data-toggle="modal"

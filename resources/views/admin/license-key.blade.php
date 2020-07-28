@@ -3,6 +3,7 @@
     <!-- Custom styles for this page -->
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="/vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         .table td,
         .table thead th,
@@ -199,6 +200,52 @@
                             </span>
                             @enderror
                         </div>
+
+                        <div class="form-group">
+                            <label>Choose a seller</label>
+                            <select class="select2" style="width: 100%;">
+                                <option value="" disabled selected>Select your option</option>
+                                <optgroup label="Người bán được nhiều đơn nhất">
+                                    <option>Alabama</option>
+                                    <option>Alaska</option>
+                                    <option>California</option>
+                                    <option>Delaware</option>
+                                    <option>Tennessee</option>
+                                    <option>Texas</option>
+                                    <option>Washington</option>
+                                </optgroup>
+                                <optgroup label="Người có doanh thu cao nhất">
+                                    <option>Alaska</option>
+                                    <option>California</option>
+                                    <option>Delaware</option>
+                                    <option>Tennessee</option>
+                                    <option>Texas</option>
+                                    <option>Washington</option>
+                                </optgroup>
+                            </select>
+                        </div> <!-- /.form-group -->
+                        <div class="form-group">
+                            <label for="customer">Customer</label>
+                            <input id="customer" type="text" class="form-control @error('customer') is-invalid @enderror"
+                                name="customer" value="{{ old('customer') }}" required autocomplete="customer" autofocus
+                                placeholder="Enter customer">
+
+                            @error('customer')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="activation-date">Activation date</label>
+                            <input class="form-control" type="date" value="" id="activation-date">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="activation-date">Expiration date</label>
+                            <input class="form-control" type="date" value="" id="expiration-date">
+                        </div>
                     </div>
 
                     <!-- Modal footer -->
@@ -227,17 +274,63 @@
                 <form>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="license-key2">License key</label>
-                            <input id="license-key2" type="text"
-                                class="form-control @error('license-key2') is-invalid @enderror" name="license-key2"
-                                value="{{ old('license-key2') }}" required autocomplete="license-key2" autofocus
+                            <label for="license-key">License key</label>
+                            <input id="license-key" type="text"
+                                class="form-control @error('license-key') is-invalid @enderror" name="license-key"
+                                value="{{ old('license-key') }}" required autocomplete="license-key" autofocus
                                 placeholder="Enter license key">
 
-                            @error('license-key2')
+                            @error('license-key')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label>Choose a seller</label>
+                            <select class="select2" style="width: 100%;">
+                                <option value="" disabled selected>Select your option</option>
+                                <optgroup label="Người bán được nhiều license nhất">
+                                    <option>Alabama</option>
+                                    <option>Alaska</option>
+                                    <option>California</option>
+                                    <option>Delaware</option>
+                                    <option>Tennessee</option>
+                                    <option>Texas</option>
+                                    <option>Washington</option>
+                                </optgroup>
+                                <optgroup label="Người có thời gian làm việc lâu nhất">
+                                    <option>Alaska</option>
+                                    <option>California</option>
+                                    <option>Delaware</option>
+                                    <option>Tennessee</option>
+                                    <option>Texas</option>
+                                    <option>Washington</option>
+                                </optgroup>
+                            </select>
+                        </div> <!-- /.form-group -->
+                        <div class="form-group">
+                            <label for="customer">Customer</label>
+                            <input id="customer" type="text" class="form-control @error('customer') is-invalid @enderror"
+                                name="customer" value="{{ old('customer') }}" required autocomplete="customer" autofocus
+                                placeholder="Enter customer">
+
+                            @error('customer')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="activation-date">Activation date</label>
+                            <input class="form-control" type="date" value="" id="activation-date">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="activation-date">Expiration date</label>
+                            <input class="form-control" type="date" value="" id="expiration-date">
                         </div>
                     </div>
 
@@ -289,6 +382,7 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>Title</th>
                             <th>License key</th>
                             <th>Seller</th>
                             <th>Customer</th>
@@ -299,6 +393,7 @@
                     </thead>
                     <tfoot>
                         <tr>
+                            <th>Title</th>
                             <th>License key</th>
                             <th>Seller</th>
                             <th>Customer</th>
@@ -309,6 +404,7 @@
                     </tfoot>
                     <tbody>
                         <tr>
+                            <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
                             <td>78B47-A5373-8C4A7-FB57A</td>
                             <td>System Architect</td>
                             <td>Edinburgh</td>
@@ -324,6 +420,7 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
                             <td>FB4WR-32 NVD-4 RW79-XQFWH-CYQG3</td>
                             <td>Accountant</td>
                             <td>Tokyo</td>
@@ -339,6 +436,7 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
                             <td>GNBB8-YVD74-QJHX6- 27 H4K-8 QHDG</td>
                             <td>Junior Technical Author</td>
                             <td>San Francisco</td>
@@ -354,6 +452,7 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
                             <td>NG4HW-VH26C-733 KW-K6F98-J8CK4</td>
                             <td>Senior Javascript Developer</td>
                             <td>Edinburgh</td>
@@ -380,7 +479,31 @@
         <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
         <script src="/js/upload-img.js"></script>
         <script src="/js/bootstrap-input-spinner.js"></script>
+        <script src="/vendor/select2/dist/js/select2.min.js"></script>
 
         <!-- Page level custom scripts -->
         <script src="/js/demo/datatables-demo.js"></script>
+
+        <script>
+            $('#dataTable').DataTable({
+                columnDefs: [{
+                    targets: 0,
+                    render: function(data, type, row) {
+                        return data.substr(0, 40);
+                    },
+                    "width": "15%"
+                }, ]
+            });
+
+        </script>
+
+
+        <script>
+            $(document).ready(function() {
+                $('.select2').select2({
+                    closeOnSelect: false,
+                });
+            });
+
+        </script>
     @endsection
