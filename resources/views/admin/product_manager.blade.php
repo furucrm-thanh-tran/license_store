@@ -363,11 +363,7 @@
                         </tr>
                     </tfoot>
                     <tbody>
-<<<<<<< HEAD
                         <tr>
-=======
-                        <tr role="button" data-href="{{ route('admin.license-key') }}">
->>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                             <td><img src="/img/samsung.jpg" alt=""></td>
                             <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
                             <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019) sở hữu kính thước màn hình lớn đem lại
@@ -380,11 +376,8 @@
                             <td>$320,800</td>
                             <td>
                                 <div class="d-flex flex-nowrap">
-<<<<<<< HEAD
                                     <a class="btn" href="{{ route('admin.license-key') }}"><i
                                         class="fa fa-plus"></i></a>
-=======
->>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                                     <button class="btn" data-toggle="modal" data-target="#viewProduct"><i
                                             class="fa fa-eye"></i></button>
                                     <button class="btn" data-toggle="modal" data-target="#editProduct"><i
@@ -394,11 +387,7 @@
                                 </div>
                             </td>
                         </tr>
-<<<<<<< HEAD
                         <tr>
-=======
-                        <tr role="button" data-href="{{ route('admin.license-key') }}">
->>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                             <td><img src="/img/vivo.jpg" alt=""></td>
                             <td>Laptop Asus Vivobook A512DA-EJ422T AMD R5-3500U/Win10 (15.6 FHD)</td>
                             <td>Laptop Asus Vivobook A512DA-EJ422T AMD R5-3500U/Win10 (15.6 FHD) có sẵn theo nhiều màu hoàn
@@ -412,11 +401,8 @@
                             <td>$170,750</td>
                             <td>
                                 <div class="d-flex flex-nowrap">
-<<<<<<< HEAD
                                     <a class="btn" href="{{ route('admin.license-key') }}"><i
                                         class="fa fa-plus"></i></a>
-=======
->>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                                     <button class="btn" data-toggle="modal" data-target="#viewProduct"><i
                                             class="fa fa-eye"></i></button>
                                     <button class="btn" data-toggle="modal" data-target="#editProduct"><i
@@ -426,11 +412,7 @@
                                 </div>
                             </td>
                         </tr>
-<<<<<<< HEAD
                         <tr>
-=======
-                        <tr role="button" data-href="{{ route('admin.license-key') }}">
->>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                             <td><img src="/img/fujifilm.jpg" alt=""></td>
                             <td>Máy Ảnh Fujifilm X-T100 + Lens 15-45mm (24.2MP)</td>
                             <td>Máy Ảnh Fujifilm X-T100 + Lens 15-45mm kết hợp kiểu retro với chức năng hiện đại, có kiểu
@@ -445,11 +427,8 @@
                             <td>$86,000</td>
                             <td>
                                 <div class="d-flex flex-nowrap">
-<<<<<<< HEAD
                                     <a class="btn" href="{{ route('admin.license-key') }}"><i
                                         class="fa fa-plus"></i></a>
-=======
->>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                                     <button class="btn" data-toggle="modal" data-target="#viewProduct"><i
                                             class="fa fa-eye"></i></button>
                                     <button class="btn" data-toggle="modal" data-target="#editProduct"><i
@@ -459,11 +438,7 @@
                                 </div>
                             </td>
                         </tr>
-<<<<<<< HEAD
                         <tr>
-=======
-                        <tr role="button" data-href="{{ route('admin.license-key') }}">
->>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                             <td><img src="/img/lg.jpg" alt=""></td>
                             <td>Tai nghe Bluetooth LG HBS-510</td>
                             <td>tai nghe Bluetooth LG HBS-510 mang thiết kế sành điệu, phù hợp với người dùng trẻ, năng
@@ -474,11 +449,8 @@
                             <td>$433,060</td>
                             <td>
                                 <div class="d-flex flex-nowrap">
-<<<<<<< HEAD
                                     <a class="btn" href="{{ route('admin.license-key') }}"><i
                                         class="fa fa-plus"></i></a>
-=======
->>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                                     <button class="btn" data-toggle="modal" data-target="#viewProduct"><i
                                             class="fa fa-eye"></i></button>
                                     <button class="btn" data-toggle="modal" data-target="#editProduct"><i
@@ -488,11 +460,7 @@
                                 </div>
                             </td>
                         </tr>
-<<<<<<< HEAD
                         <tr>
-=======
-                        <tr role="button" data-href="{{ route('admin.license-key') }}">
->>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                             <td><img src="/img/jbl.jpg" alt=""></td>
                             <td>Loa Bluetooth JBL Pulse 4</td>
                             <td>Loa Bluetooth JBL Pulse 4 với thiết kế thay đổi đáng kể phần chân đế đã biến mất làm cho
@@ -505,11 +473,8 @@
                             <td>$162,700</td>
                             <td>
                                 <div class="d-flex flex-nowrap">
-<<<<<<< HEAD
                                     <a class="btn" href="{{ route('admin.license-key') }}"><i
                                         class="fa fa-plus"></i></a>
-=======
->>>>>>> 5bf8a720b1555a032eb05e87380d9ca94768856f
                                     <button class="btn" data-toggle="modal" data-target="#viewProduct"><i
                                             class="fa fa-eye"></i></button>
                                     <button class="btn" data-toggle="modal" data-target="#editProduct"><i
