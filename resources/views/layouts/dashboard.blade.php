@@ -244,10 +244,17 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
+                                @if(Auth::guard('manager')->user()->role == 1)
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Profile
+                                    </a>
+                                @else
+                                <a class="dropdown-item" href="{{ route('seller.profile') }}">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Profile
+                                    </a>
+                                @endif
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings

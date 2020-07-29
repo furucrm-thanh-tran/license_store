@@ -25,9 +25,4 @@ class AdminController extends Controller
     {
         return view('admin.product_manager');
     }
-
-    public function licenseKey()
-    {
-        return view('admin.license-key');
-    }
 }

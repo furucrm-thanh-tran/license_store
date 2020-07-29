@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
+    return view('index');
+});
+
+Route::get('/welcome', function () {
     return view('welcome');
 });
 
@@ -34,7 +38,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/sellermanager', 'AdminController@sellerManager')->name('admin.sellermanager')->middleware('role');
     Route::get('/transactionmanager', 'AdminController@transactionManager')->name('admin.transactionmanager')->middleware('role');
     Route::get('/productmanager', 'AdminController@productManager')->name('admin.productmanager')->middleware('role');
-    Route::get('/license-key', 'AdminController@licenseKey')->name('admin.license-key')->middleware('role');
+    Route::get('/license-key', 'ManagerController@licenseKey')->name('admin.license-key');
+    Route::get('/bill/detail', 'ManagerController@billDetail')->name('admin.bill-detail');
 });
 
 Route::prefix('seller')->group(function () {
@@ -42,7 +47,12 @@ Route::prefix('seller')->group(function () {
     Route::get('/customermanager', 'SellerController@customerManager')->name('seller.customermanager');
     Route::get('/productmanager', 'SellerController@productManager')->name('seller.productmanager');
     Route::get('/transactionmanager', 'SellerController@transactionManager')->name('seller.transactionmanager');
+    Route::get('/profile', 'SellerController@profile')->name('seller.profile');
+    Route::get('/bill', 'SellerController@bill')->name('seller.bill');
+    Route::get('/bill/detail', 'ManagerController@billDetail')->name('seller.bill-detail');
+    Route::get('/license-key', 'ManagerController@licenseKey')->name('seller.license-key');
 });
+
 
 
 // Route::get('admin', function (){

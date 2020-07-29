@@ -20,4 +20,14 @@ class ManagerController extends Controller
     {
         return view('admin.index');
     }
+
+    public function billDetail()
+    {
+        return view('bill-detail');
+    }
+
+    public function licenseKey()
+    {
+        return view('admin.license-key');
+    }
 }

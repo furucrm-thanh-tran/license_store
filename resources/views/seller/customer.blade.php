@@ -3,16 +3,7 @@
     <!-- Custom styles for this page -->
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-        .table td {
-            vertical-align: middle;
-        }
-
-        td:last-child {
-            text-align: center
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/custom-table.css">
 @endsection
 @section('content')
     <h1 class="h3 mb-2 text-gray-800">Customer manager</h1>
@@ -52,6 +43,7 @@
                             <td>
                                 <button class="btn" data-toggle="modal" data-target="#editSeller"><i
                                         class="fa fa-envelope"></i></button>
+                                <a href="{{ route('seller.bill') }}" class="btn"><i class="fas fa-arrow-right"></i></a>
                             </td>
                         </tr>
                         <tr>
@@ -61,7 +53,8 @@
                             <td>20110725</td>
                             <td>
                                 <button class="btn" data-toggle="modal" data-target="#editSeller"><i
-                                    class="fa fa-envelope"></i></button>
+                                        class="fa fa-envelope"></i></button>
+                                <a href="{{ route('seller.bill') }}" class="btn"><i class="fas fa-arrow-right"></i></a>
                             </td>
                         </tr>
                         <tr>
@@ -71,7 +64,8 @@
                             <td>20090112</td>
                             <td>
                                 <button class="btn" data-toggle="modal" data-target="#editSeller"><i
-                                    class="fa fa-envelope"></i></button>
+                                        class="fa fa-envelope"></i></button>
+                                <a href="{{ route('seller.bill') }}" class="btn"><i class="fas fa-arrow-right"></i></a>
                             </td>
                         </tr>
                         <tr>
@@ -81,7 +75,8 @@
                             <td>20120329</td>
                             <td>
                                 <button class="btn" data-toggle="modal" data-target="#editSeller"><i
-                                    class="fa fa-envelope"></i></button>
+                                        class="fa fa-envelope"></i></button>
+                                <a href="{{ route('seller.bill') }}" class="btn"><i class="fas fa-arrow-right"></i></a>
                             </td>
                         </tr>
                     </tbody>

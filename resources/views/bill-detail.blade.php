@@ -3,7 +3,8 @@
     <!-- Custom styles for this page -->
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="/css/custom-uploadimg.css">
+    <link href="/vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
+
     <style>
         .table td,
         .table thead th,
@@ -45,87 +46,82 @@
             max-width: 80px;
         }
 
-        /* View Product */
-        .product_view .modal-dialog {
-            max-width: 800px
-        }
-
-        .pre-cost {
-            text-decoration: line-through;
-            color: #a5a5a5;
-        }
-
-        .space-ten {
-            padding: 10px 0;
-        }
-
-        .product_view img {
-            max-width: 100%;
-            margin: auto;
-        }
-
     </style>
 @endsection
 @section('content')
-    <h1 class="h3 mb-2 text-gray-800">Product manager</h1>
-
-    <!-- The View Product -->
-    <x-detail-demo />
+    <h1 class="h3 mb-2 text-gray-800">Bill manager</h1>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-inline-flex justify-content-between align-items-center" id="test">
-            <h6 class="m-0 font-weight-bold text-primary">DataTable Product</h6>
+            <h6 class="m-0 font-weight-bold text-primary">DataTable Bill</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-
-                <!-- Product table -->
-                <x-product-table/>
-
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td>Product #01</td>
+                            <td>$10</td>
+                            <td>2</td>
+                            <td>$20</td>
+                        </tr>
+                        <tr>
+                            <td>Product #02</td>
+                            <td>$15</td>
+                            <td>1</td>
+                            <td>$15</td>
+                        </tr>
+                        <tr>
+                            <td>Product #03</td>
+                            <td>$7</td>
+                            <td>3</td>
+                            <td>$21</td>
+                        </tr>
+                        <tr>
+                            <td>Product #03</td>
+                            <td>$5</td>
+                            <td>4</td>
+                            <td>$20</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+
 @endsection
 
 @section('script')
     <!-- Page level plugins -->
     <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="/js/upload-img.js"></script>
-    <script src="/js/bootstrap-input-spinner.js"></script>
+    <script src="/vendor/select2/dist/js/select2.min.js"></script>
 
     <!-- Page level custom scripts -->
     <script src="/js/demo/datatables-demo.js"></script>
-    <script>
-        $('#dataTable').DataTable({
-            columnDefs: [{
-                    targets: 1,
-                    render: function(data, type, row) {
-                        return data.substr(0, 40);
-                    },
-                    "width": "15%"
-                },
-                {
-                    targets: 2,
-                    render: function(data, type, row) {
-                        return data.substr(0, 290);
-                    },
-                    "width": "50%"
-                },
-            ]
-        });
-
-    </script>
 
     <script>
-        customUploading('#customFile', '#uploaded_view');
-        customUploading('#customFile2', '#uploaded_view2');
-
-        $("input[type='number']").inputSpinner();
-
-        $('tr[data-href]').on("click", function() {
-            document.location = $(this).data('href');
+        $(document).ready(function() {
+            $('.select2').select2({
+                closeOnSelect: false,
+            });
         });
 
     </script>

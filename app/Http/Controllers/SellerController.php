@@ -26,4 +26,14 @@ class SellerController extends Controller
     {
         return view('seller.transaction');
     }
+
+    public function profile()
+    {
+        return view('seller.profile');
+    }
+
+    public function bill()
+    {
+        return view('seller.bill');
+    }
 }
