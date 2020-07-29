@@ -19,7 +19,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if ($guard == "manager" && Auth::guard($guard)->check()) {
-            return redirect()->route('manager.dashboard');
+            return redirect()->route('seller');
         }
 
         if (Auth::guard($guard)->check()) {
