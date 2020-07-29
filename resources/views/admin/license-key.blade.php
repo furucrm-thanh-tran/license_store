@@ -4,6 +4,7 @@
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="/vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/delete-modal.css">
     <style>
         .table td,
         .table thead th,
@@ -43,108 +44,6 @@
 
         table img {
             max-width: 80px;
-        }
-
-        /* Delete modal */
-        .modal-confirm {
-            color: #636363;
-            width: 400px;
-        }
-
-        .modal-confirm .modal-content {
-            padding: 20px;
-            border-radius: 5px;
-            border: none;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .modal-confirm .modal-header {
-            border-bottom: none;
-            position: relative;
-        }
-
-        .modal-confirm h4 {
-            text-align: center;
-            font-size: 26px;
-            margin: 30px 0 -10px;
-        }
-
-        .modal-confirm .close {
-            position: absolute;
-            top: -5px;
-            right: -2px;
-        }
-
-        .modal-confirm .modal-body {
-            color: #999;
-        }
-
-        .modal-confirm .modal-footer {
-            border: none;
-            text-align: center;
-            border-radius: 5px;
-            font-size: 13px;
-            padding: 10px 15px 25px;
-        }
-
-        .modal-confirm .modal-footer a {
-            color: #999;
-        }
-
-        .modal-confirm .icon-box {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto;
-            border-radius: 50%;
-            z-index: 9;
-            text-align: center;
-            border: 3px solid #f15e5e;
-        }
-
-        .modal-confirm .icon-box i {
-            color: #f15e5e;
-            font-size: 46px;
-            display: inline-block;
-            margin-top: 13px;
-        }
-
-        .modal-confirm .btn,
-        .modal-confirm .btn:active {
-            color: #fff;
-            border-radius: 4px;
-            background: #60c7c1;
-            text-decoration: none;
-            transition: all 0.4s;
-            line-height: normal;
-            min-width: 120px;
-            border: none;
-            min-height: 40px;
-            border-radius: 3px;
-            margin: 0 5px;
-        }
-
-        .modal-confirm .btn-secondary {
-            background: #c1c1c1;
-        }
-
-        .modal-confirm .btn-secondary:hover,
-        .modal-confirm .btn-secondary:focus {
-            background: #a8a8a8;
-        }
-
-        .modal-confirm .btn-danger {
-            background: #f15e5e;
-        }
-
-        .modal-confirm .btn-danger:hover,
-        .modal-confirm .btn-danger:focus {
-            background: #ee3535;
-        }
-
-        .trigger-btn {
-            display: inline-block;
-            margin: 100px auto;
         }
 
         /* View Product */
@@ -382,7 +281,7 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Title</th>
+                            <th>Product ID</th>
                             <th>License key</th>
                             <th>Seller</th>
                             <th>Customer</th>
@@ -393,7 +292,7 @@
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>Title</th>
+                            <th>Product ID</th>
                             <th>License key</th>
                             <th>Seller</th>
                             <th>Customer</th>
@@ -404,7 +303,7 @@
                     </tfoot>
                     <tbody>
                         <tr>
-                            <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
+                            <td>T295</td>
                             <td>78B47-A5373-8C4A7-FB57A</td>
                             <td>System Architect</td>
                             <td>Edinburgh</td>
@@ -420,7 +319,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
+                            <td>T295</td>
                             <td>FB4WR-32 NVD-4 RW79-XQFWH-CYQG3</td>
                             <td>Accountant</td>
                             <td>Tokyo</td>
@@ -436,7 +335,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
+                            <td>T295</td>
                             <td>GNBB8-YVD74-QJHX6- 27 H4K-8 QHDG</td>
                             <td>Junior Technical Author</td>
                             <td>San Francisco</td>
@@ -452,7 +351,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
+                            <td>T295</td>
                             <td>NG4HW-VH26C-733 KW-K6F98-J8CK4</td>
                             <td>Senior Javascript Developer</td>
                             <td>Edinburgh</td>
@@ -483,19 +382,6 @@
 
         <!-- Page level custom scripts -->
         <script src="/js/demo/datatables-demo.js"></script>
-
-        <script>
-            $('#dataTable').DataTable({
-                columnDefs: [{
-                    targets: 0,
-                    render: function(data, type, row) {
-                        return data.substr(0, 40);
-                    },
-                    "width": "15%"
-                }, ]
-            });
-
-        </script>
 
 
         <script>

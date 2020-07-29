@@ -35,7 +35,7 @@ class ManagerLoginController extends Controller
             if (Auth::guard('manager')->user()->role == 1) {
                 return redirect()->route('admin');
             }else{
-                return redirect()->intended(route('seller.dashboard'));
+                return redirect()->intended(route('seller'));
             }
         }else{
             return redirect()->route('login')

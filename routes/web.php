@@ -24,7 +24,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // Manager routes
 Route::prefix('manager')->group(function () {
-    Route::get('/', 'ManagerController@index')->name('seller.dashboard');
+    // Route::get('/', 'ManagerController@index')->name('seller.dashboard');
     Route::get('/login', 'Auth\ManagerLoginController@showLoginForm')->name('manager.login');
     Route::post('/login', 'Auth\ManagerLoginController@login')->name('manager.login.submit');
 });
@@ -37,12 +37,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/license-key', 'AdminController@licenseKey')->name('admin.license-key')->middleware('role');
 });
 
-// Route::get('admin', 'ManagerController@adminHome')->name('admin')->middleware('role');
-// Route::get('/admin/sellermanager', 'AdminController@sellerManager')->name('admin.sellermanager')->middleware('role');
-// Route::get('/admin/transactionmanager', 'AdminController@transactionManager')->name('admin.transactionmanager')->middleware('role');
-// Route::get('/admin/productmanager', 'AdminController@productManager')->name('admin.productmanager')->middleware('role');
-// Route::get('/admin/license-key', 'AdminController@licenseKey')->name('admin.license-key')->middleware('role');
-
+Route::prefix('seller')->group(function () {
+    Route::get('/', 'ManagerController@index')->name('seller');
+    Route::get('/customermanager', 'SellerController@customerManager')->name('seller.customermanager');
+    Route::get('/productmanager', 'SellerController@productManager')->name('seller.productmanager');
+    Route::get('/transactionmanager', 'SellerController@transactionManager')->name('seller.transactionmanager');
+});
 
 
 // Route::get('admin', function (){

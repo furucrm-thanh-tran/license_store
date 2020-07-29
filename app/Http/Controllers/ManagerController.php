@@ -13,11 +13,11 @@ class ManagerController extends Controller
 
     public function index()
     {
-        return view('seller');
+        return view('seller.index');
     }
 
     public function adminHome()
     {
-        return view('admin.index'); 
+        return view('admin.index');
     }
 }
