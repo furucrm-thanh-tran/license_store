@@ -15,11 +15,11 @@
     </div>
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.sellermanager') }}">
+        <a class="nav-link" href="{{ route('seller_manager.index') }}">
             {{-- <a class="nav-link" href="/admin/sellermanager"> --}}
-                <i class="fas fa-fw fa-store"></i>
-                <span>Sellers</span>
-            </a>
+            <i class="fas fa-fw fa-store"></i>
+            <span>Sellers</span>
+        </a>
     </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->

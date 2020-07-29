@@ -31,11 +31,17 @@ Route::prefix('manager')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/', 'ManagerController@adminHome')->name('admin')->middleware('role');
-    Route::get('/sellermanager', 'AdminController@sellerManager')->name('admin.sellermanager')->middleware('role');
+    // Route::get('/sellermanager', 'AdminController@sellerManager')->name('admin.sellermanager')->middleware('role');
+    Route::resource('/seller_manager','SellerManagerController')->middleware('role');
+    // Route::get('seller_manager/{id}/edit/','SellerManagerController@edit')->middleware('role');
+    // Route::post('seller_manager/{id}/update','SellerManagerController@update')->middleware('role');
+
     Route::get('/transactionmanager', 'AdminController@transactionManager')->name('admin.transactionmanager')->middleware('role');
     Route::get('/productmanager', 'AdminController@productManager')->name('admin.productmanager')->middleware('role');
     Route::get('/license-key', 'AdminController@licenseKey')->name('admin.license-key')->middleware('role');
 });
+
+// Route::resource('/sellermanager','SellerManagerController');
 
 // Route::get('admin', 'ManagerController@adminHome')->name('admin')->middleware('role');
 // Route::get('/admin/sellermanager', 'AdminController@sellerManager')->name('admin.sellermanager')->middleware('role');
