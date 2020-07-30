@@ -101,7 +101,7 @@ class SellerManagerController extends Controller
      */
     public function edit($id)
     {
-        $sellermanager = Manager::find($id);
+        $sellermanager = Manager::findOrFail($id);
         // return response()->json(['sellermanager' => $sellermanager], 200);
         return response()->json($sellermanager);
     }
@@ -137,7 +137,7 @@ class SellerManagerController extends Controller
      */
     public function destroy($id)
     {
-        $sellermanager = Manager::find($id);
+        $sellermanager = Manager::findOrFail($id);
         $sellermanager->delete();
         return redirect()->route('seller_manager.index')
             ->with('success', 'Seller deleted successfully');
