@@ -20,6 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->char('cvc',3);
             $table->char('exp_month',2);
             $table->char('exp_year',4);
+            $table->string('status')->nullable();
 
             $table->foreignId('user_id')
                 ->constrained('users')

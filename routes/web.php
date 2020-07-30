@@ -37,7 +37,6 @@ Route::prefix('manager')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/', 'ManagerController@adminHome')->name('admin')->middleware('role');
-    Route::resource('/seller_manager','SellerManagerController')->middleware('role');
     Route::resource('/seller_manager', 'SellerManagerController')->middleware('role');
     Route::resource('/product_manager', 'ProductManagerController')->middleware('role');
     Route::get('product_manager/fetch_icon/{id}', 'ProductManagerController@fetch_icon');
