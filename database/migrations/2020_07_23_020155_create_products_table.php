@@ -18,8 +18,6 @@ class CreateProductsTable extends Migration
             $table->string('name_pro');
             $table->string('description_pro');
             $table->binary('icon_pro');
-            $table->date('from_day');
-            $table->date('to_day');
             $table->decimal('price_license', 8, 2);
             $table->timestamps();
         });

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLicensesTable extends Migration
+class CreateBillsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateLicensesTable extends Migration
      */
     public function up()
     {
-        Schema::create('licenses', function (Blueprint $table) {
+        Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->string('product_key');
-            $table->date('activation_date');
-            $table->date('expiration_date');
-            $table->boolean('status')->nullable();
+            $table->integer('amount_licenses');
+            $table->decimal('total_money', 8, 2);
 
             //foreignKey
             $table->foreignId('pro_id')
@@ -30,7 +28,7 @@ class CreateLicensesTable extends Migration
             $table->foreignId('seller_id')
                 ->constrained('managers')
                 ->onDelete('cascade');
-
+                
             $table->timestamps();
         });
     }
@@ -42,6 +40,6 @@ class CreateLicensesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('licenses');
+        Schema::dropIfExists('bills');
     }
 }
