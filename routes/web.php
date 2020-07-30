@@ -24,7 +24,9 @@ Route::get('/welcome', function () {
 
 Auth::routes();
 
+// Customer routes
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/profile', 'HomeController@profile')->name('profile');
 
 // Manager routes
 Route::prefix('manager')->group(function () {
@@ -35,11 +37,7 @@ Route::prefix('manager')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/', 'ManagerController@adminHome')->name('admin')->middleware('role');
-    // Route::get('/sellermanager', 'AdminController@sellerManager')->name('admin.sellermanager')->middleware('role');
     Route::resource('/seller_manager','SellerManagerController')->middleware('role');
-    // Route::get('seller_manager/{id}/edit/','SellerManagerController@edit')->middleware('role');
-    // Route::post('seller_manager/{id}/update','SellerManagerController@update')->middleware('role');
-
     Route::get('/transactionmanager', 'AdminController@transactionManager')->name('admin.transactionmanager')->middleware('role');
     Route::get('/productmanager', 'AdminController@productManager')->name('admin.productmanager')->middleware('role');
     Route::get('/license-key', 'ManagerController@licenseKey')->name('admin.license-key');
