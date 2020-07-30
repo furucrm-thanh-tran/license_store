@@ -22,6 +22,38 @@
         </tr>
     </tfoot>
     <tbody>
+        @foreach($products as $product)
+        <tr>
+            <td>
+                <img src="product_manager/fetch_icon/{{ $product->id }}">
+            </td>
+            <td>{{$product->name_pro}}</td>
+            <td>{{$product->description_pro}}</td>
+            <td>{{$product->created_at}}</td>
+            <td>{{$product->updated_at}}</td>
+            <td>{{$product->price_license}}</td>
+            <td>
+                <div class="d-flex flex-nowrap">
+                    @if(Auth::guard('manager')->user()->role == 1)
+                    <a class="btn" href="{{ route('admin.license-key') }}"><i class="fa fa-plus"></i></a>
+                    <button class="btn" id="show-product" data-toggle="modal" data-target="#viewProduct"><i class="fa fa-eye"></i></button>
+                    <button class="btn" data-toggle="modal" data-target="#editProduct"><i class="fa fa-edit"></i></button>
+                    <form action="{{ route('product_manager.destroy',$product->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn" type="submit" data-toggle="modal" onclick="return confirm('Are you sure ????');"><i class="fa fa-trash"></i></button>
+                        <!-- <button class="btn" data-toggle="modal" data-target="#deleteProduct"><i class="fa fa-trash"></i></button> -->
+                    </form>
+                    @else
+                    <a class="btn" href="{{ route('seller.license-key') }}"><i class="fa fa-plus"></i></a>
+                    <button class="btn" data-toggle="modal" data-target="#viewProduct"><i class="fa fa-eye"></i></button>
+                    @endif
+                </div>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+    <!-- <tbody>
         <tr>
             <td><img src="/img/samsung.jpg" alt=""></td>
             <td>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</td>
@@ -168,5 +200,5 @@
                 </div>
             </td>
         </tr>
-    </tbody>
+    </tbody> -->
 </table>

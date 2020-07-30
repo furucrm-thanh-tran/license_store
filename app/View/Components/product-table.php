@@ -11,9 +11,11 @@ class product-table extends Component
      *
      * @return void
      */
+
+
     public function __construct()
     {
-        //
+        
     }
 
     /**

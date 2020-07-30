@@ -341,7 +341,7 @@
                                 <form action="{{ route('seller_manager.destroy',$sellermanager->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn" type="submit" data-toggle="modal" data-target="#deleteSeller" onclick="return confirm('Are you sure ????');"><i class="fa fa-trash"></i></button>
+                                    <button class="btn" type="submit" data-toggle="modal" onclick="return confirm('Are you sure ????');"><i class="fa fa-trash"></i></button>
                                 </form>
                             </div>
                         </td>
