@@ -96,11 +96,14 @@
             </div>
 
             <!-- Modal body -->
-            <form>
+            <form id="update_product" action="" method="POST">
+                <input type="hidden" name="product_id" id="product_id" disabled>
+                @method('PATCH')
+                @csrf
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="product-name2">Name</label>
-                        <input id="product-name2" type="text" class="form-control @error('product-name2') is-invalid @enderror" name="product-name2" value='Máy Tính Bảng Samsung Galaxy Tab A8"T295 (2019)' required autocomplete="product-name2" autofocus placeholder="Enter product name">
+                        <input id="pro_edit" type="text" class="form-control @error('product-name2') is-invalid @enderror" name="name_pro" value="{{ old('product-name2') }}" required autocomplete="product-name2" autofocus placeholder="Enter product name">
 
                         @error('product-name2')
                         <span class="invalid-feedback" role="alert">
@@ -110,13 +113,9 @@
                     </div>
                     <div class="form-group">
                         <label for="description2">Description</label>
-                        <textarea id="description2" type="text" class="form-control @error('description2') is-invalid @enderror" name="description2" required autofocus placeholder="Enter description" rows="4">
-                                                                    Máy Tính Bảng Samsung Galaxy Tab A8" T295 (2019) sở hữu kính thước màn hình lớn đem lại
-                                                                    không gian sử dụng thoải mái. Màn hình của chiếc máy tính bảng Samsung được thiết kế theo tỷ
-                                                                    lệ 16:10 rất lý tưởng cho việc đọc sách, tạp chí, đọc báo hoặc lướt web. Đặc biệt với độ
-                                                                    phân giải 1280 x 800 pixels cho hình ảnh hiển thị chi tiết, giúp bạn thoải mái lướt web hay
-                                                                    xem phim phụ đề mà không mỏi mắt.
-                                                                </textarea>
+                        <textarea id="des_edit" type="text" value="{{ old('description2') }}" class="form-control @error('description2') is-invalid @enderror" name="description_pro" required autofocus placeholder="Enter description" rows="4">
+
+                        </textarea>
 
                         @error('description2')
                         <span class="invalid-feedback" role="alert">
@@ -126,7 +125,7 @@
                     </div>
                     <div class="form-group">
                         <label for="price2">Price</label>
-                        <input id="price2" type="text" class="form-control @error('price2') is-invalid @enderror" name="price_license" value="{{ old('price2') }}" required autocomplete="price2" autofocus placeholder="Enter price license">
+                        <input id="price_edit" type="text" class="form-control @error('price2') is-invalid @enderror" name="price_license" value="{{ old('price2') }}" required autocomplete="price2" autofocus placeholder="Enter price license">
 
                         @error('price2')
                         <span class="invalid-feedback" role="alert">
@@ -137,12 +136,12 @@
                     <div class="form-group">
                         <label for="customFile2">Icon</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input file-upload">
+                            <input type="file" class="custom-file-input file-upload" name="icon_pro">
                             <label class="custom-file-label" for="customFile2">Choose file</label>
                         </div>
                     </div>
                     <div class="text-center">
-                        <img src="/img/samsung.jpg" class="icon img-thumbnail" alt="icon">
+                        <img id="img_pro" src="" class="icon img-thumbnail" alt="icon">
                     </div>
                 </div>
 
@@ -191,9 +190,7 @@
     <div class="card-body">
         <div class="table-responsive">
             <!-- Product table -->
-            
             @include('components.product-table', ['products' => $products])
-
 
         </div>
     </div>
@@ -210,6 +207,39 @@
 <script>
     $(function() {
         $('#message-success').delay(3000).fadeOut();
+    });
+</script>
+
+<script type="text/javascript">
+    $(function() {
+        /* Edit product */
+        $('#dataTable').on('click', '#edit-product', function() {
+            var pro_id = $(this).data('id');
+            $.get('product_manager/' + pro_id + '/edit', function(data) {
+                $('#editProduct').modal('show');
+                $('#product_id').val(data.id);
+                $('#pro_edit').val(data.name_pro);
+                $('#des_edit').val(data.description_pro);
+                $('#price_edit').val(data.price_license);
+                $("#img_pro").attr('src', 'product_manager/fetch_icon/' + pro_id);
+                // $('#product_id').val(data[0].id);
+                // $('#pro_edit').val(data[0].name_pro);
+                // $('#des_edit').val(data[0].description_pro);
+                // $('#price_edit').val(data[0].price_license);
+                $('#update_product').attr('action', 'product_manager/' + pro_id);
+            })
+        });
+        /* Show product */
+        $('#dataTable').on('click', '#show-product', function() {
+            var pro_id = $(this).data('id');
+            $.get('product_manager/' + pro_id, function(data) {
+                $('#viewProduct').modal('show');
+                $('#show_name').html(data.name_pro);
+                $('#show_des').html(data.description_pro);
+                $('#show_price').html('<span class="fa fa-dollar-sign"></span>' + data.price_license);
+                $("#show_img").attr('src', 'product_manager/fetch_icon/' + pro_id);
+            })
+        });
     });
 </script>
 
