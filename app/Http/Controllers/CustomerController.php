@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\User;
 use App\Payment;
+use App\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Session;
@@ -22,6 +23,16 @@ class CustomerController extends Controller
         $cus->email = $request->email;
         $cus->save();
         return back();
+    }
+
+    public function index()
+    {
+        $product=product::all();
+        return view('index')->with('product',$product);
+        // foreach ($product as $product) {
+        //     echo $product->name_pro ."<br>";
+        // }
+
     }
 
 
