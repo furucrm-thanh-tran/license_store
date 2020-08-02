@@ -18,7 +18,15 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if ($guard == "manager" && Auth::guard($guard)->check()) {
+        // if ($guard == "manager" && Auth::guard($guard)->check()) {
+        //     return redirect()->route('seller');
+        // }
+
+        if ($guard == "manager" && Auth::guard($guard)->check() && Auth::guard($guard)->user()->role == 1) {
+            return redirect()->route('admin');
+        }
+
+        if ($guard == "manager" && Auth::guard($guard)->check() && Auth::guard($guard)->user()->role == 0) {
             return redirect()->route('seller');
         }
 
