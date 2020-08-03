@@ -16,7 +16,7 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string('name_card');
-            $table->char('number_card',20);
+            $table->char('number_card',20)->unique();
             $table->char('cvc',3);
             $table->char('exp_month',2);
             $table->char('exp_year',4);

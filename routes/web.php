@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return redirect()->route('home');
 });
 
 Route::get('/welcome', function () {
@@ -24,9 +24,23 @@ Route::get('/welcome', function () {
 
 Auth::routes();
 
-// Customer routes
+// Customer routes}}}}}}}}}}}}}}}}}}}}}}}
 Route::get('/home', 'HomeController@index')->name('home');
+// profile
 Route::get('/profile', 'HomeController@profile')->name('profile');
+Route::get('/frm_insertcard','HomeController@frm_insertcard')->name('frm_insertcard');
+Route::get('/insertcard/{id}','HomeController@insertcard')->name('insertcard');
+Route::get('card/{id}','HomeController@paymentprofile_delete')->name('del_card_item');
+// cart
+Route::get('shoppingcart','HomeController@shopping_cart')->name('cart');
+Route::get('cart/{id}','HomeController@del_cart_item')->name('del_cart_item');
+Route::put('cart/update/{id}/{qty}','HomeController@upd_cart_item')->name('upd_cart_item');
+Route::post('cart/add/{id}/{name}/{qty}/{price}','HomeController@add_cart_item')->name('add_cart_item');
+Route::get('paycart/{amount}/{card_number}/{cvc}/{exp_month}/{exp_year}','HomeController@pay_cart')->name('pay_cart');
+
+Route::get('info_cus/{id}','CustomerController@edit_info_cus')->name('edit_info_cus');
+
+// End customer route}}}}}}}}}}}}}}}}}}}}
 
 // Manager routes
 Route::prefix('manager')->group(function () {

@@ -32,94 +32,81 @@
     </div>
 
     <div class="row">
+        @foreach ($product as $p)
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
                     <img src="img/samsung.jpg" alt="" class="img-fluid">
                     <div class="caption">
-                        <h4 class="pull-right">$700.99</h4>
-                        <h4><a href="#">Mobile Product</a></h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                            the
-                            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                            type
-                            and scrambled it to make a type specimen book.</p>
+                        <h4 class="pull-right">${{$p->price_license}}</h4>
+                        <h4><a href="#">{{$p->name_pro}}</a></h4>
                     </div>
                     <p>
                         (15 reviews)
                     </p>
                     <div class="space-ten"></div>
                     <div class="btn-ground text-center">
-                        <button type="button" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add To
+                        <button class="add_to_card btn btn-primary"
+                        data-id="{{$p->id}}"
+                        data-price="{{$p->price_license}}"
+                        data-name="{{$p->name_pro}}"
+                        data-qty="1"
+
+                        ><i class="fa fa-shopping-cart"></i> Add To
                             Cart</button>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#viewProduct"><i
+                        <button class="btn btn-primary" data-toggle="modal"
+                                                        data-price="{{$p->price_license}}"
+                                                        data-name="{{$p->name_pro}}"
+                                                        data-description="{{$p->description_pro}}"
+                                                        data-target="#viewProduct"><i
                                 class="fa fa-search"></i> Quick View</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <img src="img/samsung.jpg" alt="" class="img-fluid">
-                    <div class="caption">
-                        <h4 class="pull-right">$700.99</h4>
-                        <h4><a href="#">Mobile Product</a></h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                            the
-                            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                            type
-                            and scrambled it to make a type specimen book.</p>
-                    </div>
-                    <p>
-                        (15 reviews)
-                    </p>
-                    <div class="space-ten"></div>
-                    <div class="btn-ground text-center">
-                        <button type="button" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add To
-                            Cart</button>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#viewProduct"><i
-                                class="fa fa-search"></i> Quick View</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <img src="img/samsung.jpg" alt="" class="img-fluid">
-                    <div class="caption">
-                        <h4 class="pull-right">$700.99</h4>
-                        <h4><a href="#">Mobile Product</a></h4>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                            the
-                            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-                            type
-                            and scrambled it to make a type specimen book.</p>
-                    </div>
-                    <p>
-                        (15 reviews)
-                    </p>
-                    <div class="space-ten"></div>
-                    <div class="btn-ground text-center">
-                        <button type="button" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add To
-                            Cart</button>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#viewProduct"><i
-                                class="fa fa-search"></i> Quick View</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
     @endsection
 
     @section('script')
-        <script src="/js/bootstrap-input-spinner.js"></script>
-        <script>
-            $("input[type='number']").inputSpinner();
 
-            $('tr[data-href]').on("click", function() {
-                document.location = $(this).data('href');
+    <script>
+        $(".add_to_card").click(function(){
+            var id = $(this).data("id");
+            var name = $(this).data("name");
+            var price = $(this).data("price");
+            var qty = $(this).data("qty");
+            $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+            $.ajax(
+            {
+                url: "cart/add/"+id+"/"+name+"/"+qty+"/"+price,
+                type: 'POST',
+                data: {
+                    "id": id,
+                    "name": name,
+                    "price":price,
+                    "qty":qty
+                },
+                success: function (data)
+                {
+                    console.log("it Work");
+                    window.location.reload();
+
+                }
             });
-        </script>
+            console.log(id,token);
+        });
+    </script>
+        {{-- <script src="/js/bootstrap-input-spinner.js"></script>
+        <script>
+            // $("input[type='number']").inputSpinner();
+
+            // $('tr[data-href]').on("click", function() {
+            //     document.location = $(this).data('href');
+            // });
+        </script> --}}
     @endsection
