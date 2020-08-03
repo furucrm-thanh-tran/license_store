@@ -38,7 +38,7 @@ Route::get('shoppingcart','HomeController@shopping_cart')->name('cart');
 Route::get('cart/{id}','HomeController@del_cart_item')->name('del_cart_item');
 Route::put('cart/update/{id}/{qty}','HomeController@upd_cart_item')->name('upd_cart_item');
 Route::post('cart/add/{id}/{name}/{qty}/{price}','HomeController@add_cart_item')->name('add_cart_item');
-Route::get('pay/', 'HomeController@pay')->name('pay');
+Route::get('pay', 'HomeController@pay')->name('pay');
 Route::get('info_cus/{id}','CustomerController@edit_info_cus')->name('edit_info_cus');
 
 // End customer route}}}}}}}}}}}}}}}}}}}}

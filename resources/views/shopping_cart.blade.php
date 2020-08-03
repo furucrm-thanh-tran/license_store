@@ -21,7 +21,7 @@
                             <tbody id="cart_product">
                             @foreach(Cart::content() as $row)
                                 <tr>
-                                <td class="pro_id" data-id="{{$row->id}}"><?php echo $row->name; ?></td>
+                                <td class="pro_id" data-id="{{$row->rowId}}"><?php echo $row->name; ?></td>
                                 <td>
                                     <input data-qty="{{$row->qty}}" class="qty" type="number" min="0" onfocus="focusFunction()" value="<?php echo $row->qty; ?>"/>
                                 </td>
@@ -222,21 +222,18 @@
         // }).get();
 
         for(i=0;i<id.length;i++){
-            id_item=id[i];
-            console.log(id[i]+" "+qty[i]+" "+price[i]+" "+subtotal[i]);
-        // $.ajax({
-        //             url: "pay/"+id+"/"+qty+"/"+price+"/"+subtotal,
-        //             type: 'GET',
-        //             data: {
-        //                 "id": id,
-        //                 "qty": qty,
-        //                 "price":price,
-        //                 "subtotal":subtotal
-        //             },
+            rowId=id[i];
+        $.ajax({
+                    url: "pay/"+rowId,
+                    type: 'POST',
+                    data: {
+                        "rowId": rowId,
+                    },
 
-        //         });
+                });
 
         };
+        console.log(rowId);
 
     });
     </script>

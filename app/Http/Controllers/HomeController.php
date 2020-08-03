@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\payment;
@@ -40,9 +41,9 @@ class HomeController extends Controller
     {
 
         Stripe\Stripe::setApiKey("sk_test_51H7XCjBZo2jHPYhTsESBupsZkNosZPrTXD6cvkX9lflKz8Gue1lSYdmpiSv7imOXnwqgEsUwVMcqJ34nOblpuFAs005bYSJWOq");
-        $validator = $request->validate([
-            'number_card'=>'required|unique:payments',
-        ]);
+        // $validator = $request->validate([
+        //     'number_card'=>'required|unique:payments',
+        // ]);
         // $card=Stripe\Customer::updateSource(
         //     'cus_HjITAbZNKVAGMU',
         //     'card_1HA8dVBZo2jHPYhTP8YYIkis',
@@ -58,7 +59,7 @@ class HomeController extends Controller
         $payment->save();
         return redirect()->route('profile');
         // return redirect()->route('profile');
-        Session::flash('card_number', "Cart is empty");
+        // Session::flash('card_number', "Cart is empty");
 
 
     }
@@ -95,6 +96,8 @@ class HomeController extends Controller
     }
 
     public function pay(Request $request){
+        // $data = Cart::get($rowId);
+        // return $data;
         $card_number=$request->card_number;
         $amount = $request->amount;
         $data = payment::where('number_card',$card_number)->select('number_card','cvc','exp_month','exp_year')->first();
@@ -117,13 +120,14 @@ class HomeController extends Controller
                     "source" => $Stoken->id,
                     "description" => "Test payment from itsolutionstuff.com.",
             ]);
+            return $Scharge;
 
 
 
 
-            $Sretrieve=Stripe\Charge::retrieve([
-                "id"=>$Scharge->id
-                ]);
+            // $Sretrieve=Stripe\Charge::retrieve([
+            //     "id"=>$Scharge->id
+            //     ]);
             // return $id .$qty .$price .$subtotal;
 
         }catch(\Stripe\Exception\CardException $e) {
@@ -165,20 +169,11 @@ class HomeController extends Controller
     }
 
 
-    public function get_cart_item($id)
-    {
-        $rowId=$id;
-        $data = Cart::get($rowId);
-        return $data;
-    }
-
 
     public function add_cart_item($id,$name,$qty,$price)
     {
         $data=Cart::add($id, $name, $qty , $price);
     }
-
-
     public function upd_cart_item($id,$qty)
     {
         $rowId = $id;
@@ -189,5 +184,9 @@ class HomeController extends Controller
     {
         $rowId = $id;
         Cart::remove($rowId);
+    }
+    public function create_bill($rowId)
+    {
+        Cart::get($rowId);
     }
 }
