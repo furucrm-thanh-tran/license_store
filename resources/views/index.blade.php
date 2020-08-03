@@ -94,7 +94,6 @@
                 success: function (data)
                 {
                     console.log("it Work");
-                    window.location.reload();
 
                 }
             });

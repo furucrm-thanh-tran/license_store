@@ -11,6 +11,7 @@ use Stripe;
 use Cart;
 use Session;
 use Exception;
+use App\Http\Controllers\Number;
 class HomeController extends Controller
 {
     /**
@@ -28,15 +29,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        $product=product::all();
-        return view('index')->with('product',$product);
-        // foreach ($product as $product) {
-        //     echo $product->name_pro ."<br>";
-        // }
 
-    }
 
     public function frm_insertcard()
     {
@@ -45,10 +38,11 @@ class HomeController extends Controller
 
     public function insertcard( Request $request, $id)
     {
+
         Stripe\Stripe::setApiKey("sk_test_51H7XCjBZo2jHPYhTsESBupsZkNosZPrTXD6cvkX9lflKz8Gue1lSYdmpiSv7imOXnwqgEsUwVMcqJ34nOblpuFAs005bYSJWOq");
-        // $validator = $request->validate([
-        //     'number_card'=>'required|unique:payments',
-        // ]);
+        $validator = $request->validate([
+            'number_card'=>'required|unique:payments',
+        ]);
         // $card=Stripe\Customer::updateSource(
         //     'cus_HjITAbZNKVAGMU',
         //     'card_1HA8dVBZo2jHPYhTP8YYIkis',
@@ -64,6 +58,8 @@ class HomeController extends Controller
         $payment->save();
         return redirect()->route('profile');
         // return redirect()->route('profile');
+        Session::flash('card_number', "Cart is empty");
+
 
     }
 
@@ -71,7 +67,7 @@ class HomeController extends Controller
     {
         try{
         $id=Auth::user()->id;
-        $data = payment::where('user_id','=',$id)->select('number_card','cvc','exp_month','exp_year')->get();
+        $data = payment::where('user_id','=',$id)->select('id','number_card','cvc','exp_month','exp_year')->get();
         return view('profile')->with('data',$data);
         }catch(Error $e){
             return redirect()->route('frm_insertcard');
@@ -91,10 +87,89 @@ class HomeController extends Controller
         // Cart::destroy();
         $id=Auth::user()->id;
         $data = payment::where('user_id','=',$id)
-                        ->where('number_card','=','4242 4242 4242 4242')
+                        // ->where('number_card','=','4242 4242 4242 4242')
                         // ->where('number_card','=','4000 0000 0000 0002')
-                        ->select('name_card','number_card','cvc','exp_month','exp_year')->get();
+                        ->select('id','name_card','number_card','cvc','exp_month','exp_year')->get();
         return view('shopping_cart')->with('data',$data);
+
+    }
+
+    public function pay(Request $request){
+        $card_number=$request->card_number;
+        $amount = $request->amount;
+        $data = payment::where('number_card',$card_number)->select('number_card','cvc','exp_month','exp_year')->first();
+        // return $name_pro;
+        try{
+            Stripe\Stripe::setApiKey("sk_test_51H7XCjBZo2jHPYhTsESBupsZkNosZPrTXD6cvkX9lflKz8Gue1lSYdmpiSv7imOXnwqgEsUwVMcqJ34nOblpuFAs005bYSJWOq");
+              $Stoken=Stripe\Token::create([
+                'card' => [
+                  'number' => $data->number_card,
+                  'cvc' => $data->cvc,
+                  'exp_month' => $data->exp_month,
+                  'exp_year' => $data->exp_year,
+                ],
+              ]);
+
+
+            $Scharge=Stripe\Charge::create ([
+                    "amount" => $amount*100,
+                    "currency" => "usd",
+                    "source" => $Stoken->id,
+                    "description" => "Test payment from itsolutionstuff.com.",
+            ]);
+
+
+
+
+            $Sretrieve=Stripe\Charge::retrieve([
+                "id"=>$Scharge->id
+                ]);
+            // return $id .$qty .$price .$subtotal;
+
+        }catch(\Stripe\Exception\CardException $e) {
+            // Since it's a decline, \Stripe\Exception\CardException will be caught
+            'Status is:' . $e->getHttpStatus() . '<br>';
+            'Load:' .$e->getError()->load .'<br>';
+            'Type is:' . $e->getError()->type . '<br>';
+            'Code is:' . $e->getError()->code . '<br>';
+            // param is '' in this case
+            'Param is:' . $e->getError()->param . '<br>';
+            'Status:' .' failed' .'<br>';
+            'Message is:' . $e->getError()->message . '<br>';
+            Session::flash('erorr', $e->getError()->message);
+            return back();
+          } catch (\Stripe\Exception\RateLimitException $e) {
+            // Too many requests made to the API too quickly
+            return "e1";
+          } catch (\Stripe\Exception\InvalidRequestException $e) {
+            // Invalid parameters were supplied to Stripe's API
+            Session::flash('erorr2', "Cart is empty");
+            return back();
+          } catch (\Stripe\Exception\AuthenticationException $e) {
+            // Authentication with Stripe's API failed
+            // (maybe you changed API keys recently)
+            return "Authentication with Stripe's API failed";
+          } catch (\Stripe\Exception\ApiConnectionException $e) {
+            // Network communication with Stripe failed
+            return "e4";
+          } catch (\Stripe\Exception\ApiErrorException $e) {
+            // Display a very generic error to the user, and maybe send
+            // yourself an email
+            return "e5";
+          } catch (Exception $e) {
+            return "e6";
+            // Something else happened, completely unrelated to Stripe
+          }
+        //   Cart::destroy();
+        //   return back();
+    }
+
+
+    public function get_cart_item($id)
+    {
+        $rowId=$id;
+        $data = Cart::get($rowId);
+        return $data;
     }
 
 
@@ -114,87 +189,5 @@ class HomeController extends Controller
     {
         $rowId = $id;
         Cart::remove($rowId);
-        // Cart::update($rowId,4);
-        // return response()->json([
-        // 'success' => 'Record has been deleted successfully!'
-        // ]);
     }
-
-    public function pay_cart($amount,$card_number,$cvc,$exp_month,$exp_year)
-    {
-        try{
-        Stripe\Stripe::setApiKey("sk_test_51H7XCjBZo2jHPYhTsESBupsZkNosZPrTXD6cvkX9lflKz8Gue1lSYdmpiSv7imOXnwqgEsUwVMcqJ34nOblpuFAs005bYSJWOq");
-          $Stoken=Stripe\Token::create([
-            'card' => [
-              'number' => $card_number,
-              'cvc' => $cvc,
-              'exp_month' => $exp_month,
-              'exp_year' => $exp_year,
-
-            ],
-          ]);
-
-
-        $Scharge=Stripe\Charge::create ([
-                "amount" => $amount*100,
-                "currency" => "usd",
-                "source" => $Stoken->id,
-                "description" => "Test payment from itsolutionstuff.com.",
-        ]);
-
-
-
-
-        $Sretrieve=Stripe\Charge::retrieve([
-            "id"=>$Scharge->id
-            ]);
-        return $Sretrieve;
-
-    }catch(\Stripe\Exception\CardException $e) {
-        // Since it's a decline, \Stripe\Exception\CardException will be caught
-        'Status is:' . $e->getHttpStatus() . '<br>';
-        'Load:' .$e->getError()->load .'<br>';
-        'Type is:' . $e->getError()->type . '<br>';
-        'Code is:' . $e->getError()->code . '<br>';
-        // param is '' in this case
-        'Param is:' . $e->getError()->param . '<br>';
-        'Status:' .' failed' .'<br>';
-        'Message is:' . $e->getError()->message . '<br>';
-        Session::flash('erorr', $e->getError()->message);
-        return back();
-
-
-
-      } catch (\Stripe\Exception\RateLimitException $e) {
-        // Too many requests made to the API too quickly
-        return "e1";
-      } catch (\Stripe\Exception\InvalidRequestException $e) {
-        // Invalid parameters were supplied to Stripe's API
-        Session::flash('erorr2', "Cart is empty");
-        return back();
-      } catch (\Stripe\Exception\AuthenticationException $e) {
-        // Authentication with Stripe's API failed
-        // (maybe you changed API keys recently)
-        return "Authentication with Stripe's API failed";
-      } catch (\Stripe\Exception\ApiConnectionException $e) {
-        // Network communication with Stripe failed
-        return "e4";
-      } catch (\Stripe\Exception\ApiErrorException $e) {
-        // Display a very generic error to the user, and maybe send
-        // yourself an email
-        return "e5";
-      } catch (Exception $e) {
-        return "e6";
-        // Something else happened, completely unrelated to Stripe
-      }
-    //   $Sretrieve=Stripe\Charge::retrieve([
-    //         "id"=>$test
-    //         ]);
-
-    //     return $Sretrieve;
-    }
-
-
-
-
 }

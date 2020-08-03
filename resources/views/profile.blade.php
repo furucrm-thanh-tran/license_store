@@ -70,7 +70,7 @@
                     <div class="border-bottom p-4">
                         <div class="osahan-user text-center">
                             <div class="osahan-user-media">
-                                <img class="mb-3 rounded-pill shadow-sm mt-1" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="gurdeep singh osahan">
+                                {{-- <img class="mb-3 rounded-pill shadow-sm mt-1" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="gurdeep singh osahan"> --}}
                                 <div class="osahan-user-media-body">
                                     <h6 class="mb-2">{{ Auth::user()->full_name }}</h6>
                                     <p class="mb-1">{{ Auth::user()->phone }}</p>
@@ -105,9 +105,6 @@
                                 <div class="col-md-6">
                                     <div class="bg-white card payments-item mb-4 shadow-sm">
                                         <div class="gold-members p-4">
-                                            <label class="form-check-label" for="radio1">
-                                                <input type="radio" class="form-check-input" id="radio1" name="optradio" value="option1" checked>Main Payment
-                                              </label>
                                             <div class="media">
 
                                                 <div class="media-body">
@@ -116,7 +113,7 @@
 
                                                    </a>
                                                     <a href="#">
-                                                        <h6 id="card_number" class="mb-1">{{ $p->number_card }}</h6>
+                                                        <h6 id="card_number" data-number="{{ $p->number_card }}" class="mb-1">{{ $p->number_card }}</h6>
                                                     <p>CVC:***<br>
                                                         VALID TILL: {{$p->exp_month}}/{{$p->exp_year}}
                                                     </p>
@@ -154,5 +151,9 @@
             document.getElementsByTagName("h6")[i].innerHTML = newstr;
         }
     });
+</script>
+
+<script>
+
 </script>
 @endsection

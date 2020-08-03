@@ -21,16 +21,15 @@
                             <tbody id="cart_product">
                             @foreach(Cart::content() as $row)
                                 <tr>
-
-                                    <td><?php echo $row->name; ?></td>
-                                    <td>
-                                    <input class="qty" type="number" id="replyNumber" min="0" onfocus="focusFunction()" data-qty="{{$row->qty}}"value="<?php echo $row->qty; ?>"/>
-                                    </td>
-                                    <td>$<?php echo $row->price; ?></td>
-                                    <td>$<?php echo $row->subtotal; ?></td>
-                                    <td>
+                                <td class="pro_id" data-id="{{$row->id}}"><?php echo $row->name; ?></td>
+                                <td>
+                                    <input data-qty="{{$row->qty}}" class="qty" type="number" min="0" onfocus="focusFunction()" value="<?php echo $row->qty; ?>"/>
+                                </td>
+                                <td class="price" data-price="{{$row->price}}">$<?php echo $row->price; ?></td>
+                                <td class="subtotal" data-subtotal="{{$row->subtotal}}">$<?php echo $row->subtotal; ?></td>
+                                <td>
                                     <a class="remove_item" type="button" data-id="{{$row->rowId}}"><i class="fa fa-trash " aria-hidden="true"></i></a>
-                                    </td>
+                                </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -52,6 +51,7 @@
       <div class=" col-md-3">
         <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">
             <div class="tab-content" id="myTabContent">
+            <form action="{{route('pay')}}">
                 <div class="tab-pane fade active show" id="payments" role="tabpanel" aria-labelledby="payments-tab">
                     <h4 class="font-weight-bold mt-0 mb-4">Payments</h4>
 
@@ -59,11 +59,16 @@
 
                     <div class="row">
                         <h4>Total: $<?php echo Cart::subtotal(); ?></h4>
-                    @foreach($data as $p)
+
                         <div class="payment">
 
                             {{-- route payment_profile --}}
-                            <a href="/paymentprofile">Change</a>
+                            <select class="form-control" id="card_number" name="card_number">
+                            @foreach($data as $p)
+                                <option>{{$p->number_card}}</option>
+                                @endforeach
+                              </select>
+
                             <h4 class="headline-primary">Payment</h3>
 
                                 @if (Session::has('erorr'))
@@ -72,38 +77,15 @@
                                         <strong>Erorr!!</strong>{{ Session::get('erorr') }}
                                     </div>
                                 @endif
-
-                              <div class="bg-white card payments-item mb-4 shadow-sm">
-                                  <div class="gold-members p-4">
-
-                                      <div class="media">
-                                          <div class="media-body">
-                                              <a href="#">
-                                                {{$p->name_card}}
-                                                  <h6 id="card_number" >{{$p->number_card}}</h6>
-                                              </a>
-                                          </div>
-                                      </div>
-
-                                  </div>
-                              </div>
                           </div>
-                          <a type="button"
-                                        data-number="{{$p->number_card}}"
-                                        data-cvc="{{$p->cvc}}"
-                                        data-month="{{$p->exp_month}}"
-                                        data-year="{{$p->exp_year}}"
-                                        href="{{route('pay_cart',[Cart::subtotal(),
-                                                                    $p->number_card,
-                                                                    $p->cvc,
-                                                                    $p->exp_month,
-                                                                    $p->exp_year,])}}" class="btn btn-primary action_payment">Pay $<?php echo Cart::subtotal(); ?> </a>
+                          <input type="submit"  id="amount" name="amount" class="btn btn-primary action_payment col-12" value="<?php echo Cart::initial();?>">
 
-                          @endforeach
+
+
 
 
                     </div>
-                {{-- </form> --}}
+                </form>
 
                 </div>
             </div>
@@ -125,8 +107,31 @@
         }
     });
 </script> --}}
-
     {{-- delete cart item --}}
+    {{-- <script>
+        $(document).ready(function(){
+            var n = $("select");
+            var re = /(\w+)\s(\w+)\s(\w+)\s(\w+)/;
+            for (i = 0; i < n.length+1; i++){
+                var str = document.getElementsByTagName("select")[i].innerHTML;
+                var newstr = str.replace(re, "$1 **** **** $4");
+                document.getElementsByTagName("select")[i].innerHTML = newstr;
+            }
+        });
+    </script>
+
+<script>
+    $(document).ready(function(){
+        var n = $("option");
+        var re = /(\w+)\s(\w+)\s(\w+)\s(\w+)/;
+        for (i = 0; i < n.length+1; i++){
+            var str = document.getElementsByTagName("option")[i].innerHTML;
+            var newstr = str.replace(re, "$1 **** **** $4");
+            document.getElementsByTagName("option")[i].innerHTML = newstr;
+        }
+    });
+</script> --}}
+
     <script>
         $(".remove_item").click(function(){
             var id = $(this).data("id");
@@ -157,31 +162,22 @@
     {{-- end delete --}}
 
 
-    <script>
+    <script type = "text/javascript">
         $(".get_item").click(function(){
-            var datalist_id = $(".remove_item").map(function() {
-                return $(this).data("id");
-            }).get();
-            // var datalist_qty = $(".qty").map(function() {
-            //     return $(this).data("qty");
-            // }).get();
-
-            // get Quantity
-            var get_qty = document.getElementsByTagName("input");
-
-            // get token
-            // var token = $(".remove_item").map(function() {
-            //     return $(this).data("token");
-            // }).get();
-            var i = 0;
             $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
+            var datalist_id = $(".remove_item").map(function() {
+                return $(this).data("id");
+            }).get();
+            var get_qty = document.getElementsByTagName("input");
+            var i = 0;
+
             for(i=0; i<datalist_id.length; i++){
                 id=datalist_id[i];
-                qty=get_qty[i].value;
+                qty=get_qty[i+1].value;
 
                 $.ajax({
                     url: "cart/update/"+id+"/"+qty,
@@ -189,19 +185,72 @@
                     data: {
                         "id": id,
                         "qty": qty,
-                        _method: 'PUT'
                     },
 
                 });
                 console.log("it Work");
+                console.log(id+" "+qty);
             };
-            // alert('Record has been update successfully !!!!');
-            // window.location.reload();
+            alert('Record has been update successfully !!!!');
+            window.location.reload();
             // datalist_id.forEach(test)
             // function test(id){
-            console.log(id+" "+qty);
+            // console.log(id+" "+"qty");
         });
     </script>
+
+    {{-- Billl --}}
+
+    <script>
+        $(".action_payment").click(function(){
+        $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+        var id = $(".pro_id").map(function() {
+                return $(this).data("id");
+            }).get();
+        // var qty = $(".qty").map(function() {
+        //     return $(this).data("qty");
+        // }).get();
+        // var price = $(".price").map(function() {
+        //     return $(this).data("price");
+        // }).get();
+        // var subtotal = $(".subtotal").map(function() {
+        //     return $(this).data("subtotal");
+        // }).get();
+
+        for(i=0;i<id.length;i++){
+            id_item=id[i];
+            console.log(id[i]+" "+qty[i]+" "+price[i]+" "+subtotal[i]);
+        // $.ajax({
+        //             url: "pay/"+id+"/"+qty+"/"+price+"/"+subtotal,
+        //             type: 'GET',
+        //             data: {
+        //                 "id": id,
+        //                 "qty": qty,
+        //                 "price":price,
+        //                 "subtotal":subtotal
+        //             },
+
+        //         });
+
+        };
+
+    });
+    </script>
+
+
+    <script>
+        var str = document.getElementById("amount").value;
+        var result = str.replace(/,/g, "");
+        document.getElementById("amount").value = result;
+
+    </script>
+
+
+
 
     {{-- show button update --}}
     <script>

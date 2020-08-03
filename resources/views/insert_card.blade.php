@@ -2,8 +2,6 @@
 @section('content')
 {{-- Insert payment card --}}
 <div class="container">
-
-
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="card">
@@ -25,7 +23,12 @@
                             data-stripe-publishable-key="pk_test_51H7XCjBZo2jHPYhTztHCfF41vWOknXAyZIUKPL07ZbWITXnmITofSHlBKLIVrI2cwrtuASyT3OclONZ7LyTKOSmq00D9dB180q"
                             id="payment-form">
                         @csrf
-
+                        @if (Session::has('card_number'))
+                        <div class="alert alert-danger alert-dismissible col-12">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Erorr!!</strong>{{ Session::get('card_number') }}
+                        </div>
+                        @endif
                         <div class='form-row row'>
                             <div class='col-xs-12 form-group required'>
                                 <label class='control-label'>Name on Card</label>
