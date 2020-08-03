@@ -38,7 +38,7 @@ class ManagerLoginController extends Controller
                 return redirect()->intended(route('seller'));
             }
         }else{
-            return redirect()->route('login')
+            return redirect()->route('manager.login')
                 ->with('error','User Name or Password Are Wrong.');
         }
 
