@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLicensesTable extends Migration
+class CreateBillProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,24 +13,18 @@ class CreateLicensesTable extends Migration
      */
     public function up()
     {
-        Schema::create('licenses', function (Blueprint $table) {
+        Schema::create('bill__products', function (Blueprint $table) {
             $table->id();
-            $table->string('product_key');
-            $table->date('activation_date');
-            $table->date('expiration_date');
-            $table->boolean('status')->nullable();
+            $table->integer('amount_licenses');
 
             //foreignKey
             $table->foreignId('pro_id')
                 ->constrained('products')
                 ->onDelete('cascade');
-            $table->foreignId('user_id')->nullable()
-                ->constrained('users')
+            $table->foreignId('bill_id')
+                ->constrained('bills')
                 ->onDelete('cascade');
-            $table->foreignId('seller_id')->nullable()
-                ->constrained('managers')
-                ->onDelete('cascade');
-
+                
             $table->timestamps();
         });
     }
@@ -42,6 +36,6 @@ class CreateLicensesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('licenses');
+        Schema::dropIfExists('bill__products');
     }
 }

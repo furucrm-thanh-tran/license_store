@@ -15,17 +15,13 @@ class CreateBillsTable extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->integer('amount_licenses');
             $table->decimal('total_money', 8, 2);
 
             //foreignKey
-            $table->foreignId('pro_id')
-                ->constrained('products')
-                ->onDelete('cascade');
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->onDelete('cascade');
-            $table->foreignId('seller_id')
+            $table->foreignId('seller_id')->nullable()
                 ->constrained('managers')
                 ->onDelete('cascade');
                 
