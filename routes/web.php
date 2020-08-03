@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return redirect()->route('home');
+    return view('welcome');
 });
 
 Route::get('/welcome', function () {

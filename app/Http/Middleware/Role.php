@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
+
 use Illuminate\Support\Facades\Auth;
 
 use Closure;
@@ -19,7 +20,6 @@ class Role
         if(Auth::guard('manager')->user()->role == 1){
             return $next($request);
         }
-   
-        return redirect('home')->with('error',"You don't have admin access.");
+        return redirect()->route('manager.login')->with('error',"You don't have admin access.");
     }
 }
