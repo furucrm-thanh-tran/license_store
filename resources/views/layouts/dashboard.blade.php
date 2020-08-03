@@ -245,9 +245,13 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 @if(Auth::guard('manager')->user()->role == 1)
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{{ route('admin.profile') }}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Profile
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('admin.register') }}">
+                                        <i class="fa fa-user-plus fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Create New Admin
                                     </a>
                                 @else
                                 <a class="dropdown-item" href="{{ route('seller.profile') }}">

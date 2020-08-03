@@ -58,17 +58,7 @@ class ProductManagerController extends Controller
 
         $icon_file = $request->icon_pro;
         $icon = Image::make('./img/' . $icon_file);
-        // dd($icon);
         Response::make($icon->encode('jpeg'));
-
-        // $form_data = array(
-        //     'name_pro' => $request->name_pro,
-        //     'description_pro' => $request->description_pro,
-        //     'icon_pro' => $icon,
-        //     'price_license' => $request->price_license,
-        // );
-
-        // Product::create($form_data);
 
         $product = new Product();
         $product->name_pro = $request->name_pro;
@@ -76,7 +66,6 @@ class ProductManagerController extends Controller
         $product->icon_pro = $icon;
         $product->price_license = $request->price_license;
         $product->save();
-        // dd($product);
 
         return redirect()->back()->with('success', 'Product store in database successfully');
     }
@@ -112,7 +101,6 @@ class ProductManagerController extends Controller
      */
     public function edit($id)
     {
-        // $product = Product::where('id', $id)->get(['id', 'name_pro', 'description_pro', 'price_license']);
         $product = Product::findOrFail($id, ['id', 'name_pro', 'description_pro', 'price_license']);
         return response()->json($product);
     }
@@ -129,7 +117,6 @@ class ProductManagerController extends Controller
         $request->validate([
             'name_pro'  => ['required'],
             'description_pro' => ['required'],
-            // 'icon_pro' => ['required'],
             'price_license' => ['required'],
         ]);
 
@@ -152,18 +139,6 @@ class ProductManagerController extends Controller
             $product->price_license = $request->price_license;
             $product->save();
         }
-
-        // $icon_file = $request->icon_pro;
-        // $icon = Image::make('./img/' . $icon_file);
-        // // dd($icon);
-        // Response::make($icon->encode('jpeg'));
-
-        // $product = Product::find($id);
-        // $product->name_pro = $request->name_pro;
-        // $product->description_pro = $request->description_pro;
-        // $product->icon_pro = $icon;
-        // $product->price_license = $request->price_license;
-        // $product->save();
 
         return redirect()->back()->with('success', 'Product update in database successfully');
     }
