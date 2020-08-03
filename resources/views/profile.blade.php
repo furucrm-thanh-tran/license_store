@@ -70,7 +70,7 @@
                     <div class="border-bottom p-4">
                         <div class="osahan-user text-center">
                             <div class="osahan-user-media">
-                                <img class="mb-3 rounded-pill shadow-sm mt-1" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="gurdeep singh osahan">
+                                <!-- <img class="mb-3 rounded-pill shadow-sm mt-1" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="gurdeep singh osahan"> -->
                                 <div class="osahan-user-media-body">
                                     <h6 class="mb-2">{{ Auth::user()->full_name }}</h6>
                                     <p class="mb-1">{{ Auth::user()->phone }}</p>
