@@ -18,7 +18,7 @@ class CreateLicensesTable extends Migration
             $table->string('product_key');
             $table->date('activation_date');
             $table->date('expiration_date');
-            $table->boolean('status')->nullable();
+            
 
             //foreignKey
             $table->foreignId('pro_id')

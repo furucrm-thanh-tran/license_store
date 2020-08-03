@@ -16,6 +16,7 @@ class CreateBillsTable extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->decimal('total_money', 8, 2);
+            $table->boolean('status')->nullable();
 
             //foreignKey
             $table->foreignId('user_id')
