@@ -57,6 +57,10 @@
             <h6 class="m-0 font-weight-bold text-primary">DataTable Bill</h6>
         </div>
         <div class="card-body">
+            {{ $list }}
+            {{-- @foreach ($list as $item)
+                {{ $item }}
+            @endforeach --}}
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>

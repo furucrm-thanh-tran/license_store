@@ -248,21 +248,21 @@
 <script>
     $('#dataTable').DataTable({
         columnDefs: [{
-                targets: 1,
+                targets: 2,
                 render: function(data, type, row) {
                     return data.substr(0, 40);
                 },
                 "width": "15%"
             },
             {
-                targets: 2,
+                targets: 3,
                 render: function(data, type, row) {
                     return data.substr(0, 290);
                 },
-                "width": "50%"
+                "width": "40%"
             },
             {
-                targets: 5,
+                targets: 7,
                 "width": "12%"
             }
         ]
