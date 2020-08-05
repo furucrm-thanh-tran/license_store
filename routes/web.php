@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,18 +29,20 @@ Auth::routes();
 Route::get('/home', 'CustomerController@index')->name('home');
 // profile
 Route::get('/profile', 'HomeController@profile')->name('profile');
-Route::get('/frm_insertcard','HomeController@frm_insertcard')->name('frm_insertcard');
-Route::get('/insertcard/{id}','HomeController@insertcard')->name('insertcard');
-Route::get('card/{id}','HomeController@paymentprofile_delete')->name('del_card_item');
+Route::get('/frm_insertcard', 'HomeController@frm_insertcard')->name('frm_insertcard');
+Route::get('/insertcard/{id}', 'HomeController@insertcard')->name('insertcard');
+Route::get('card/{id}', 'HomeController@paymentprofile_delete')->name('del_card_item');
 // cart
-Route::get('shoppingcart','HomeController@shopping_cart')->name('cart');
-// Route::get('shoppingcart','HomeController@select_cart')->name('cart');
-
-Route::get('cart/{id}','HomeController@del_cart_item')->name('del_cart_item');
-Route::put('cart/update/{id}/{qty}','HomeController@upd_cart_item')->name('upd_cart_item');
-Route::post('cart/add/{id}/{name}/{qty}/{price}','HomeController@add_cart_item')->name('add_cart_item');
-Route::get('pay', 'HomeController@pay')->name('pay');
-Route::get('info_cus/{id}','CustomerController@edit_info_cus')->name('edit_info_cus');
+Route::get('shoppingcart', 'HomeController@shopping_cart')->name('cart');
+Route::get('cart/{id}', 'HomeController@del_cart_item')->name('del_cart_item');
+Route::put('cart/update/{id}/{qty}', 'HomeController@upd_cart_item')->name('upd_cart_item');
+Route::post('cart/add/{id}/{name}/{qty}/{price}', 'HomeController@add_cart_item')->name('add_cart_item');
+Route::get('info_cus/{id}', 'CustomerController@edit_info_cus')->name('edit_info_cus');
+Route::post('create_bill', 'HomeController@create_bill')->name('create_bill');
+/// Bill
+Route::get('list_bills/{id}','HomeController@list_bills')->name('list_bills');
+Route::get('bill_detail/{id}','HomeController@bill_detail')->name('bill_detail');
+// Route::get('bill_detail/{id}','HomeController@bill_detail')->name('bill_detail');
 
 // End customer route}}}}}}}}}}}}}}}}}}}}
 

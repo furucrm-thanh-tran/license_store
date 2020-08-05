@@ -12,9 +12,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-
                 <!-- Modal body -->
-            <form action="/info_cus/{{Auth::user()->id}}">
+                <form action="/info_cus/{{Auth::user()->id}}">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name">Full name</label>
@@ -28,7 +27,6 @@
                             </span>
                             @enderror
                         </div>
-
                         <div class="form-group">
                             <label for="email">Email address</label>
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
@@ -41,7 +39,6 @@
                             </span>
                             @enderror
                         </div>
-
                         <div class="form-group">
                             <label for="phone">Phone number</label>
                             <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror"
@@ -54,7 +51,6 @@
                             @enderror
                         </div>
                     </div>
-
                     <!-- Modal footer -->
                     <div class="modal-footer border-top-0 d-flex justify-content-center">
                         <button type="submit" data-id="{{ Auth::user()->id }}" class="btn btn-success">Submit</button>
@@ -76,16 +72,13 @@
                                     <p class="mb-1">{{ Auth::user()->phone }}</p>
                                     <p>{{ Auth::user()->email}}</p>
                                     {{-- <button class="btn btn-outline-dark float-right" data-toggle="modal" data-target="#editProfile">Edit Profile</button> --}}
-                                    <p class="mb-0 text-black font-weight-bold"><a class="text-primary mr-3" data-toggle="modal" data-target="#editProfile" href="#"><i class="icofont-ui-edit"></i> EDIT</a></p>
+                                    <p class="mb-0 text-black font-weight-bold"><a class="text-primary mr-3" data-toggle="modal" data-target="#editProfile" href="#">EDIT</a></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <ul class="nav nav-tabs flex-column border-0 pt-4 pl-4 pb-4" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="payments-tab" data-toggle="tab" href="#payments" role="tab" aria-controls="payments" aria-selected="true"><i class="icofont-credit-card"></i> Payments</a>
-                        </li>
-                    </ul>
+                        <a class="nav-link active" id="list_bills"  href="{{ route('list_bills',Auth::user()->id) }}">Purchase History</a>
+
                 </div>
             </div>
             <div class="col-md-9">
@@ -96,41 +89,26 @@
                                 <h4 class="font-weight-bold mt-0 mb-4 col-7">Payments</h4>
                                 <a href="{{ url("/frm_insertcard") }}" class="font-weight-bold">Add payment card</a>
                             </div>
-
                             <div class="row">
-
                                 @foreach($data as $p)
-
-
                                 <div class="col-md-6">
                                     <div class="bg-white card payments-item mb-4 shadow-sm">
                                         <div class="gold-members p-4">
                                             <div class="media">
-
                                                 <div class="media-body">
-                                                   <a href="#">
-                                                       <i class="fa fa-cc-visa fa-4x"></i>
-
-                                                   </a>
-                                                    <a href="#">
-                                                        <h6 id="card_number" data-number="{{ $p->number_card }}" class="mb-1">{{ $p->number_card }}</h6>
-                                                    <p>CVC:***<br>
-                                                        VALID TILL: {{$p->exp_month}}/{{$p->exp_year}}
-                                                    </p>
-                                                    </a>
+                                                    <i class="fa fa-cc-visa fa-4x"></i>
+                                                    <h6 id="card_number" data-number="{{ $p->number_card }}" class="mb-1">{{ $p->number_card }}</h6>
+                                                    <p>CVC:***<br>VALID TILL: {{$p->exp_month}}/{{$p->exp_year}}</p>
                                                     <p class="mb-0 text-black font-weight-bold">
                                                         <a class="text-danger" onclick="return confirm('Are you sure ???');" href="{{route('del_card_item',[$p->number_card])}}">
                                                             <i class="icofont-ui-delete"></i> DELETE</a>
-                                                        </p>
+                                                    </p>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-
                                 @endforeach
-
                             </div>
                         </div>
                     </div>
@@ -141,7 +119,7 @@
 @endsection
 
 @section('script')
-    <script>
+<script>
     $(document).ready(function(){
         var n = $("h6");
         var re = /(\w+)\s(\w+)\s(\w+)\s(\w+)/;
@@ -153,7 +131,4 @@
     });
 </script>
 
-<script>
-
-</script>
 @endsection

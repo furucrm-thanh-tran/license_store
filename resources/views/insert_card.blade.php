@@ -1,27 +1,17 @@
 @extends('layouts.master')
 @section('content')
 {{-- Insert payment card --}}
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="card">
-                <div class="card-title display-table" >
-                    <div class="row display-tr" >
-                        <h3 class="panel-title display-td" >Payment Details</h3>
-                        <div class="display-td" >
-                            <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
-                        </div>
-                    </div>
+        <div class="container row">
+            <div class="col-3">
+
+            </div>
+            <div class="card col-6">
+                <div class="card-title col-12 mt-3" >
+                    <h3 class="panel-title display-td" >Payment Details</h3>
+                    <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
                 </div>
                 <div class="card-body">
-
-                    <form
-                            role="form"
-                            action="{{ route('insertcard',Auth::user()->id) }}"
-                            class="require-validation"
-                            data-cc-on-file="false"
-                            data-stripe-publishable-key="pk_test_51H7XCjBZo2jHPYhTztHCfF41vWOknXAyZIUKPL07ZbWITXnmITofSHlBKLIVrI2cwrtuASyT3OclONZ7LyTKOSmq00D9dB180q"
-                            id="payment-form">
+                    <form role="form" action="{{ route('insertcard',Auth::user()->id) }}"class="require-validation"data-cc-on-file="false"data-stripe-publishable-key="pk_test_51H7XCjBZo2jHPYhTztHCfF41vWOknXAyZIUKPL07ZbWITXnmITofSHlBKLIVrI2cwrtuASyT3OclONZ7LyTKOSmq00D9dB180q"id="payment-form">
                         @csrf
                         @if (Session::has('card_number'))
                         <div class="alert alert-danger alert-dismissible col-12">
@@ -29,59 +19,56 @@
                             <strong>Erorr!!</strong>{{ Session::get('card_number') }}
                         </div>
                         @endif
-                        <div class='form-row row'>
-                            <div class='col-xs-12 form-group required'>
-                                <label class='control-label'>Name on Card</label>
+                        <div class='row'>
+                            <div class='col-xs-12 col-12 form-group required'>
+                                <label>Name on Card</label>
                                 <input name="card_name" class='form-control' size='4' type='text'>
                             </div>
                         </div>
 
-                        <div class='form-row row'>
-                            <div class='col-xs-12 form-group card required'>
+                        <div class='row'>
+                            <div class='col-12 required'>
                                 <label class='card-title'>Card Number</label>
-                                <input name="card_number" id="card_number" autocomplete='off' class='form-control card-number' maxlength="19" type='text' >
-                                @if ($errors->has('card_number'))
-                                    <div class="error alert-danger text-center">
-                                        {{ $errors->first('card_number')}}
-                                    </div>
-                                @endif
+                                <input name="number_card" id="number_card" autocomplete='off' class='form-control card-number' maxlength="19" type='text'>
+                            @if ($errors->has('number_card'))
+                                <div class="error alert-danger text-center">
+                                    {{ $errors->first('number_card')}}
+                                </div>
+                            @endif
                             </div>
                         </div>
-
-                        <div class='form-row row'>
+                        <div class='row mt-3'>
                             <div class='col-xs-12 col-md-4 form-group cvc required'>
-                                <label class='control-label'>CVC</label>
-                                <input name="card_cvc" autocomplete='off'class='form-control card-cvc' placeholder='ex. 311' maxlength="3"type='text'>
+                                <label>CVC</label>
+                                <input name="card_cvc" autocomplete='off'class='form-control card-cvc' placeholder='ex. 311' maxlength="3"type='password'>
                             </div>
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                <label class='control-label'>Expiration Month</label>
+                                <label>Expiration Month</label>
                                 <input name="card_expmonth" class='form-control card-expiry-month' placeholder='MM' maxlength="2"type='text'>
                             </div>
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                <label class='control-label'>Expiration Year</label>
+                                <label>Expiration Year</label>
                                 <input name="card_expyear" class='form-control card-expiry-year' placeholder='YYYY' maxlength="4" type='text'>
                             </div>
                         </div>
-
-                        <div class='form-row row'>
+                        <div class='row'>
                             <div class='col-md-12 error form-group collapse'>
                                 <div class='alert-danger alert'>Please correct the errors and try again.</div>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-xs-12">
+                            <div class="col-12">
                                 <button class="btn btn-primary btn-lg btn-block" type="submit">Save</button>
                             </div>
                         </div>
-
-                </form>
+                    </form>
                 </div>
             </div>
-        </div>
-    </div>
+            <div class="col-3">
 
-</div>
+            </div>
+        </div>
 
 
 
@@ -126,35 +113,33 @@ $(function() {
           }, stripeResponseHandler);
         }
 
-  });
+    });
 
-  function stripeResponseHandler(status, response) {
+    function stripeResponseHandler(status, response) {
         if (response.error) {
             $('.error')
-                .removeClass('collapse')
-                .find('.alert')
-                .text(response.error.message);
-        } else {
-            /* token contains id, last4, and card type */
+            .removeClass('collapse')
+            .find('.alert')
+            .text(response.error.message);
+        }else{
+                /* token contains id, last4, and card type */
             var token = response['id'];
-
             $form.find('input[type=text]').empty();
             $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
             $form.get(0).submit();
         }
     }
-
 });
 </script>
 
 <script>
 $(document).ready(function(){
-    document.querySelector('#card_number').addEventListener('keydown', (e) => {
-    e.target.value = e.target.value.replace(/(\d{4})(\d+)/g, '$1 $2')
+    document.querySelector('#number_card').addEventListener('keydown',(e) => {
+        e.target.value = e.target.value.replace(/(\d{4})(\d+)/g, '$1 $2')
     })
     /* Jquery */
-    $('#card_number').keyup(function() {
-    $(this).val($(this).val().replace(/(\d{4})(\d+)/g, '$1 $2'))
+    $('#number_card').keyup(function() {
+        $(this).val($(this).val().replace(/(\d{4})(\d+)/g, '$1 $2'))
     });
 });
 </script>

@@ -27,8 +27,7 @@
     <x-product-detail />
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <h1 class="display-4">Pricing</h1>
-        <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap
-            example. It's built with default Bootstrap components and utilities with little customization.</p>
+        <p class="lead"></p>
     </div>
 
     <div class="row">
@@ -47,6 +46,7 @@
                     <div class="space-ten"></div>
                     <div class="btn-ground text-center">
                         <button class="add_to_card btn btn-primary"
+                        id="card_add"
                         data-id="{{$p->id}}"
                         data-price="{{$p->price_license}}"
                         data-name="{{$p->name_pro}}"
@@ -100,12 +100,5 @@
             console.log(id,token);
         });
     </script>
-        {{-- <script src="/js/bootstrap-input-spinner.js"></script>
-        <script>
-            // $("input[type='number']").inputSpinner();
 
-            // $('tr[data-href]').on("click", function() {
-            //     document.location = $(this).data('href');
-            // });
-        </script> --}}
     @endsection
