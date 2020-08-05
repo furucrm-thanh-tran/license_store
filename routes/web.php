@@ -56,8 +56,11 @@ Route::prefix('admin')->group(function () {
     Route::get('product_manager/fetch_icon/{id}', 'ProductManagerController@fetch_icon');
     Route::get('/transactionmanager', 'AdminController@transactionManager')->name('admin.transactionmanager')->middleware('role');
     Route::get('/license-key', 'ManagerController@licenseKey')->name('admin.license-key');
-    Route::get('/bill/detail', 'ManagerController@billDetail')->name('admin.bill-detail');
+    Route::get('/bill/detail/{id}', 'ManagerController@billDetail')->name('admin.bill-detail');
+    Route::post('/transactionmanager/{id}', 'AdminController@updateTransaction');
+
 });
+Route::get('get_id/{id}', 'AdminController@get_id')->name('admin.get_id');
 
 Route::prefix('seller')->group(function () {
     Route::get('/', 'ManagerController@index')->name('seller');

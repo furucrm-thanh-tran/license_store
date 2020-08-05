@@ -27,6 +27,14 @@ class AdminController extends Controller
         return view('admin.transaction_manager', ['transactions' => $transactions, 'sellers_long' => $sellers_long, 'sellers_best' => $sellers_best]);
     }
 
+    public function updateTransaction(Request $res, $id)
+    {
+        $bill = Bill::find($id);
+        $bill->seller_id = $res->seller;
+        $bill->save();
+        return back();
+    }
+
     public function productManager()
     {
         return view('admin.product_manager');

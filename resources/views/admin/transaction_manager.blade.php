@@ -22,19 +22,20 @@
                 </div>
 
                 <!-- Modal body -->
-                <form>
+                <form id="update_bill" action="" method="POST">
+                    @csrf
                     <div class="form-group">
-                        <label>Choose a seller</label>
-                        <select class="select2" style="width: 100%;">
+                        <label>Choose a seller for bill <span id="title">#</span></label>
+                        <select name="seller" class="select2" style="width: 100%;">
                             <option value="" disabled selected>Select your option</option>
                             <optgroup label="Người bán được nhiều license nhất">
                                 @foreach ($sellers_best as $seller)
-                                    <option>{{ $seller->managers->full_name }}</option>
+                                    <option value="{{ $seller->managers->id }}">{{ $seller->managers->full_name }}</option>
                                 @endforeach
                             </optgroup>
                             <optgroup label="Người có thời gian làm việc lâu nhất">
                                 @foreach ($sellers_long as $seller)
-                                    <option>{{ $seller->full_name }}</option>
+                                    <option value="{{ $seller->id }}">{{ $seller->full_name }}</option>
                                 @endforeach
                             </optgroup>
                         </select> </div> <!-- /.form-group -->
@@ -54,7 +55,7 @@
             <h6 class="m-0 font-weight-bold text-primary">DataTable Seller</h6>
         </div>
         <div class="card-body">
-            {{ $sellers_best }}
+            {{-- {{ $sellers_best }} --}}
             <div class="table-responsive">
                 <!-- Transaction table -->
                 @include('components.transaction-table', ['transactions' => $transactions])
@@ -79,6 +80,19 @@
         $(document).ready(function() {
             $('.select2').select2({
                 closeOnSelect: false,
+            });
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $(function() {
+            /* Edit product */
+            $('#dataTable').on('click', '#assign-seller', function() {
+                var bill_id = $(this).data('id');
+                $('#assignSeller').modal('show');
+                $('#title').html(bill_id);
+                $('#update_bill').attr('action', 'transactionmanager/' + bill_id);
             });
         });
 

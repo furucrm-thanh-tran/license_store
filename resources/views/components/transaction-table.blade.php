@@ -48,10 +48,11 @@
                         <button class="btn btn-primary disabled" data-toggle="modal" data-target="#assignSeller"
                             disabled>Assign</button>
                     @else
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#assignSeller">Assign</button>
+                        {{-- <button class="btn btn-primary" data-toggle="modal" data-target="#assignSeller">Assign</button> --}}
+                        <button id="assign-seller" class="btn btn-primary" data-toggle="modal" data-target="#assignSeller" data-id="{{ $transaction->id }}">Assign</button>
                     @endif
                     @if (Auth::guard('manager')->user()->role == 1)
-                        <a href="{{ route('admin.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
+                        <a href="{{ route('admin.bill-detail',$transaction->id) }}" class="btn"><i class="fas fa-info text-info"></i></a>
                     @else
                         <a href="{{ route('seller.bill-detail') }}" class="btn"><i
                                 class="fas fa-info text-info"></i></a>
