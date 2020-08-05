@@ -65,9 +65,9 @@ class HomeController extends Controller
       return redirect()->route('frm_insertcard');
     }
   }
-  public function paymentprofile_delete($card_number)
+  public function paymentprofile_delete($id)
   {
-    $data = payment::where('number_card', $card_number)->delete();
+    $data = payment::where('id', $id)->delete();
     return back();
   }
 
@@ -101,7 +101,7 @@ class HomeController extends Controller
     $amount = $request->amount;
     $user_id = $request->user_id;
     // return $card_number ." " .$amount ." " .$user_id;
-    $data = payment::where('number_card', $card_number)->select('number_card', 'cvc', 'exp_month', 'exp_year')->first();
+    $data = payment::where('number_card','like', '%'.$card_number)->select('number_card', 'cvc', 'exp_month', 'exp_year')->first();
     // return $data;
     try {
       Stripe\Stripe::setApiKey("sk_test_51H7XCjBZo2jHPYhTsESBupsZkNosZPrTXD6cvkX9lflKz8Gue1lSYdmpiSv7imOXnwqgEsUwVMcqJ34nOblpuFAs005bYSJWOq");

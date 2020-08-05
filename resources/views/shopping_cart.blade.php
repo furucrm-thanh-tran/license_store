@@ -55,15 +55,14 @@
                         <h4 class="font-weight-bold mt-0 mb-4">Payments</h4>
                     {{-- action payment --}}
                         <div class="row">
-                            <h4>Total: $<?php echo Cart::subtotal(); ?></h4>
-                            <div class="payment">
+                            <h4 class="col-12">Total: $<?php echo Cart::subtotal(); ?></h4>
+                            <div class="col-12">
                                     {{-- route payment_profile --}}
                                     <select class="form-control" id="card_number" name="card_number">
                                     @foreach($data as $p)
-                                        <option>{{$p->number_card}}</option>
+                                    <option data-id="{{$p->id}}">{{$p->number_card}}</option>
                                         @endforeach
                                     </select>
-                                    <h4 class="headline-primary">Payment</h3>
                                         @if (Session::has('erorr'))
                                             <div class="alert alert-danger alert-dismissible col-12">
                                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -73,7 +72,7 @@
                             </div>
                             <input type="text" id="pro_count" class="collapse" value="{{Cart::count()}}">
                             <input type="text" id="user_id" class="collapse" value="{{Auth::user()->id}}">
-                            <input type="submit"  id="amount" name="amount" class="btn btn-primary action_payment col-12" value="<?php echo Cart::initial();?>">
+                            <input type="submit"  id="amount" name="amount" class="btn btn-primary action_payment mt-3 col-12" value="<?php echo Cart::initial();?>">
                         </div>
                     </div>
                 </div>
@@ -214,6 +213,18 @@
             $(this).prop("disabled", true);
         });
     });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            var n = $("option");
+            var re = /(\w+)\s(\w+)\s(\w+)\s(\w+)/;
+            for (i = 0; i < n.length+1; i++){
+                var str = document.getElementsByTagName("option")[i].innerHTML;
+                var newstr = str.replace(re, "$4");
+                document.getElementsByTagName("option")[i].innerHTML = newstr;
+            }
+        });
     </script>
 
 

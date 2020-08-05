@@ -97,10 +97,10 @@
                                             <div class="media">
                                                 <div class="media-body">
                                                     <i class="fa fa-cc-visa fa-4x"></i>
-                                                    <h6 id="card_number" data-number="{{ $p->number_card }}" class="mb-1">{{ $p->number_card }}</h6>
+                                                    <h6 id="card_number" class="mb-1">{{ $p->number_card }}</h6>
                                                     <p>CVC:***<br>VALID TILL: {{$p->exp_month}}/{{$p->exp_year}}</p>
                                                     <p class="mb-0 text-black font-weight-bold">
-                                                        <a class="text-danger" onclick="return confirm('Are you sure ???');" href="{{route('del_card_item',[$p->number_card])}}">
+                                                        <a class="text-danger" onclick="return confirm('Are you sure ???');" href="{{route('del_card_item',[$p->id])}}">
                                                             <i class="icofont-ui-delete"></i> DELETE</a>
                                                     </p>
                                                 </div>
