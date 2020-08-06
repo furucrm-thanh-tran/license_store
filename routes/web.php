@@ -28,17 +28,17 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 // profile
 Route::get('/profile', 'HomeController@profile')->name('profile');
-Route::get('/frm_insertcard','HomeController@frm_insertcard')->name('frm_insertcard');
-Route::get('/insertcard/{id}','HomeController@insertcard')->name('insertcard');
-Route::get('card/{id}','HomeController@paymentprofile_delete')->name('del_card_item');
+Route::get('/frm_insertcard', 'HomeController@frm_insertcard')->name('frm_insertcard');
+Route::get('/insertcard/{id}', 'HomeController@insertcard')->name('insertcard');
+Route::get('card/{id}', 'HomeController@paymentprofile_delete')->name('del_card_item');
 // cart
-Route::get('shoppingcart','HomeController@shopping_cart')->name('cart');
-Route::get('cart/{id}','HomeController@del_cart_item')->name('del_cart_item');
-Route::put('cart/update/{id}/{qty}','HomeController@upd_cart_item')->name('upd_cart_item');
-Route::post('cart/add/{id}/{name}/{qty}/{price}','HomeController@add_cart_item')->name('add_cart_item');
-Route::get('paycart/{amount}/{card_number}/{cvc}/{exp_month}/{exp_year}','HomeController@pay_cart')->name('pay_cart');
+Route::get('shoppingcart', 'HomeController@shopping_cart')->name('cart');
+Route::get('cart/{id}', 'HomeController@del_cart_item')->name('del_cart_item');
+Route::put('cart/update/{id}/{qty}', 'HomeController@upd_cart_item')->name('upd_cart_item');
+Route::post('cart/add/{id}/{name}/{qty}/{price}', 'HomeController@add_cart_item')->name('add_cart_item');
+Route::get('paycart/{amount}/{card_number}/{cvc}/{exp_month}/{exp_year}', 'HomeController@pay_cart')->name('pay_cart');
 
-Route::get('info_cus/{id}','CustomerController@edit_info_cus')->name('edit_info_cus');
+Route::get('info_cus/{id}', 'CustomerController@edit_info_cus')->name('edit_info_cus');
 
 // End customer route}}}}}}}}}}}}}}}}}}}}
 
@@ -58,15 +58,16 @@ Route::prefix('admin')->middleware('is_admin')->group(function () {
     Route::resource('/product_manager', 'ProductManagerController');
     Route::get('product_manager/fetch_icon/{id}', 'ProductManagerController@fetch_icon');
 
-    Route::get('/register', 'AdminController@showAdminRegister')->name('admin.register');
-    Route::post('/register', 'AdminController@createAdmin')->name('admin.register.submit');
-
     Route::get('/profile', 'AdminController@showProfile')->name('admin.profile');
 
     Route::get('/transactionmanager', 'AdminController@transactionManager')->name('admin.transactionmanager');
     Route::get('/license-key', 'ManagerController@licenseKey')->name('admin.license-key');
     Route::get('/bill/detail', 'ManagerController@billDetail')->name('admin.bill-detail');
 });
+
+Route::get('/hello/newadmin/register', 'RegisterAdminController@showAdminRegister')->name('newadmin.register');
+Route::post('/hello/newadmin/register', 'RegisterAdminController@createAdmin')->name('newadmin.register.submit');
+
 
 // Seller routes
 Route::prefix('seller')->middleware('is_seller')->group(function () {

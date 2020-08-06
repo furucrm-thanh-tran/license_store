@@ -23,15 +23,25 @@
 
 <body>
     <div class="container">
+        @if(session()->get('error'))
+        <div class="alert alert-danger text-center col-md-6 mx-auto message">
+            {{ session()->get('error') }}
+        </div>
+        @endif
+
+        @if(session()->get('success'))
+        <div class="alert alert-success text-center col-md-6 mx-auto message">
+            {{ session()->get('success') }}
+        </div>
+        @endif
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ __('Register Admin') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('admin.register.submit') }}">
+                        <form method="POST" action="{{ route('newadmin.register.submit') }}">
                             @csrf
-
                             <div class="form-group row">
                                 <label for="user_name" class="col-md-4 col-form-label text-md-right">{{ __('User Name') }}</label>
 
@@ -116,6 +126,13 @@
                                     <input id="role" type="text" class="form-control" name="role" value="1" disabled>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="key" class="col-md-4 col-form-label text-md-right">{{ __('Code') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="key" type="password" class="form-control" name="key" required autocomplete="">
+                                </div>
+                            </div>
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
@@ -130,6 +147,12 @@
             </div>
         </div>
     </div>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script>
+        $(function() {
+            $('.message').delay(3000).fadeOut();
+        });
+    </script>
 </body>
 
 </html>

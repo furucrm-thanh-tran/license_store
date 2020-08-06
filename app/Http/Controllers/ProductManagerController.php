@@ -57,7 +57,7 @@ class ProductManagerController extends Controller
         ]);
 
         $icon_file = $request->icon_pro;
-        $icon = Image::make('./img/' . $icon_file);
+        $icon = Image::make($icon_file);
         Response::make($icon->encode('jpeg'));
 
         $product = new Product();
@@ -122,11 +122,9 @@ class ProductManagerController extends Controller
 
         
         $icon_file = $request->icon_pro;
-        // $icon = Image::make('./img/' . $icon_file);
-        // Response::make($icon->encode('jpeg'));
         $product = Product::find($id);
         if ($icon_file != null) {
-            $icon = Image::make('./img/' . $icon_file);
+            $icon = Image::make($icon_file);
             Response::make($icon->encode('jpeg'));
             $product->name_pro = $request->name_pro;
             $product->description_pro = $request->description_pro;

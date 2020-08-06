@@ -22,7 +22,7 @@
         {{ session()->get('success') }}
     </div>
     @endif
-    
+
 </div>
 <!-- The Create Seller -->
 <div class="modal fade" id="createSeller">
@@ -38,7 +38,8 @@
             </div>
 
             <!-- Modal body -->
-            <form action="{{ route('seller_manager.store') }}" method="POST">
+            <form id="frmCreate" action="{{ route('seller_manager.store') }}" method="POST">
+            <!-- <form id="frmCreate"> -->
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -99,7 +100,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer border-top-0 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button id="saveBtn" type="submit" class="btn btn-success">Submit</button>
                 </div>
             </form>
         </div>
@@ -172,7 +173,7 @@
     <div class="card-header py-3 d-inline-flex justify-content-between align-items-center" id="test">
         <h6 class="m-0 font-weight-bold text-primary">DataTable Seller</h6>
         <div>
-            <button class="btn btn-outline-dark" data-toggle="modal" data-target="#createSeller"><i class="fa fa-user-plus"></i> Create seller</button>
+            <button id="btnCreate" class="btn btn-outline-dark" data-toggle="modal" data-target="#createSeller"><i class="fa fa-user-plus"></i> Create seller</button>
         </div>
     </div>
     <div class="card-body">
@@ -209,7 +210,6 @@
                         <td>
                             <div class="d-flex flex-nowrap justify-content-center">
                                 <button class="btn" id="edit-seller" data-toggle="modal" data-id="{{ $sellermanager->id }}"><i class="fa fa-edit"></i></button>
-                                <!-- <a href="javascript:void(0)" class="btn" id="edit-seller-a" data-toggle="modal" data-id="{{ $sellermanager->id }}"><i class="fa fa-edit"></i></a> -->
                                 <form action="{{ route('seller_manager.destroy',$sellermanager->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
@@ -242,6 +242,42 @@
 
 <script type="text/javascript">
     $(function() {
+
+        // $.ajaxSetup({
+        //     headers: {
+        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //     }
+        // });
+
+        // $('#btnCreate').click(function() {
+        //     $('#saveBtn').val("create-Seller");
+        //     $('#frmCreate').trigger("reset");
+        //     $('#createSeller').modal('show');
+        // });
+
+        // $('#saveBtn').click(function(e) {
+        //     e.preventDefault();
+        //     $(this).html('Sending..');
+
+        //     $.ajax({
+        //         data: $('#frmCreate').serialize(),
+        //         url: "",
+        //         type: "POST",
+        //         dataType: 'json',
+        //         success: function(data) {
+
+        //             $('#frmCreate').trigger("reset");
+        //             $('#createSeller').modal('hide');
+        //             table.draw();
+
+        //         },
+        //         error: function(data) {
+        //             console.log('Error:', data);
+        //             $('#saveBtn').html('Save Changes');
+        //         }
+        //     });
+        // });
+
         /* Edit seller */
         $('#dataTable').on('click', '#edit-seller', function() {
             var seller_id = $(this).data('id');
