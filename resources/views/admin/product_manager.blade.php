@@ -28,7 +28,7 @@
             </div>
 
             <!-- Modal body -->
-            <form action="{{ route('product_manager.store') }}" method="POST">
+            <form action="{{ route('product_manager.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -96,7 +96,7 @@
             </div>
 
             <!-- Modal body -->
-            <form id="update_product" action="" method="POST">
+            <form id="update_product" action="" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="product_id" id="product_id" disabled>
                 @method('PATCH')
                 @csrf
