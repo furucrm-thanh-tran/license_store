@@ -22,6 +22,35 @@
 </head>
 
 <body>
+    <!-- <div class="modal fade" id="checkKey">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Check Key</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="frmCheck" action="" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="id">ID</label>
+                            <input type="text" class="form-control @error('id') is-invalid @enderror" name="id" value="" required autocomplete="id" autofocus placeholder="Enter id">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Enter password">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer border-top-0 d-flex justify-content-center">
+                        <button id="saveBtn" type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> -->
     <div class="container">
         @if(session()->get('error'))
         <div class="alert alert-danger text-center col-md-6 mx-auto message">

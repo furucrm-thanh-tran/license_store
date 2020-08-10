@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::post('manager/login', 'API\ManagerController@login');
+   
+Route::middleware(['auth:apimanager','scope:admin'])->group( function () {
+    Route::resource('seller_manager', 'API\SellerManagerController');
+    Route::resource('product_manager', 'API\ProductManagerController');
 });
+
+Route::middleware(['auth:apimanager','scope:seller'])->group( function () {
+    Route::get('product', 'API\ProductManagerController@index');
+    Route::get('product/{id}', 'API\ProductManagerController@show');
+});
+
+Route::post('register', 'API\UserController@register');
+Route::post('login', 'API\UserController@login');
