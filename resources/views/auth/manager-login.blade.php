@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('manager.login.submit') }}">
                         @csrf
-                        
+
                         <div class="form-group row">
                             <label for="user_name" class="col-md-4 col-form-label text-md-right">{{ __('User Name') }}</label>
 
@@ -38,6 +38,8 @@
                                 @enderror
                             </div>
                         </div>
+                        
+                        <!-- Message Error -->
                         @if(session()->get('error'))
                         <div class="alert alert-danger text-center col-md-6 mx-auto">
                             {{ session()->get('error') }}

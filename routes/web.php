@@ -59,24 +59,48 @@ Route::prefix('manager')->group(function () {
     Route::post('/login', 'Auth\ManagerLoginController@login')->name('manager.login.submit');
 });
 
-Route::prefix('admin')->group(function () {
-    Route::get('/', 'ManagerController@adminHome')->name('admin')->middleware('role');
-    Route::resource('/seller_manager', 'SellerManagerController')->middleware('role');
-    Route::resource('/product_manager', 'ProductManagerController')->middleware('role');
-    Route::get('product_manager/fetch_icon/{id}', 'ProductManagerController@fetch_icon');
-    Route::get('/transactionmanager', 'AdminController@transactionManager')->name('admin.transactionmanager')->middleware('role');
-    Route::get('/license-key', 'ManagerController@licenseKey')->name('admin.license-key');
-    Route::get('/bill/detail', 'ManagerController@billDetail')->name('admin.bill-detail');
-});
+// Admin routes
+Route::prefix('admin')->middleware('is_admin')->group(function () {
+    Route::get('/', 'ManagerController@adminHome')->name('admin');
 
-Route::prefix('seller')->group(function () {
+    Route::resource('/seller_manager', 'SellerManagerController');
+
+    Route::resource('/product_manager', 'ProductManagerController');
+    Route::get('product_manager/fetch_icon/{id}', 'ProductManagerController@fetch_icon');
+
+    Route::get('/profile', 'AdminController@showProfile')->name('admin.profile');
+
+    Route::get('/transactionmanager', 'AdminController@transactionManager')->name('admin.transactionmanager');
+    Route::get('/license-key', 'ManagerController@licenseKey')->name('admin.license-key');
+    Route::get('/bill/detail/{id}', 'ManagerController@billDetail')->name('admin.bill-detail');
+    Route::post('/transactionmanager/{id}', 'AdminController@updateTransaction');
+    Route::resource('/transaction', 'TransactionController');
+
+});
+Route::get('get_id/{id}', 'AdminController@get_id')->name('admin.get_id');
+
+Route::get('/hello/newadmin/register', 'RegisterAdminController@showAdminRegister')->name('newadmin.register');
+Route::post('/hello/newadmin/register', 'RegisterAdminController@createAdmin')->name('newadmin.register.submit');
+// Route::post('/hello/newadmin/login', 'RegisterAdminController@checkLogin')->name('newadmin.login.submit');
+
+
+// Seller routes
+Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::get('/', 'ManagerController@index')->name('seller');
     Route::get('/customermanager', 'SellerController@customerManager')->name('seller.customermanager');
-    Route::get('/productmanager', 'SellerController@productManager')->name('seller.productmanager');
+    // Route::get('/productmanager', 'SellerController@productManager')->name('seller.productmanager');
+
+    Route::resource('/productmanager', 'ProductController');
+    Route::get('productmanager/fetch_icon/{id}', 'ProductController@fetch_icon');
+
     Route::get('/transactionmanager', 'SellerController@transactionManager')->name('seller.transactionmanager');
     Route::get('/profile', 'SellerController@profile')->name('seller.profile');
     Route::get('/bill', 'SellerController@bill')->name('seller.bill');
-    Route::get('/bill/detail', 'ManagerController@billDetail')->name('seller.bill-detail');
+    Route::get('/bill/detail/{id}', 'ManagerController@billDetail')->name('seller.bill-detail');
     Route::get('/license-key', 'ManagerController@licenseKey')->name('seller.license-key');
+    Route::resource('/transaction', 'TransactionController');
+
+    Route::put('profile/{id}', 'SellerController@update');
+    Route::get('profile/{id}/edit', 'SellerController@edit');
 });
 

@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Support\Facades\Auth;
 
-use Closure;
-
-class Role
+class IsSeller
 {
     /**
      * Handle an incoming request.
@@ -17,9 +16,10 @@ class Role
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::guard('manager')->user()->role == 1){
+        if (Auth::guard('manager')->user()->role == 0) {
             return $next($request);
         }
-        return redirect()->route('manager.login')->with('error',"You don't have admin access.");
+
+        return redirect()->route('manager.login')->with('error',"You don't have seller access.");
     }
 }

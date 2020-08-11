@@ -115,7 +115,7 @@
                             <td>$320,800</td>
                             <td>
                                 <button class="btn" disabled><i class="fa fa-check text-mute"></i></button>
-                                <a href="{{ route('seller.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
+                                <a href="bill/detail/1" class="btn"><i class="fas fa-info text-info"></i></a>
                             </td>
                         </tr>
                         <tr>
@@ -128,7 +128,7 @@
                             <td>$170,750</td>
                             <td>
                                 <button class="btn"><i class="fa fa-check text-success"></i></button>
-                                <a href="{{ route('seller.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
+                                <a href="bill/detail/1" class="btn"><i class="fas fa-info text-info"></i></a>
                             </td>
                         </tr>
                         <tr>
@@ -141,7 +141,7 @@
                             <td>$86,000</td>
                             <td>
                                 <button class="btn"><i class="fa fa-check text-success"></i></button>
-                                <a href="{{ route('seller.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
+                                <a href="bill/detail/1" class="btn"><i class="fas fa-info text-info"></i></a>
                             </td>
                         </tr>
                         <tr>
@@ -154,7 +154,7 @@
                             <td>$433,060</td>
                             <td>
                                 <button class="btn" disabled><i class="fa fa-check text-mute"></i></button>
-                                <a href="{{ route('seller.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
+                                <a href="bill/detail/1" class="btn"><i class="fas fa-info text-info"></i></a>
                             </td>
                         </tr>
                     </tbody>

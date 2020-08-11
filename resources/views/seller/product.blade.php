@@ -81,7 +81,7 @@
             <div class="table-responsive">
 
                 <!-- Product table -->
-                <x-product-table/>
+                @include('components.product-table', ['products' => $products])
 
             </div>
         </div>
@@ -128,5 +128,19 @@
             document.location = $(this).data('href');
         });
 
+    </script>
+
+    <script>
+        /* Show product */
+        $('#dataTable').on('click', '#seller_showproduct', function() {
+            var pro_id = $(this).data('id');
+            $.get('productmanager/' + pro_id, function(data) {
+                $('#viewProduct').modal('show');
+                $('#show_name').html(data.name_pro);
+                $('#show_des').html(data.description_pro);
+                $('#show_price').html('<span class="fa fa-dollar-sign"></span>' + data.price_license);
+                $("#show_img").attr('src', 'productmanager/fetch_icon/' + pro_id);
+            })
+        });
     </script>
 @endsection

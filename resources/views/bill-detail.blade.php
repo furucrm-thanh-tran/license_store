@@ -76,30 +76,18 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        <tr>
-                            <td>Product #01</td>
-                            <td>$10</td>
-                            <td>2</td>
-                            <td>$20</td>
-                        </tr>
-                        <tr>
-                            <td>Product #02</td>
-                            <td>$15</td>
-                            <td>1</td>
-                            <td>$15</td>
-                        </tr>
-                        <tr>
-                            <td>Product #03</td>
-                            <td>$7</td>
-                            <td>3</td>
-                            <td>$21</td>
-                        </tr>
-                        <tr>
-                            <td>Product #03</td>
-                            <td>$5</td>
-                            <td>4</td>
-                            <td>$20</td>
-                        </tr>
+                        @foreach ($list as $item)
+                            <tr>
+                                <td>{{ $item->products->name_pro }}</td>
+                                <td>$ {{ $item->products->price_license }}</td>
+                                <td>{{ $item->amount_licenses }}</td>
+                            <td>
+                                $
+                                {{
+                                   number_format(($item->amount_licenses *  $item->products->price_license), 2)
+                                }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
