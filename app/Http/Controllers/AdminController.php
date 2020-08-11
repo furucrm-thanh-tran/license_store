@@ -32,7 +32,9 @@ class AdminController extends Controller
         $bill = Bill::find($id);
         $bill->seller_id = $res->seller;
         $bill->save();
-        return back();
+        return response([
+            'bill' => $bill
+        ], 200);
     }
 
     public function productManager()
