@@ -59,6 +59,46 @@
             </div>
         </div>
     </div>
+
+    <!-- The Edit Payment Card -->
+
+    <div class="modal fade" id="card_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title">Update card</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <form action="{{route('edit_card_item')}}">
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label>Expiration Month</label>
+                            <input name="card_expmonth" id="card_expmonth" class='form-control card-expiry-month' placeholder='MM' max="12" min="01" type='number'>
+                        </div>
+                        <div class="form-group">
+                            <label>Expiration Year</label>
+                            <input name="card_expyear" id="card_expyear" class='form-control card-expiry-year' placeholder='YYYY' maxlength="4" maxlength="4" type='number'>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer border-top-0 d-flex justify-content-center">
+                        <input type="submit" class="btn btn-success" value="Submit">
+                        <input id="edit" name="edit" class="btn btn-success collapse" value="" required>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
     <div class="container">
         <div class="row">
             <div class="col-md-3">
@@ -98,10 +138,16 @@
                                                 <div class="media-body">
                                                     <i class="fa fa-cc-visa fa-4x"></i>
                                                     <h6 id="card_number" class="mb-1">{{ $p->number_card }}</h6>
-                                                    <p>CVC:***<br>VALID TILL: {{$p->exp_month}}/{{$p->exp_year}}</p>
+                                                    <p>CVC:***<br>VALID TILL: **/****</p>
                                                     <p class="mb-0 text-black font-weight-bold">
                                                         <a class="text-danger" onclick="return confirm('Are you sure ???');" href="{{route('del_card_item',[$p->id])}}">
                                                             <i class="icofont-ui-delete"></i> DELETE</a>
+                                                        <a class="text-danger m-lg-3 edit_card" data-toggle="modal"
+                                                                                                data-month="{{$p->exp_month}}"
+                                                                                                data-year="{{$p->exp_year}}"
+                                                                                                data-id="{{$p->id}}"
+                                                                                                href="#card_modal"
+                                                                                                onclick="edit_card(this)">EDIT</a>
                                                     </p>
                                                 </div>
                                             </div>
@@ -109,6 +155,11 @@
                                     </div>
                                 </div>
                                 @endforeach
+                            </div>
+                            <div class='row'>
+                                <div class='col-md-12 error form-group collapse'>
+                                    <div class='alert-danger alert'>Please correct the errors and try again.</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -129,6 +180,17 @@
             document.getElementsByTagName("h6")[i].innerHTML = newstr;
         }
     });
+</script>
+
+<script>
+    function edit_card(card){
+        var month = $(card).data('month');
+        var year = $(card).data('year');
+        var id = $(card).data('id');
+        document.getElementById('card_expmonth').value = month;
+        document.getElementById('card_expyear').value = year;
+        document.getElementById('edit').value = id;
+    }
 </script>
 
 @endsection

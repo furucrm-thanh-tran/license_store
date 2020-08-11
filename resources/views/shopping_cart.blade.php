@@ -58,9 +58,10 @@
                             <h4 class="col-12">Total: $<?php echo Cart::subtotal(); ?></h4>
                             <div class="col-12">
                                     {{-- route payment_profile --}}
-                                    <select class="form-control" id="card_number" name="card_number">
-                                    @foreach($data as $p)
-                                    <option data-id="{{$p->id}}">{{$p->number_card}}</option>
+                                    <select class="form-control"  id="card_number" name="card_number">
+                                        <option>Choose Card !!!!</option>
+                                        @foreach($data as $p)
+                                            <option data-id="{{$p->id}}" value="{{$p->number_card}}">**** **** **** {{$p->number_card}}</option>
                                         @endforeach
                                     </select>
                                         @if (Session::has('erorr'))
@@ -160,11 +161,6 @@
         var amount = document.getElementById("amount").value;
         var card_number = document.getElementById("card_number").value
         var user_id = document.getElementById("user_id").value
-        // var id = $(".pro_id").map(function() {
-        //         return $(this).data("id");
-        //     }).get();
-        // for(i=-1;i<=id.length;i++){
-        //     var rowId=id[i];
         $.ajax({
                     url: "create_bill",
                     type: 'POST',
@@ -188,16 +184,12 @@
     });
     </script>
 
-
     <script>
         var str = document.getElementById("amount").value;
         var result = str.replace(/,/g, "");
         document.getElementById("amount").value = result;
 
     </script>
-
-
-
 
     {{-- show button update --}}
     <script>
@@ -207,26 +199,10 @@
     </script>
 
     <script>
-    $(document).ready(function() {
-        $("#amount").click(function() {
-        // disable button
-            $(this).prop("disabled", true);
-        });
-    });
+        $("#amount").click(function(){
+            document.getElementById("amount").disabled = true;
+        })
     </script>
-
-    <script>
-        $(document).ready(function(){
-            var n = $("option");
-            var re = /(\w+)\s(\w+)\s(\w+)\s(\w+)/;
-            for (i = 0; i < n.length+1; i++){
-                var str = document.getElementsByTagName("option")[i].innerHTML;
-                var newstr = str.replace(re, "$4");
-                document.getElementsByTagName("option")[i].innerHTML = newstr;
-            }
-        });
-    </script>
-
 
 @endsection
 

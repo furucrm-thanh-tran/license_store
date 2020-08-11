@@ -45,15 +45,12 @@
                     </p>
                     <div class="space-ten"></div>
                     <div class="btn-ground text-center">
-                        <button class="add_to_card btn btn-primary"
+                        <a class="add_to_card btn btn-primary"
                         id="card_add"
-                        data-id="{{$p->id}}"
-                        data-price="{{$p->price_license}}"
-                        data-name="{{$p->name_pro}}"
-                        data-qty="1"
+                        href="/login"
 
                         ><i class="fa fa-shopping-cart"></i> Add To
-                            Cart</button>
+                            Cart</a>
                         <button class="btn btn-primary" data-toggle="modal"
                                                         data-price="{{$p->price_license}}"
                                                         data-name="{{$p->name_pro}}"

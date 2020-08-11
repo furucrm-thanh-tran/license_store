@@ -15,23 +15,29 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'CustomerController@index');
 
-Route::get('/welcome', function () {
-    return view('welcome');
-});
+// Route::get('/welcome', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
 // Customer routes}}}}}}}}}}}}}}}}}}}}}}}
-Route::get('/home', 'CustomerController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home_new','HomeController@index_new');
+Route::get('/home_update','HomeController@index_update');
+Route::get('/home_view','HomeController@index_view');
+Route::get('home/fetch_icon/{id}', 'HomeController@fetch_icon');
+
+Route::put('/insert_view/{id}/{new_view}','HomeController@insert_view');
 // profile
 Route::get('/profile', 'HomeController@profile')->name('profile');
 Route::get('/frm_insertcard', 'HomeController@frm_insertcard')->name('frm_insertcard');
 Route::get('/insertcard/{id}', 'HomeController@insertcard')->name('insertcard');
 Route::get('card/{id}', 'HomeController@paymentprofile_delete')->name('del_card_item');
+Route::get('card', 'HomeController@paymentprofile_edit')->name('edit_card_item');
+
 // cart
 Route::get('shoppingcart', 'HomeController@shopping_cart')->name('cart');
 Route::get('cart/{id}', 'HomeController@del_cart_item')->name('del_cart_item');
@@ -73,3 +79,4 @@ Route::prefix('seller')->group(function () {
     Route::get('/bill/detail', 'ManagerController@billDetail')->name('seller.bill-detail');
     Route::get('/license-key', 'ManagerController@licenseKey')->name('seller.license-key');
 });
+

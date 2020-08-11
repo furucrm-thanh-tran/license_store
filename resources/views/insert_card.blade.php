@@ -44,11 +44,11 @@
                             </div>
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
                                 <label>Expiration Month</label>
-                                <input name="card_expmonth" class='form-control card-expiry-month' placeholder='MM' maxlength="2"type='text'>
+                                <input name="card_expmonth" class='form-control card-expiry-month' placeholder='MM' maxlength="2" minlength="2" type='text'>
                             </div>
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
                                 <label>Expiration Year</label>
-                                <input name="card_expyear" class='form-control card-expiry-year' placeholder='YYYY' maxlength="4" type='text'>
+                                <input name="card_expyear" class='form-control card-expiry-year' placeholder='YYYY' maxlength="4" maxlength="4" type='text'>
                             </div>
                         </div>
                         <div class='row'>

@@ -10,6 +10,7 @@ use Session;
 use Stripe;
 use Cart;
 use Exception;
+
 class CustomerController extends Controller
 {
     public function edit_info_cus(Request $request, $id)
@@ -27,17 +28,18 @@ class CustomerController extends Controller
 
     public function index()
     {
-        $product=product::all();
-        return view('index')->with('product',$product);
+        $product = product::all();
+        return view('index')->with('product', $product);
         // foreach ($product as $product) {
         //     echo $product->name_pro ."<br>";
         // }
-
     }
 
 
 
+    public function email()
+    {
+        return view('emails.SendMail');
+    }
 
 
-
-}
