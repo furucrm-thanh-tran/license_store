@@ -35,7 +35,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <img src="img/samsung.jpg" alt="" class="img-fluid">
+                    <img src="fetch_icon/{{ $p->id }}" alt="" class="img-fluid">
                     <div class="caption">
                         <h4 class="pull-right">${{$p->price_license}}</h4>
                         <h4><a href="#">{{$p->name_pro}}</a></h4>

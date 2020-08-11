@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', 'CustomerController@index');
+Route::get('fetch_icon/{id}', 'CustomerController@fetch_icon');
 
 // Route::get('/welcome', function () {
 //     return view('welcome');
