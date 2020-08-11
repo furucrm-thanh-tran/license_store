@@ -277,7 +277,7 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid" id="app">
                     @yield('content')
                 </div>
                 <!-- /.container-fluid -->
@@ -336,6 +336,7 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="/vendor/jquery/jquery.min.js"></script>
+    {{-- <script src="/vendor/jquery/jquery.min.js"></script> --}}
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->

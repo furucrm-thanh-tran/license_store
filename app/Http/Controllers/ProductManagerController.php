@@ -120,7 +120,7 @@ class ProductManagerController extends Controller
             'price_license' => ['required', 'between:0,999999.99', 'numeric'],
         ]);
 
-        
+
         $icon_file = $request->icon_pro;
         $product = Product::find($id);
         if ($icon_file != null) {

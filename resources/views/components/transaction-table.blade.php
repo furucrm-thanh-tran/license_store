@@ -1,12 +1,11 @@
 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
     <thead>
         <tr>
             <th>Code bill</th>
             <th>Customer ID</th>
             <th>Date of purchase</th>
             <th>Seller</th>
-            <th>Seller email</th>
-            <th>Status paid</th>
             <th>Process</th>
             <th>Total money</th>
             <th data-orderable="false"></th>
@@ -18,88 +17,48 @@
             <th>Customer ID</th>
             <th>Date of purchase</th>
             <th>Seller</th>
-            <th>Seller email</th>
-            <th>Status paid</th>
             <th>Process</th>
             <th>Total money</th>
             <th></th>
         </tr>
     </tfoot>
     <tbody>
-        <tr>
-            <td>Tiger Nixon</td>
-            <td>System Architect</td>
-            <td>2011/04/25</td>
-            <td>Edinburgh</td>
-            <td>edinburgh@gmail.com</td>
-            <td><span class="text-success">Success</span></td>
-            <td><span class="text-success">Complete</span></td>
-            <td>$320,800</td>
-            <td>
-                <button class="btn btn-primary disabled" data-toggle="modal" data-target="#assignSeller"
-                    disabled>Assign</button>
-                @if(Auth::guard('manager')->user()->role == 1)
-                    <a href="{{ route('admin.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
-                @else
-                    <a href="{{ route('seller.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
-                @endif
-            </td>
-        </tr>
-        <tr>
-            <td>Garrett Winters</td>
-            <td>Accountant</td>
-            <td>2011/07/25</td>
-            <td><span class="text-danger">Anonymous</span></td>
-            <td><span class="text-danger">Anonymous</span></td>
-            <td><span class="text-success">Success</span></td>
-            <td><span class="text-warning">Pending...</span></td>
-            <td>$170,750</td>
-            <td>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#assignSeller">Assign</button>
-                @if(Auth::guard('manager')->user()->role == 1)
-                    <a href="{{ route('admin.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
-                @else
-                    <a href="{{ route('seller.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
-                @endif
-            </td>
-        </tr>
-        <tr>
-            <td>Ashton Cox</td>
-            <td>Junior Technical Author</td>
-            <td>2009/01/12</td>
-            <td>San Francisco</td>
-            <td>sanfrancisco@gmail.com</td>
-            <td><span class="text-success">Success</span></td>
-            <td><span class="text-warning">Pending...</span></td>
-            <td>$86,000</td>
-            <td>
-                <button class="btn btn-primary disabled" data-toggle="modal" data-target="#assignSeller"
-                    disabled>Assign</button>
-                @if(Auth::guard('manager')->user()->role == 1)
-                    <a href="{{ route('admin.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
-                @else
-                    <a href="{{ route('seller.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
-                @endif
-            </td>
-        </tr>
-        <tr>
-            <td>Cedric Kelly</td>
-            <td>Senior Javascript Developer</td>
-            <td>2012/03/29</td>
-            <td><span class="text-danger">Anonymous</span></td>
-            <td><span class="text-danger">Anonymous</span></td>
-            <td><span class="text-danger">Fail</span></td>
-            <td><span class="text-danger">Refuse</span></td>
-            <td>$433,060</td>
-            <td>
-                <button class="btn btn-primary disabled" data-toggle="modal" data-target="#assignSeller"
-                    disabled>Assign</button>
-                @if(Auth::guard('manager')->user()->role == 1)
-                    <a href="{{ route('admin.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
-                @else
-                    <a href="{{ route('seller.bill-detail') }}" class="btn"><i class="fas fa-info text-info"></i></a>
-                @endif
-            </td>
-        </tr>
+        @foreach ($transactions as $transaction)
+            <tr>
+                <td>{{ $transaction->id }}</td>
+                <td>{{ $transaction->users->full_name }}</td>
+                <td>{{ $transaction->created_at }}</td>
+                <td>
+                    @if ($transaction->seller_id != null)
+                        {{ $transaction->managers->full_name }}
+                    @else
+                        <span class="text-danger">Anonymous</span>
+                    @endif
+                </td>
+                <td>
+                    @if ($transaction->status == 1)
+                        <span class="text-success">Complete</span>
+                    @else
+                        <span class="text-warning">Pending...</span>
+                    @endif
+                </td>
+                <td>$320,800</td>
+                <td>
+                    @if ($transaction->seller_id != null)
+                        <button class="btn btn-primary disabled" data-toggle="modal" data-target="#assignSeller"
+                            disabled>Assign</button>
+                    @else
+                        {{-- <button class="btn btn-primary" data-toggle="modal" data-target="#assignSeller">Assign</button> --}}
+                        <button id="assign-seller" class="btn btn-primary" data-toggle="modal" data-target="#assignSeller" data-id="{{ $transaction->id }}">Assign</button>
+                    @endif
+                    @if (Auth::guard('manager')->user()->role == 1)
+                        <a href="{{ route('admin.bill-detail',$transaction->id) }}" class="btn"><i class="fas fa-info text-info"></i></a>
+                    @else
+                        <a href="{{ route('seller.bill-detail') }}" class="btn"><i
+                                class="fas fa-info text-info"></i></a>
+                    @endif
+                </td>
+            </tr>
+        @endforeach
     </tbody>
 </table>

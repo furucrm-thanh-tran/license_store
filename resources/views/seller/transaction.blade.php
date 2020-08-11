@@ -34,14 +34,15 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-inline-flex justify-content-between align-items-center" id="test">
-            <h6 class="m-0 font-weight-bold text-primary">DataTable Transaction</h6>
+            <h6 class="m-0 font-weight-bold text-primary">DataTable Seller</h6>
         </div>
         <div class="card-body">
+            {{-- {{ $sellers_best }} --}}
             <div class="table-responsive">
-
                 <!-- Transaction table -->
-                <x-transaction-table/>
-
+                <transaction-manager></transaction-manager>
+                {{--
+                <x-transaction-table /> --}}
             </div>
         </div>
     </div>
@@ -57,12 +58,6 @@
     <!-- Page level custom scripts -->
     <script src="/js/demo/datatables-demo.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2({
-                closeOnSelect: false,
-            });
-        });
+    <script src="{{ asset('js/vue.js') }}" defer></script>
 
-    </script>
 @endsection

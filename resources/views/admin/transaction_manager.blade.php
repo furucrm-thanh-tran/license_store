@@ -8,62 +8,18 @@
 @section('content')
     <h1 class="h3 mb-2 text-gray-800">Transaction manager</h1>
 
-    <!-- The Assign Seller -->
-    <div class="modal fade" id="assignSeller">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h5 class="modal-title">Assign seller</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <!-- Modal body -->
-                <form>
-                    <div class="form-group">
-                        <label>Choose a seller</label>
-                        <select class="select2" style="width: 100%;">
-                            <option value="" disabled  selected>Select your option</option>
-                            <optgroup label="Người bán được nhiều license nhất">
-                                <option>Alabama</option>
-                                <option>Alaska</option>
-                                <option>California</option>
-                                <option>Delaware</option>
-                                <option>Tennessee</option>
-                                <option>Texas</option>
-                                <option>Washington</option>
-                            </optgroup>
-                            <optgroup label="Người có thời gian làm việc lâu nhất">
-                                <option>Alaska</option>
-                                <option>California</option>
-                                <option>Delaware</option>
-                                <option>Tennessee</option>
-                                <option>Texas</option>
-                                <option>Washington</option>
-                            </optgroup>
-                        </select> </div> <!-- /.form-group -->
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer border-top-0 d-flex justify-content-center">
-                        <button type="submit" class="btn btn-success">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-inline-flex justify-content-between align-items-center" id="test">
             <h6 class="m-0 font-weight-bold text-primary">DataTable Seller</h6>
         </div>
         <div class="card-body">
+            {{-- {{ $sellers_best }} --}}
             <div class="table-responsive">
                 <!-- Transaction table -->
-                <x-transaction-table/>
+                <transaction-manager></transaction-manager>
+                {{--
+                <x-transaction-table /> --}}
             </div>
         </div>
     </div>
@@ -75,9 +31,10 @@
     <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="/vendor/select2/dist/js/select2.min.js"></script>
+    <script src="/js/demo/datatables-demo.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="/js/demo/datatables-demo.js"></script>
+
 
     <script>
         $(document).ready(function() {
@@ -87,4 +44,21 @@
         });
 
     </script>
+
+
+    <script src="{{ asset('js/vue.js') }}" defer></script>
+
+    <script type="text/javascript">
+        $(function() {
+            /* Edit product */
+            $('#dataTable').on('click', '#assign-seller', function() {
+                var bill_id = $(this).data('id');
+                $('#assignSeller').modal('show');
+                $('#title').html(bill_id);
+                $('#update_bill').attr('action', 'transactionmanager/' + bill_id);
+            });
+        });
+
+    </script>
+
 @endsection
