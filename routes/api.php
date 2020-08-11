@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+
+// Admin
 Route::post('manager/login', 'API\ManagerController@login');
    
 Route::middleware(['auth:apimanager','scope:admin'])->group( function () {
@@ -25,10 +27,12 @@ Route::middleware(['auth:apimanager','scope:admin'])->group( function () {
     Route::resource('product_manager', 'API\ProductManagerController');
 });
 
+// Seller
 Route::middleware(['auth:apimanager','scope:seller'])->group( function () {
     Route::get('product', 'API\ProductManagerController@index');
     Route::get('product/{id}', 'API\ProductManagerController@show');
 });
 
+// Login Register User
 Route::post('register', 'API\UserController@register');
 Route::post('login', 'API\UserController@login');

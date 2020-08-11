@@ -53,7 +53,7 @@ class ProductManagerController extends Controller
             'name_pro'  => ['required'],
             'description_pro' => ['required'],
             'icon_pro' => ['required', 'max:2048'],
-            'price_license' => ['required'],
+            'price_license' => ['required', 'between:0,999999.99', 'numeric'],
         ]);
 
         $icon_file = $request->icon_pro;
@@ -117,7 +117,7 @@ class ProductManagerController extends Controller
         $request->validate([
             'name_pro'  => ['required'],
             'description_pro' => ['required'],
-            'price_license' => ['required'],
+            'price_license' => ['required', 'between:0,999999.99', 'numeric'],
         ]);
 
         
