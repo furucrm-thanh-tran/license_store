@@ -27,6 +27,7 @@ class ManagerLoginController extends Controller
     {
         // Validate form data
         $this->validate($request, [
+            'user_name' => 'required',
             'password' => 'required|min:8'
         ]);
 

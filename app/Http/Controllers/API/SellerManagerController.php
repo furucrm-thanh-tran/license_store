@@ -1,18 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\Manager;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use SebastianBergmann\Environment\Console;
-use Redirect, Response;
-use DataTables;
+use App\Manager;
+use Validator;
+use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Resources\Manager as ManagerResource;
 
-class SellerManagerController extends Controller
+class SellerManagerController extends BaseController
+
 {
     public function __construct()
     {
-        $this->middleware('auth:manager');
+        $this->middleware('auth:apimanager');
     }
     /**
      * Display a listing of the resource.
@@ -23,20 +25,7 @@ class SellerManagerController extends Controller
     {
         $sellermanagers = Manager::all()->where('role', 0);
 
-        return view('admin/seller_manager', [
-            'sellermanagers' => $sellermanagers,
-        ]);
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->sendResponse(ManagerResource::collection($sellermanagers), 'Sellers retrieved successfully.');
     }
 
     /**
@@ -47,25 +36,25 @@ class SellerManagerController extends Controller
      */
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
             'user_name' => ['required', 'string', 'max:255', 'unique:managers'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:managers'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8'],
             'full_name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'regex:/(0)[0-9]{9}/', 'max:10']
         ]);
 
-        Manager::create([
+        $sellermanager = Manager::create([
             'user_name' => $request->user_name,
             'password' => bcrypt($request->password),
             'full_name' => $request->full_name,
             'email' => $request->email,
             'phone' => $request->phone,
-        ]);    
-
-        return redirect(route('seller_manager.index'))->with('success', 'Seller has been added');
+        ]);
+        
+        return $this->sendResponse(new ManagerResource($sellermanager), 'Seller created successfully.');
     }
+
     /**
      * Display the specified resource.
      *
@@ -74,19 +63,12 @@ class SellerManagerController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
         $sellermanager = Manager::findOrFail($id);
-        return response()->json($sellermanager);
+
+        if (is_null($sellermanager)) {
+            return $this->sendError('Seller not found.');
+        }
+        return $this->sendResponse(new ManagerResource($sellermanager), 'Sellers retrieved successfully.');
     }
 
     /**
@@ -109,7 +91,8 @@ class SellerManagerController extends Controller
         $sellermanager->email = $request->email;
         $sellermanager->phone = $request->phone;
         $sellermanager->save();
-        return redirect(route('seller_manager.index'))->with('success', 'Seller has been updated');
+
+        return $this->sendResponse(new ManagerResource($sellermanager), 'Sellers updated successfully.');
     }
 
     /**
@@ -122,7 +105,7 @@ class SellerManagerController extends Controller
     {
         $sellermanager = Manager::findOrFail($id);
         $sellermanager->delete();
-        return redirect()->route('seller_manager.index')
-            ->with('success', 'Seller deleted successfully');
+
+        return $this->sendResponse([], 'Seller deleted successfully.');
     }
 }

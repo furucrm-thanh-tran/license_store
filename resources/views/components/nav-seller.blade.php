@@ -16,7 +16,7 @@
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('seller.productmanager') }}">
+        <a class="nav-link" href="{{ route('productmanager.index') }}">
             <i class="fas fa-fw fa-cubes"></i>
             <span>Products</span>
         </a>

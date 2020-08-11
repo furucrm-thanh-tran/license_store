@@ -11,108 +11,6 @@
     td:last-child {
         text-align: center
     }
-
-    /* Delete modal */
-    .modal-confirm {
-        color: #636363;
-        width: 400px;
-    }
-
-    .modal-confirm .modal-content {
-        padding: 20px;
-        border-radius: 5px;
-        border: none;
-        text-align: center;
-        font-size: 14px;
-    }
-
-    .modal-confirm .modal-header {
-        border-bottom: none;
-        position: relative;
-    }
-
-    .modal-confirm h4 {
-        text-align: center;
-        font-size: 26px;
-        margin: 30px 0 -10px;
-    }
-
-    .modal-confirm .close {
-        position: absolute;
-        top: -5px;
-        right: -2px;
-    }
-
-    .modal-confirm .modal-body {
-        color: #999;
-    }
-
-    .modal-confirm .modal-footer {
-        border: none;
-        text-align: center;
-        border-radius: 5px;
-        font-size: 13px;
-        padding: 10px 15px 25px;
-    }
-
-    .modal-confirm .modal-footer a {
-        color: #999;
-    }
-
-    .modal-confirm .icon-box {
-        width: 80px;
-        height: 80px;
-        margin: 0 auto;
-        border-radius: 50%;
-        z-index: 9;
-        text-align: center;
-        border: 3px solid #f15e5e;
-    }
-
-    .modal-confirm .icon-box i {
-        color: #f15e5e;
-        font-size: 46px;
-        display: inline-block;
-        margin-top: 13px;
-    }
-
-    .modal-confirm .btn,
-    .modal-confirm .btn:active {
-        color: #fff;
-        border-radius: 4px;
-        background: #60c7c1;
-        text-decoration: none;
-        transition: all 0.4s;
-        line-height: normal;
-        min-width: 120px;
-        border: none;
-        min-height: 40px;
-        border-radius: 3px;
-        margin: 0 5px;
-    }
-
-    .modal-confirm .btn-secondary {
-        background: #c1c1c1;
-    }
-
-    .modal-confirm .btn-secondary:hover,
-    .modal-confirm .btn-secondary:focus {
-        background: #a8a8a8;
-    }
-
-    .modal-confirm .btn-danger {
-        background: #f15e5e;
-    }
-
-    .modal-confirm .btn-danger:hover,
-    .modal-confirm .btn-danger:focus {
-        background: #ee3535;
-    }
-
-    .trigger-btn {
-        display: inline-block;
-        margin: 100px auto;
-    }
 </style>
 @endsection
 @section('content')
@@ -124,6 +22,7 @@
         {{ session()->get('success') }}
     </div>
     @endif
+
 </div>
 <!-- The Create Seller -->
 <div class="modal fade" id="createSeller">
@@ -139,12 +38,13 @@
             </div>
 
             <!-- Modal body -->
-            <form action="{{ route('seller_manager.store') }}" method="POST">
+            <form id="frmCreate" action="{{ route('seller_manager.store') }}" method="POST">
+            <!-- <form id="frmCreate"> -->
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="name">Full name</label>
-                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="full_name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Enter full name">
+                        <input id="name" type="text" class="form-control @error('full_name') is-invalid @enderror" name="full_name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Enter full name">
 
                         @error('full_name')
                         <span class="invalid-feedback" role="alert">
@@ -154,7 +54,7 @@
                     </div>
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="user_name" value="{{ old('username') }}" required autocomplete="username" autofocus placeholder="Enter username">
+                        <input id="username" type="text" class="form-control @error('user_name') is-invalid @enderror" name="user_name" value="{{ old('username') }}" required autocomplete="username" autofocus placeholder="Enter username">
 
                         @error('user_name')
                         <span class="invalid-feedback" role="alert">
@@ -200,7 +100,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer border-top-0 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button id="saveBtn" type="submit" class="btn btn-success">Submit</button>
                 </div>
             </form>
         </div>
@@ -228,7 +128,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="name">Full name</label>
-                        <input id="edit_name" type="text" class=" form-control @error('name') is-invalid @enderror" name="full_name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Enter full name">
+                        <input id="edit_name" type="text" class=" form-control @error('full_name') is-invalid @enderror" name="full_name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Enter full name">
 
                         @error('full_name')
                         <span class="invalid-feedback" role="alert">
@@ -268,39 +168,12 @@
     </div>
 </div>
 
-<!-- The Delete Seller -->
-<!-- <div id="deleteSeller" class="modal fade">
-    <div class="modal-dialog modal-confirm">
-        <div class="modal-content">
-            <div class="modal-header flex-column">
-                <div class="icon-box">
-                    <i class="material-icons">&#xE5CD;</i>
-                </div>
-                <h4 class="modal-title w-100">Are you sure?</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-
-            <div class="modal-body">
-                <p>Do you really want to delete these records? This process cannot be undone.</p>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <form id="delete_seller" action="" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div> -->
-
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-inline-flex justify-content-between align-items-center" id="test">
         <h6 class="m-0 font-weight-bold text-primary">DataTable Seller</h6>
         <div>
-            <button class="btn btn-outline-dark" data-toggle="modal" data-target="#createSeller"><i class="fa fa-user-plus"></i> Create seller</button>
+            <button id="btnCreate" class="btn btn-outline-dark" data-toggle="modal" data-target="#createSeller"><i class="fa fa-user-plus"></i> Create seller</button>
         </div>
     </div>
     <div class="card-body">
@@ -337,7 +210,6 @@
                         <td>
                             <div class="d-flex flex-nowrap justify-content-center">
                                 <button class="btn" id="edit-seller" data-toggle="modal" data-id="{{ $sellermanager->id }}"><i class="fa fa-edit"></i></button>
-                                <!-- <a href="javascript:void(0)" class="btn" id="edit-seller-a" data-toggle="modal" data-id="{{ $sellermanager->id }}"><i class="fa fa-edit"></i></a> -->
                                 <form action="{{ route('seller_manager.destroy',$sellermanager->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
@@ -370,17 +242,51 @@
 
 <script type="text/javascript">
     $(function() {
+
+        // $.ajaxSetup({
+        //     headers: {
+        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //     }
+        // });
+
+        // $('#btnCreate').click(function() {
+        //     $('#saveBtn').val("create-Seller");
+        //     $('#frmCreate').trigger("reset");
+        //     $('#createSeller').modal('show');
+        // });
+
+        // $('#saveBtn').click(function(e) {
+        //     e.preventDefault();
+        //     $(this).html('Sending..');
+
+        //     $.ajax({
+        //         data: $('#frmCreate').serialize(),
+        //         url: "",
+        //         type: "POST",
+        //         dataType: 'json',
+        //         success: function(data) {
+
+        //             $('#frmCreate').trigger("reset");
+        //             $('#createSeller').modal('hide');
+        //             table.draw();
+
+        //         },
+        //         error: function(data) {
+        //             console.log('Error:', data);
+        //             $('#saveBtn').html('Save Changes');
+        //         }
+        //     });
+        // });
+
         /* Edit seller */
         $('#dataTable').on('click', '#edit-seller', function() {
             var seller_id = $(this).data('id');
             $.get('seller_manager/' + seller_id + '/edit', function(data) {
-                // $('#btn-save').prop('disabled', false);
                 $('#editSeller').modal('show');
                 $('#seller_id').val(data.id);
                 $('#edit_name').val(data.full_name);
                 $('#edit_email').val(data.email);
                 $('#edit_phone').val(data.phone);
-                // $('#update_seller').attr('action', 'seller_manager/' +data.id +'/update');
                 $('#update_seller').attr('action', 'seller_manager/' + data.id);
             })
         });

@@ -273,7 +273,7 @@
             <h6 class="m-0 font-weight-bold text-primary">DataTable license key</h6>
             <div>
                 <button class="btn btn-outline-dark" data-toggle="modal" data-target="#add-key"><i
-                        class="fa fa-user-plus"></i> Create seller</button>
+                        class="fa fa-user-plus"></i> Create license key</button>
             </div>
         </div>
         <div class="card-body">

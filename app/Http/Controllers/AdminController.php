@@ -41,4 +41,9 @@ class AdminController extends Controller
     {
         return view('admin.product_manager');
     }
+
+    public function showProfile()
+    {
+        return view('admin.profile');
+    }
 }
