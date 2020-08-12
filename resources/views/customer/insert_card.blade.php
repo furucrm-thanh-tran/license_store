@@ -11,7 +11,7 @@
                     <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
                 </div>
                 <div class="card-body">
-                    <form role="form" action="{{ route('insertcard',Auth::user()->id) }}"class="require-validation"data-cc-on-file="false"data-stripe-publishable-key="pk_test_51H7XCjBZo2jHPYhTztHCfF41vWOknXAyZIUKPL07ZbWITXnmITofSHlBKLIVrI2cwrtuASyT3OclONZ7LyTKOSmq00D9dB180q"id="payment-form">
+                <form role="form" action="{{ route('insertcard',Auth::user()->id) }}"class="require-validation"data-cc-on-file="false"data-stripe-publishable-key="{{env('STRIPE_DEVICE_NAME')}}"id="payment-form">
                         @csrf
                         @if (Session::has('card_number'))
                         <div class="alert alert-danger alert-dismissible col-12">

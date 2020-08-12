@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\User;
 use App\Payment;
 use App\Product;
@@ -34,11 +35,13 @@ class CustomerController extends Controller
         //     echo $product->name_pro ."<br>";
         // }
     }
-
-
-
     public function email()
     {
         return view('emails.SendMail');
     }
+    public function pro_detail($id)
+    {
+        return $id;
+    }
+
 }

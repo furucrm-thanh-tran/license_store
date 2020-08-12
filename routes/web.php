@@ -40,6 +40,7 @@ Route::get('card', 'HomeController@paymentprofile_edit')->name('edit_card_item')
 
 // cart
 Route::get('shoppingcart', 'HomeController@shopping_cart')->name('cart');
+Route::get('/shop/product/{id}','CustomerController@pro_detail')->name('pro_detail');
 Route::get('cart/{id}', 'HomeController@del_cart_item')->name('del_cart_item');
 Route::put('cart/update/{id}/{qty}', 'HomeController@upd_cart_item')->name('upd_cart_item');
 Route::post('cart/add/{id}/{name}/{qty}/{price}', 'HomeController@add_cart_item')->name('add_cart_item');
@@ -103,4 +104,3 @@ Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::put('profile/{id}', 'SellerController@update');
     Route::get('profile/{id}/edit', 'SellerController@edit');
 });
-

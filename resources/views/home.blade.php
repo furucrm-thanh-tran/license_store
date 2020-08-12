@@ -60,10 +60,14 @@
                                     <button class="add_to_card btn btn-primary" id="card_add" data-id="{{ $p->id }}"
                                         data-price="{{ $p->price_license }}" data-name="{{ $p->name_pro }}" data-qty="1"><i
                                             class="fa fa-shopping-cart"></i></button>
-                                    <button name="{{ $p->id }}" type="button" class="btn btn-primary btn-view"
+                                    {{-- <button name="{{ $p->id }}" type="button" class="btn btn-primary btn-view"
                                         data-toggle="modal" data-target="#viewProduct" data-view="{{ $p->view }}"
                                         data-id="{{ $p->id }}">
-                                        <i class="fa fa-search"></i></button>
+                                        <i class="fa fa-search"></i></button> --}}
+
+                                        <a class="btn btn-primary btn-view" href="{{route('pro_detail', $p->id)}}">
+                                            <i class="fa fa-search"></i>
+                                        </a>
                                 </div>
                             </div>
                         </div>
@@ -139,19 +143,11 @@
             console.log(id, token);
         });
 
-    </script>
-
-    <script>
         $(".btn-view").click(function() {
             var id = $(this).data("id");
             var view = document.getElementById(id).innerHTML;
             var new_view = +view + +1;
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
             $.ajax({
                 url: "/insert_view/" + id + "/" + new_view,
                 type: "PUT",
@@ -168,7 +164,5 @@
         });
 
     </script>
-
-
 
 @endsection

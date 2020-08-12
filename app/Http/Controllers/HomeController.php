@@ -64,22 +64,22 @@ class HomeController extends Controller
         return view('home')->with('product', $product);
     }
 
-    public function insert_view($id, $new_view)
-    {
-        $product = Product::find($id);
-        $product->view = $new_view;
-        $product->save();
-    }
+    // public function insert_view($id, $new_view)
+    // {
+    //     $product = Product::find($id);
+    //     $product->view = $new_view;
+    //     $product->save();
+    // }
 
     public function frm_insertcard()
     {
-        return view('insert_card');
+        return view('customer.insert_card');
     }
 
     public function insertcard(Request $request, $id)
     {
-
-        Stripe\Stripe::setApiKey("sk_test_51H7XCjBZo2jHPYhTsESBupsZkNosZPrTXD6cvkX9lflKz8Gue1lSYdmpiSv7imOXnwqgEsUwVMcqJ34nOblpuFAs005bYSJWOq");
+        $apikey = env("STRIPE_API_KEY");
+        Stripe\Stripe::setApiKey($apikey);
         $validator = $request->validate([
             'number_card' => 'required|unique:payments',
         ]);
@@ -99,8 +99,8 @@ class HomeController extends Controller
     {
         try {
             $id = Auth::user()->id;
-            $data = payment::where('user_id', '=', $id)->select('id', 'number_card', 'cvc', 'exp_month', 'exp_year')->get();
-            return view('profile')->with('data', $data);
+            $data = payment::where('user_id', '=', $id)->select(DB::raw('RIGHT(number_card,4) as number_card'),'id','exp_month', 'exp_year')->get();
+            return view('customer.profile')->with('data', $data);
         } catch (Error $e) {
             return redirect()->route('frm_insertcard');
         }
@@ -111,15 +111,41 @@ class HomeController extends Controller
         return back();
     }
 
-    public function paymentprofile_edit(Request $request)
-    {
-        Stripe\Stripe::setApiKey("sk_test_51H7XCjBZo2jHPYhTsESBupsZkNosZPrTXD6cvkX9lflKz8Gue1lSYdmpiSv7imOXnwqgEsUwVMcqJ34nOblpuFAs005bYSJWOq");
-        $id = $request->edit;
-        $data = payment::find($id);
-        $data->exp_month = $request->card_expmonth;
-        $data->exp_year = $request->card_expyear;
-        $data->save();
-        return back();
+    // public function paymentprofile_edit(Request $request)
+    // {
+    //     $apikey = env("STRIPE_API_KEY");
+    //     Stripe\Stripe::setApiKey($apikey);
+    //     $id = $request->edit;
+    //     $data = payment::find($id);
+    //     $data->exp_month = $request->card_expmonth;
+    //     $data->exp_year = $request->card_expyear;
+    //     $data->save();
+    //     return back();
+    // }
+    public function paymentprofile_edit(Request $request){
+        $apikey=env("STRIPE_API_KEY");
+        Stripe\Stripe::setApiKey($apikey);
+        $exp_month = $request->card_expmonth;
+        $exp_year = $request->card_expyear;
+        $card_number = $request->card_number;
+        $data = Payment::where('number_card', 'like', '%' . $card_number)->select('id','number_card', 'cvc','exp_month','exp_year')->first();
+        try{
+            $test=Stripe\Token::create([
+                'card' => [
+                  'number' => $data->number_card,
+                  'exp_month' => $exp_month,
+                  'exp_year' => $exp_year,
+                  'cvc' => $data->cvc,
+                ],
+              ]);
+        }catch(\Stripe\Exception\CardException $e){
+            $error = $e->getError()->message;
+            return redirect('profile')->with('status',"Edit Erorr: " .$error);
+        }
+          $data->exp_month = $exp_month;
+          $data->exp_year = $exp_year;
+          $data->save();
+          return back();
     }
 
 
@@ -130,7 +156,7 @@ class HomeController extends Controller
         $data = payment::where('user_id', '=', $id)
             ->select(DB::raw('RIGHT(number_card,4) as number_card'))->get();
         //   return $data;
-        return view('shopping_cart')->with('data', $data);
+        return view('customer.shopping_cart')->with('data', $data);
     }
 
     public function add_cart_item($id, $name, $qty, $price)
@@ -154,14 +180,12 @@ class HomeController extends Controller
         $amount = $request->amount;
         $user_id = $request->user_id;
         $user_email = Auth::user()->email;
+        $apikey = env("STRIPE_API_KEY");
         // return $card_number ." " .$amount ." " .$user_id;
         $data = payment::where('number_card', 'like', '%' . $card_number)->select('number_card', 'cvc', 'exp_month', 'exp_year')->first();
         // return $data;
         try {
-            Stripe\Stripe::setApiKey("sk_test_51H7XCjBZo2jHPYhTsESBupsZkNosZPrTXD6cvkX9lflKz8Gue1lSYdmpiSv7imOXnwqgEsUwVMcqJ34nOblpuFAs005bYSJWOq");
-            $stripe = new \Stripe\StripeClient(
-                'sk_test_51H7XCjBZo2jHPYhTsESBupsZkNosZPrTXD6cvkX9lflKz8Gue1lSYdmpiSv7imOXnwqgEsUwVMcqJ34nOblpuFAs005bYSJWOq'
-            );
+            Stripe\Stripe::setApiKey($apikey);
             $Stoken = Stripe\Token::create([
                 'card' => [
                     'number' => $data->number_card,
@@ -209,11 +233,6 @@ class HomeController extends Controller
             return response()->json([
                 'success' => $Scharge->outcome->seller_message
             ]);
-
-
-
-
-
             // return $product->id ." " .$product->name ." " .$product->qty ." " .$product->price;
             // return $product;
         } catch (\Stripe\Exception\CardException $e) {
@@ -260,7 +279,7 @@ class HomeController extends Controller
     public function list_bills($id)
     {
         $bill = Bill::with('bill__products:id,amount_licenses,pro_id,bill_id', 'products:name_pro,price_license')->where('user_id', $id)->get();
-        return view('cus_list_bills')->with('bill', $bill);
+        return view('customer.cus_list_bills')->with('bill', $bill);
         // return $bill[0]." " .$bill[0]->products[0] ." " .$bill[0]->bill__products[0];
 
     }
@@ -268,7 +287,8 @@ class HomeController extends Controller
     public function bill_detail($id)
     {
         $data = Bill_Product::with('products:id,name_pro,price_license')->where('bill_id', $id)->get();
-        return view('cus_bill_detail')->with('data', $data);
+        return view('customer.cus_bill_detail')->with('data', $data);
         // return $data[1]->products ." " .$data[1]->amount_licenses;
     }
+
 }
