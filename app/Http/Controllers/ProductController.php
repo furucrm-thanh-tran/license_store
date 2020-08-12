@@ -27,17 +27,6 @@ class ProductController extends Controller
         ]);
     }
 
-    function fetch_icon($icon_id)
-    {
-        $icon = Product::findOrFail($icon_id);
-
-        $icon_file = Image::make($icon->icon_pro);
-
-        $response = Response::make($icon_file->encode('jpeg'));
-        return $response;
-    }
-
-
     /**
      * Show the form for creating a new resource.
      *
@@ -67,7 +56,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::findOrFail($id, ['name_pro', 'description_pro', 'price_license']);
+        $product = Product::findOrFail($id);
         return response()->json($product);
     }
 

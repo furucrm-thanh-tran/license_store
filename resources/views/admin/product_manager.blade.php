@@ -64,7 +64,7 @@
                     <div class="form-group">
                         <label for="customFile">Icon</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input file-upload @error('icon_pro') is-invalid @enderror"  name="icon_pro" required>
+                            <input type="file" class="custom-file-input file-upload @error('icon_pro') is-invalid @enderror"  name="icon_pro">
                             <label class="custom-file-label" for="customFile">Choose file</label>
                             @error('icon_pro')
                             <span class="invalid-feedback" role="alert">
@@ -204,7 +204,7 @@
                 $('#pro_edit').val(data.name_pro);
                 $('#des_edit').val(data.description_pro);
                 $('#price_edit').val(data.price_license);
-                $("#img_pro").attr('src', 'product_manager/fetch_icon/' + pro_id);
+                $("#img_pro").attr('src', data.icon_pro);
                 $('#update_product').attr('action', 'product_manager/' + pro_id);
             })
         });
@@ -215,8 +215,9 @@
                 $('#viewProduct').modal('show');
                 $('#show_name').html(data.name_pro);
                 $('#show_des').html(data.description_pro);
+                $('#show_view').html('Views: ' + data.view);
                 $('#show_price').html('<span class="fa fa-dollar-sign"></span>' + data.price_license);
-                $("#show_img").attr('src', 'product_manager/fetch_icon/' + pro_id);
+                $("#show_img").attr('src', data.icon_pro);
             })
         });
     });

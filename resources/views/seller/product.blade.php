@@ -138,8 +138,9 @@
                 $('#viewProduct').modal('show');
                 $('#show_name').html(data.name_pro);
                 $('#show_des').html(data.description_pro);
+                $('#show_view').html('Views: ' + data.view);
                 $('#show_price').html('<span class="fa fa-dollar-sign"></span>' + data.price_license);
-                $("#show_img").attr('src', 'productmanager/fetch_icon/' + pro_id);
+                $("#show_img").attr('src',data.icon_pro);
             })
         });
     </script>

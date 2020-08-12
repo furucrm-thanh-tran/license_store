@@ -27,15 +27,9 @@
         @foreach($products as $product)
         <tr>
             <td>{{$product->id}}</td>
-            @if(Auth::guard('manager')->user()->role == 1)
             <td>
-                <img src="product_manager/fetch_icon/{{ $product->id }}">
+                <img src="{{ $product->icon_pro }}">
             </td>
-            @else
-            <td>
-                <img src="productmanager/fetch_icon/{{ $product->id }}">
-            </td>
-            @endif
             <td>{{$product->name_pro}}</td>
             <td>{{$product->description_pro}}</td>
             <td>{{$product->created_at}}</td>

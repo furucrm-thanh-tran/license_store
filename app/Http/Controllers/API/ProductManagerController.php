@@ -57,7 +57,7 @@ class ProductManagerController extends BaseController
      */
     public function show($id)
     {
-        $product = Product::findOrFail($id, ['id', 'name_pro', 'description_pro', 'price_license']);
+        $product = Product::findOrFail($id);
         return $this->sendResponse(new ProductResource($product), 'Product retrieved successfully.');
     }
 
