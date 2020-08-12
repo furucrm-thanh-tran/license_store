@@ -24,7 +24,10 @@
                 </tr>
             </tfoot>
             <tbody>
-                <tr v-for="(trans, index) in list_transaction.trans" :key="trans.id">
+                <tr
+                    v-for="(trans, index) in list_transaction.trans"
+                    :key="trans.id"
+                >
                     <td>{{ trans.id }}</td>
                     <td>{{ trans.users.full_name }}</td>
                     <td>{{ trans.created_at }}</td>
@@ -55,7 +58,11 @@
                                         <option
                                             v-for="best in list_transaction.best"
                                             :key="best.seller_id"
-                                            :value="{seller_id: best.seller_id, seller_name: best.managers.full_name}"
+                                            :value="{
+                                                seller_id: best.seller_id,
+                                                seller_name:
+                                                    best.managers.full_name
+                                            }"
                                             >{{
                                                 best.managers.full_name
                                             }}</option
@@ -67,7 +74,10 @@
                                         <option
                                             v-for="long in list_transaction.long"
                                             :key="long.id"
-                                            :value="{seller_id: long.id, seller_name: long.full_name}"
+                                            :value="{
+                                                seller_id: long.id,
+                                                seller_name: long.full_name
+                                            }"
                                             >{{ long.full_name }}</option
                                         >
                                     </optgroup>
@@ -87,25 +97,39 @@
                     </td>
                     <td>$ {{ trans.total_money }}</td>
                     <td>
-                        <button
-                            v-if="trans.isAssign === false"
-                            id="assign-seller"
-                            class="btn btn-primary"
-                            :disabled="trans.seller_id"
-                            @click="selectTransaction(trans)"
-                        >
-                            Assign
-                        </button>
-                        <button
-                            v-if="trans.isAssign === true"
-                            id="assign-seller"
-                            class="btn btn-danger"
-                            :disabled="trans.seller_id"
-                            @click="selectTransaction(trans)"
-                        >
-                            Cancel
-                        </button>
-                        <a :href="'bill/detail/' + trans.id" class="btn"><i class="fas fa-info text-info"></i></a>
+                        <span v-if="user_role == 1">
+                            <button
+                                v-if="trans.isAssign === false"
+                                id="assign-seller"
+                                class="btn btn-primary"
+                                :disabled="trans.seller_id"
+                                @click="selectTransaction(trans)"
+                            >
+                                Assign
+                            </button>
+                            <button
+                                v-if="trans.isAssign === true"
+                                id="assign-seller"
+                                class="btn btn-danger"
+                                :disabled="trans.seller_id"
+                                @click="selectTransaction(trans)"
+                            >
+                                Cancel
+                            </button>
+                        </span>
+                        <span v-else>
+                            <button
+                                class="btn btn-primary"
+                                :disabled="trans.seller_id"
+                                @click="updateTransaction(index)"
+                            >
+                                Get
+                            </button>
+                        </span>
+
+                        <a :href="'bill/detail/' + trans.id" class="btn"
+                            ><i class="fas fa-info text-info"></i
+                        ></a>
                     </td>
                 </tr>
             </tbody>
@@ -115,13 +139,16 @@
 </template>
 
 <script>
-
 export default {
     data() {
         return {
-            seller: '',
+            user_role: this.$userRole,
+            seller: {
+                seller_id: this.$userId,
+                seller_name: this.$userName
+            },
             errors: [],
-            list_transaction: [],
+            list_transaction: []
             // selectTransaction: {}
         };
     },
@@ -136,9 +163,9 @@ export default {
                 .get("transaction")
                 .then(response => {
                     (this.list_transaction = response.data),
-                    this.list_transaction.trans.forEach(trans => {
-                        Vue.set(trans, "isAssign", false);
-                    });
+                        this.list_transaction.trans.forEach(trans => {
+                            Vue.set(trans, "isAssign", false);
+                        });
                 })
                 .catch(error => {
                     this.errors = error.response.data.errors.name;
@@ -149,15 +176,31 @@ export default {
             transaction.isAssign = !transaction.isAssign;
         },
         updateTransaction(index) {
-            axios.put('transaction/' + this.list_transaction.trans[index].id, {seller: this.seller.seller_id})
-            .then(response => {
-                this.list_transaction.trans[index].seller_id = this.seller.seller_id,
-                this.list_transaction.trans[index].managers = Object.assign({}, this.list_transaction.trans[index].managers, { full_name: this.seller.seller_name })
-                this.list_transaction.trans[index].isAssign = false
-            })
-            .catch(error => {
-					this.errors = error.response.data.errors.name
-            })
+            if (confirm("Are you sure?")) {
+                axios
+                    .put(
+                        "transaction/" + this.list_transaction.trans[index].id,
+                        {
+                            seller: this.seller.seller_id
+                        }
+                    )
+                    .then(response => {
+                        (this.list_transaction.trans[
+                            index
+                        ].seller_id = this.seller.seller_id),
+                            (this.list_transaction.trans[
+                                index
+                            ].managers = Object.assign(
+                                {},
+                                this.list_transaction.trans[index].managers,
+                                { full_name: this.seller.seller_name }
+                            ));
+                        this.list_transaction.trans[index].isAssign = false;
+                    })
+                    .catch(error => {
+                        this.errors = error.response.data.errors.name;
+                    });
+            }
         }
     }
 };

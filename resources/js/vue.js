@@ -19,6 +19,9 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('transaction-manager', require('./components/TransactionManager.vue').default);
+Vue.prototype.$userRole = document.querySelector("meta[name='user_role']").getAttribute('content');
+Vue.prototype.$userId = document.querySelector("meta[name='user_id']").getAttribute('content');
+Vue.prototype.$userName = document.querySelector("meta[name='user_name']").getAttribute('content');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

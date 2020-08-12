@@ -2057,10 +2057,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      seller: '',
+      user_role: this.$userRole,
+      seller: {
+        seller_id: this.$userId,
+        seller_name: this.$userName
+      },
       errors: [],
       list_transaction: [] // selectTransaction: {}
 
@@ -2088,16 +2116,18 @@ __webpack_require__.r(__webpack_exports__);
     updateTransaction: function updateTransaction(index) {
       var _this2 = this;
 
-      axios.put('transaction/' + this.list_transaction.trans[index].id, {
-        seller: this.seller.seller_id
-      }).then(function (response) {
-        _this2.list_transaction.trans[index].seller_id = _this2.seller.seller_id, _this2.list_transaction.trans[index].managers = Object.assign({}, _this2.list_transaction.trans[index].managers, {
-          full_name: _this2.seller.seller_name
+      if (confirm("Are you sure?")) {
+        axios.put("transaction/" + this.list_transaction.trans[index].id, {
+          seller: this.seller.seller_id
+        }).then(function (response) {
+          _this2.list_transaction.trans[index].seller_id = _this2.seller.seller_id, _this2.list_transaction.trans[index].managers = Object.assign({}, _this2.list_transaction.trans[index].managers, {
+            full_name: _this2.seller.seller_name
+          });
+          _this2.list_transaction.trans[index].isAssign = false;
+        })["catch"](function (error) {
+          _this2.errors = error.response.data.errors.name;
         });
-        _this2.list_transaction.trans[index].isAssign = false;
-      })["catch"](function (error) {
-        _this2.errors = error.response.data.errors.name;
-      });
+      }
     }
   }
 });
@@ -19962,51 +19992,73 @@ var render = function() {
               _c("td", [_vm._v("$ " + _vm._s(trans.total_money))]),
               _vm._v(" "),
               _c("td", [
-                trans.isAssign === false
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: {
-                          id: "assign-seller",
-                          disabled: trans.seller_id
-                        },
-                        on: {
-                          click: function($event) {
-                            return _vm.selectTransaction(trans)
+                _vm.user_role == 1
+                  ? _c("span", [
+                      trans.isAssign === false
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              attrs: {
+                                id: "assign-seller",
+                                disabled: trans.seller_id
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.selectTransaction(trans)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            Assign\n                        "
+                              )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      trans.isAssign === true
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-danger",
+                              attrs: {
+                                id: "assign-seller",
+                                disabled: trans.seller_id
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.selectTransaction(trans)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            Cancel\n                        "
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  : _c("span", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { disabled: trans.seller_id },
+                          on: {
+                            click: function($event) {
+                              return _vm.updateTransaction(index)
+                            }
                           }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                        Assign\n                    "
-                        )
-                      ]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                trans.isAssign === true
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-danger",
-                        attrs: {
-                          id: "assign-seller",
-                          disabled: trans.seller_id
                         },
-                        on: {
-                          click: function($event) {
-                            return _vm.selectTransaction(trans)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                        Cancel\n                    "
-                        )
-                      ]
-                    )
-                  : _vm._e(),
+                        [
+                          _vm._v(
+                            "\n                            Get\n                        "
+                          )
+                        ]
+                      )
+                    ]),
                 _vm._v(" "),
                 _c(
                   "a",
@@ -32400,6 +32452,9 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
 Vue.component('transaction-manager', __webpack_require__(/*! ./components/TransactionManager.vue */ "./resources/js/components/TransactionManager.vue")["default"]);
+Vue.prototype.$userRole = document.querySelector("meta[name='user_role']").getAttribute('content');
+Vue.prototype.$userId = document.querySelector("meta[name='user_id']").getAttribute('content');
+Vue.prototype.$userName = document.querySelector("meta[name='user_name']").getAttribute('content');
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

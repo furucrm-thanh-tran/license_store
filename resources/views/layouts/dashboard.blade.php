@@ -8,6 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    @if (Auth::check())
+        <meta name="user_role" content="{{ Auth::guard('manager')->user()->role }}" />
+        <meta name="user_id" content="{{ Auth::user()->id }}" />
+        <meta name="user_name" content="{{ Auth::user()->full_name }}" />
+    @endif
 
     <title>SB Admin 2 - Dashboard</title>
 
