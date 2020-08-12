@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('icon_pro')->nullable();
             $table->decimal('price_license', 8, 2);
             $table->integer('view')->default(0);
+            $table->integer('buy')->default(0);
             $table->timestamps();
         });
     }
