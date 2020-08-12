@@ -67,7 +67,6 @@ Route::prefix('admin')->middleware('is_admin')->group(function () {
     Route::resource('/seller_manager', 'SellerManagerController');
 
     Route::resource('/product_manager', 'ProductManagerController');
-    Route::get('product_manager/fetch_icon/{id}', 'ProductManagerController@fetch_icon');
 
     Route::get('/profile', 'AdminController@showProfile')->name('admin.profile');
 
@@ -89,10 +88,8 @@ Route::post('/hello/newadmin/register', 'RegisterAdminController@createAdmin')->
 Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::get('/', 'ManagerController@index')->name('seller');
     Route::get('/customermanager', 'SellerController@customerManager')->name('seller.customermanager');
-    // Route::get('/productmanager', 'SellerController@productManager')->name('seller.productmanager');
 
     Route::resource('/productmanager', 'ProductController');
-    Route::get('productmanager/fetch_icon/{id}', 'ProductController@fetch_icon');
 
     Route::get('/transactionmanager', 'SellerController@transactionManager')->name('seller.transactionmanager');
     Route::get('/profile', 'SellerController@profile')->name('seller.profile');

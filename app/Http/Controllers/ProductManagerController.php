@@ -47,39 +47,33 @@ class ProductManagerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         $request->validate([
             'name_pro'  => ['required'],
             'description_pro' => ['required'],
-            'icon_pro' => ['required', 'max:2048'],
+            'icon_pro' => ['max:2048', 'image', 'mimes:jpeg,png,jpg,gif,svg'],
             'price_license' => ['required', 'between:0,999999.99', 'numeric'],
         ]);
 
-        $icon_file = $request->icon_pro;
-        $icon = Image::make($icon_file);
-        Response::make($icon->encode('jpeg'));
-
         $product = new Product();
+
+        if ($file = $request->hasFile('icon_pro')) {
+            $file = $request->file('icon_pro');
+            $fileName = $file->getClientOriginalName();
+            $destinationPath = public_path() . '/icon_pro/';
+            $file->move($destinationPath, $fileName);
+            $product->icon_pro = '/icon_pro/' . $fileName;
+        }
+
         $product->name_pro = $request->name_pro;
         $product->description_pro = $request->description_pro;
-        $product->icon_pro = $icon;
         $product->price_license = $request->price_license;
         $product->save();
 
         return redirect()->back()->with('success', 'Product store in database successfully');
     }
-
-    function fetch_icon($icon_id)
-    {
-        $icon = Product::findOrFail($icon_id);
-
-        $icon_file = Image::make($icon->icon_pro);
-
-        $response = Response::make($icon_file->encode('jpeg'));
-        return $response;
-    }
-
 
     /**
      * Display the specified resource.
@@ -89,7 +83,7 @@ class ProductManagerController extends Controller
      */
     public function show($id)
     {
-        $product = Product::findOrFail($id, ['name_pro', 'description_pro', 'price_license']);
+        $product = Product::findOrFail($id);
         return response()->json($product);
     }
 
@@ -101,7 +95,7 @@ class ProductManagerController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id, ['id', 'name_pro', 'description_pro', 'price_license']);
+        $product = Product::findOrFail($id);
         return response()->json($product);
     }
 
@@ -117,26 +111,23 @@ class ProductManagerController extends Controller
         $request->validate([
             'name_pro'  => ['required'],
             'description_pro' => ['required'],
+            'icon_pro' => ['max:2048', 'image', 'mimes:jpeg,png,jpg,gif,svg'],
             'price_license' => ['required', 'between:0,999999.99', 'numeric'],
         ]);
 
-
-        $icon_file = $request->icon_pro;
         $product = Product::find($id);
-        if ($icon_file != null) {
-            $icon = Image::make($icon_file);
-            Response::make($icon->encode('jpeg'));
-            $product->name_pro = $request->name_pro;
-            $product->description_pro = $request->description_pro;
-            $product->icon_pro = $icon;
-            $product->price_license = $request->price_license;
-            $product->save();
-        } else {
-            $product->name_pro = $request->name_pro;
-            $product->description_pro = $request->description_pro;
-            $product->price_license = $request->price_license;
-            $product->save();
+        if ($file = $request->hasFile('icon_pro')) {
+            $file = $request->file('icon_pro');
+            $fileName = $file->getClientOriginalName();
+            $destinationPath = public_path() . '/icon_pro/';
+            $file->move($destinationPath, $fileName);
+            $product->icon_pro = '/icon_pro/' . $fileName;
         }
+
+        $product->name_pro = $request->name_pro;
+        $product->description_pro = $request->description_pro;
+        $product->price_license = $request->price_license;
+        $product->save();
 
         return redirect()->back()->with('success', 'Product update in database successfully');
     }

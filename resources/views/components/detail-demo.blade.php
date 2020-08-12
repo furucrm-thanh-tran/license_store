@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-md-6 product_content">
                         <h4 id="show_name">Product Name</h4>
-                        <p>
+                        <p id="show_view">
                             (10 views)
                         </p>
                         <p id="show_des">Product Description</p>
