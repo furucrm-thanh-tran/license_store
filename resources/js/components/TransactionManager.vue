@@ -158,7 +158,7 @@ export default {
     },
 
     methods: {
-        getListTransaction() {
+        getListTransaction: function() {
             axios
                 .get("transaction")
                 .then(response => {
@@ -171,11 +171,11 @@ export default {
                     this.errors = error.response.data.errors.name;
                 });
         },
-        selectTransaction(transaction) {
+        selectTransaction: function(transaction) {
             // this.selectTransaction = { ...transaction }
             transaction.isAssign = !transaction.isAssign;
         },
-        updateTransaction(index) {
+        updateTransaction: function(index) {
             if (confirm("Are you sure?")) {
                 axios
                     .put(
