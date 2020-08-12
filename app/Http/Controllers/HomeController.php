@@ -47,28 +47,21 @@ class HomeController extends Controller
         $response = Response::make($icon_file->encode('jpeg'));
         return $response;
     }
-    public function index_new()
-    {
-        $product = Product::orderBy('created_at', 'desc')->get();
-        return view('home')->with('product', $product);
-    }
-    public function index_update()
-    {
-        $product = Product::orderBy('updated_at', 'desc')->get();
-        return view('home')->with('product', $product);
-    }
-
-    public function index_view()
-    {
-        $product = Product::orderBy('view', 'desc')->get();
-        return view('home')->with('product', $product);
-    }
-
-    // public function insert_view($id, $new_view)
+    // public function index_new()
     // {
-    //     $product = Product::find($id);
-    //     $product->view = $new_view;
-    //     $product->save();
+    //     $product = Product::orderBy('created_at', 'desc')->get();
+    //     return view('home')->with('product', $product);
+    // }
+    // public function index_update()
+    // {
+    //     $product = Product::orderBy('updated_at', 'desc')->get();
+    //     return view('home')->with('product', $product);
+    // }
+
+    // public function index_view()
+    // {
+    //     $product = Product::orderBy('view', 'desc')->get();
+    //     return view('home')->with('product', $product);
     // }
 
     public function frm_insertcard()
@@ -111,17 +104,6 @@ class HomeController extends Controller
         return back();
     }
 
-    // public function paymentprofile_edit(Request $request)
-    // {
-    //     $apikey = env("STRIPE_API_KEY");
-    //     Stripe\Stripe::setApiKey($apikey);
-    //     $id = $request->edit;
-    //     $data = payment::find($id);
-    //     $data->exp_month = $request->card_expmonth;
-    //     $data->exp_year = $request->card_expyear;
-    //     $data->save();
-    //     return back();
-    // }
     public function paymentprofile_edit(Request $request){
         $apikey=env("STRIPE_API_KEY");
         Stripe\Stripe::setApiKey($apikey);

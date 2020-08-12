@@ -37,7 +37,7 @@
                 <a class="nav-link active" id="new" href="/home_new">New</a>
                 <a class="nav-link active" id="update" href="/home_update">Update</a>
                 <a class="nav-link active" id="view" href="/home_view">View</a>
-                <a class="nav-link active" id="buy" href="#">Buy</a>
+                <a class="nav-link active" id="buy" href="/home_buy">Buy</a>
             </div>
         </div>
         <div class="col-md-9">
@@ -47,7 +47,7 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <img src="home/fetch_icon/{{ $p->id }}" alt="" class="img-fluid">
+                                <img src="{{ $p->icon_pro }}" alt="" class="img-fluid">
                                 <div class="caption">
                                     <h5 class="pull-right">${{ $p->price_license }}</h5>
                                     <a href="#">{{ $p->name_pro }}</a>
@@ -60,14 +60,9 @@
                                     <button class="add_to_card btn btn-primary" id="card_add" data-id="{{ $p->id }}"
                                         data-price="{{ $p->price_license }}" data-name="{{ $p->name_pro }}" data-qty="1"><i
                                             class="fa fa-shopping-cart"></i></button>
-                                    {{-- <button name="{{ $p->id }}" type="button" class="btn btn-primary btn-view"
-                                        data-toggle="modal" data-target="#viewProduct" data-view="{{ $p->view }}"
-                                        data-id="{{ $p->id }}">
-                                        <i class="fa fa-search"></i></button> --}}
-
-                                        <a class="btn btn-primary btn-view" href="{{route('pro_detail', $p->id)}}">
-                                            <i class="fa fa-search"></i>
-                                        </a>
+                                    <button name="{{ $p->id }}" class="btn btn-primary btn-view" data-toggle="modal"
+                                        data-target="#viewProduct" data-view="{{ $p->view }}" data-id="{{ $p->id }}">
+                                        <i class="fa fa-search"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -143,24 +138,20 @@
             console.log(id, token);
         });
 
+        // ADD View//////////
         $(".btn-view").click(function() {
             var id = $(this).data("id");
-            var view = document.getElementById(id).innerHTML;
-            var new_view = +view + +1;
-
             $.ajax({
-                url: "/insert_view/" + id + "/" + new_view,
-                type: "PUT",
+                url: "/insert_view/" + id,
+                type: "GET",
                 data: {
                     "id": id,
-                    "view": new_view,
                 },
                 success: function(data) {
-                    console.log("it Work");
+                    console.log(data);
+                    document.getElementById(id).innerHTML = data;
                 }
             });
-            document.getElementById(id).innerHTML = new_view;
-            console.log(view + " " + id);
         });
 
     </script>

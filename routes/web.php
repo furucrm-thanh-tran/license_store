@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', 'CustomerController@index');
+Route::get('fetch_icon/{id}', 'CustomerController@fetch_icon');
 
 // Route::get('/welcome', function () {
 //     return view('welcome');
@@ -25,12 +26,11 @@ Auth::routes();
 
 // Customer routes}}}}}}}}}}}}}}}}}}}}}}}
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home_new','HomeController@index_new');
-Route::get('/home_update','HomeController@index_update');
-Route::get('/home_view','HomeController@index_view');
-Route::get('home/fetch_icon/{id}', 'HomeController@fetch_icon');
-
-Route::put('/insert_view/{id}/{new_view}','HomeController@insert_view');
+Route::get('/home_new','CustomerController@index_new');
+Route::get('/home_update','CustomerController@index_update');
+Route::get('/home_view','CustomerController@index_view');
+Route::get('/home_buy','CustomerController@index_buy');
+Route::get('/insert_view/{id}','CustomerController@insert_view');
 // profile
 Route::get('/profile', 'HomeController@profile')->name('profile');
 Route::get('/frm_insertcard', 'HomeController@frm_insertcard')->name('frm_insertcard');
@@ -40,7 +40,6 @@ Route::get('card', 'HomeController@paymentprofile_edit')->name('edit_card_item')
 
 // cart
 Route::get('shoppingcart', 'HomeController@shopping_cart')->name('cart');
-Route::get('/shop/product/{id}','CustomerController@pro_detail')->name('pro_detail');
 Route::get('cart/{id}', 'HomeController@del_cart_item')->name('del_cart_item');
 Route::put('cart/update/{id}/{qty}', 'HomeController@upd_cart_item')->name('upd_cart_item');
 Route::post('cart/add/{id}/{name}/{qty}/{price}', 'HomeController@add_cart_item')->name('add_cart_item');
@@ -67,7 +66,6 @@ Route::prefix('admin')->middleware('is_admin')->group(function () {
     Route::resource('/seller_manager', 'SellerManagerController');
 
     Route::resource('/product_manager', 'ProductManagerController');
-    Route::get('product_manager/fetch_icon/{id}', 'ProductManagerController@fetch_icon');
 
     Route::get('/profile', 'AdminController@showProfile')->name('admin.profile');
 
@@ -89,10 +87,8 @@ Route::post('/hello/newadmin/register', 'RegisterAdminController@createAdmin')->
 Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::get('/', 'ManagerController@index')->name('seller');
     Route::get('/customermanager', 'SellerController@customerManager')->name('seller.customermanager');
-    // Route::get('/productmanager', 'SellerController@productManager')->name('seller.productmanager');
 
     Route::resource('/productmanager', 'ProductController');
-    Route::get('productmanager/fetch_icon/{id}', 'ProductController@fetch_icon');
 
     Route::get('/transactionmanager', 'SellerController@transactionManager')->name('seller.transactionmanager');
     Route::get('/profile', 'SellerController@profile')->name('seller.profile');

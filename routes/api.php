@@ -22,13 +22,13 @@ use Illuminate\Support\Facades\Route;
 // Admin
 Route::post('manager/login', 'API\ManagerController@login');
    
-Route::middleware(['auth:apimanager','scope:admin'])->group( function () {
+Route::prefix('admin')->middleware(['auth:apimanager','scope:admin'])->group( function () {
     Route::resource('seller_manager', 'API\SellerManagerController');
     Route::resource('product_manager', 'API\ProductManagerController');
 });
 
 // Seller
-Route::middleware(['auth:apimanager','scope:seller'])->group( function () {
+Route::prefix('seller')->middleware(['auth:apimanager','scope:seller'])->group( function () {
     Route::get('product', 'API\ProductManagerController@index');
     Route::get('product/{id}', 'API\ProductManagerController@show');
 });

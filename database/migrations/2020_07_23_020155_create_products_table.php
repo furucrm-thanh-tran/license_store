@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name_pro');
             $table->string('description_pro');
-            $table->binary('icon_pro')->nullable();
+            $table->string('icon_pro')->nullable();
             $table->decimal('price_license', 8, 2);
             $table->integer('view')->default(0);
             $table->timestamps();
