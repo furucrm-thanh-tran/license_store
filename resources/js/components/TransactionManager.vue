@@ -59,7 +59,7 @@
                 <tr v-for="(trans, index) in get_rows()" :key="trans.id">
                     <td>{{ trans.id }}</td>
                     <td>{{ trans.users.full_name }}</td>
-                    <td>{{ trans.created_at }}</td>
+                    <td>{{ trans.created_at | formatDate }}</td>
                     <td>
                         <div v-if="trans.seller_id">
                             {{ trans.managers.full_name }}
