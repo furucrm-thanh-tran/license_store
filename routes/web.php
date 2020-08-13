@@ -55,7 +55,6 @@ Route::get('bill_detail/{id}','HomeController@bill_detail')->name('bill_detail')
 
 // Manager routes
 Route::prefix('manager')->group(function () {
-    // Route::get('/', 'ManagerController@index')->name('seller.dashboard');
     Route::get('/login', 'Auth\ManagerLoginController@showLoginForm')->name('manager.login');
     Route::post('/login', 'Auth\ManagerLoginController@login')->name('manager.login.submit');
 });
@@ -71,11 +70,14 @@ Route::prefix('admin')->middleware('is_admin')->group(function () {
     Route::get('/profile', 'AdminController@showProfile')->name('admin.profile');
 
     Route::get('/transactionmanager', 'AdminController@transactionManager')->name('admin.transactionmanager');
-    Route::get('/license-key', 'ManagerController@licenseKey')->name('admin.license-key');
+    // Route::get('/license-key', 'ManagerController@licenseKey')->name('admin.license-key');
     Route::get('/bill/detail/{id}', 'ManagerController@billDetail')->name('admin.bill-detail');
     Route::post('/transactionmanager/{id}', 'AdminController@updateTransaction');
     Route::resource('/transaction', 'TransactionController');
 
+    Route::resource('/license', 'Admin\LicenseController');
+
+    Route::get('/get_id/{id}', 'Admin\LicenseController@get_id');
 });
 Route::get('get_id/{id}', 'AdminController@get_id')->name('admin.get_id');
 
@@ -87,18 +89,18 @@ Route::post('/hello/newadmin/register', 'RegisterAdminController@createAdmin')->
 // Seller routes
 Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::get('/', 'ManagerController@index')->name('seller');
-    Route::get('/customermanager', 'SellerController@customerManager')->name('seller.customermanager');
+    // Route::get('/customermanager', 'SellerController@customerManager')->name('seller.customermanager');
 
     Route::resource('/productmanager', 'ProductController');
 
     Route::get('/transactionmanager', 'SellerController@transactionManager')->name('seller.transactionmanager');
     Route::get('/profile', 'SellerController@profile')->name('seller.profile');
-    Route::get('/bill', 'SellerController@bill')->name('seller.bill');
-    Route::get('/bill/detail/{id}', 'ManagerController@billDetail')->name('seller.bill-detail');
     Route::get('/license-key', 'ManagerController@licenseKey')->name('seller.license-key');
     Route::resource('/transaction', 'TransactionController');
 
     Route::put('profile/{id}', 'SellerController@update');
     Route::get('profile/{id}/edit', 'SellerController@edit');
-});
 
+    Route::resource('/customermanager', 'Seller\CustomerManagerController');
+    Route::get('/bill/detail/{id}', 'ManagerController@billDetail')->name('seller.bill-detail');
+});
