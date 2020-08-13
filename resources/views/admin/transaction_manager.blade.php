@@ -21,6 +21,22 @@
             background-size: contain;
             background-position-y: bottom;
         }
+
+        .number {
+            display: inline-block;
+            padding: 4px 10px;
+            color: #FFF;
+            border-radius: 4px;
+            background: #44475C;
+            margin: 0px 5px;
+            cursor: pointer;
+        }
+
+        .number:hover,
+        .number.active {
+            background: #717699;
+        }
+
     </style>
 @endsection
 @section('content')
@@ -46,7 +62,6 @@
 
 @section('script')
     <!-- Page level plugins -->
-    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="/vendor/select2/dist/js/select2.min.js"></script>
     <script src="/js/demo/datatables-demo.js"></script>

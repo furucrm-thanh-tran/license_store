@@ -2086,11 +2086,49 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      currentPage: 1,
+      elementsPerPage: 5,
       ascending: false,
       sortColumn: "",
+      search: "",
       user_role: this.$userRole,
       seller: {
         seller_id: this.$userId,
@@ -2177,11 +2215,8 @@ __webpack_require__.r(__webpack_exports__);
         var ascending = this.ascending;
 
         if (col.indexOf(".") > -1) {
-          // alert("hello found inside your_string");
           col = col.split(".");
-          var len = col.length; // alert("hello found inside your_string" + col[0]);
-          // this.list_transaction.trans = Object.values(this.list_transaction.trans).sort((a, b) => a.users.full_name.localeCompare(b.users.full_name));
-
+          var len = col.length;
           this.list_transaction.trans.sort(function (a, b) {
             var i = 0;
 
@@ -2211,17 +2246,24 @@ __webpack_require__.r(__webpack_exports__);
           return 0;
         });
       }
-    }
-  },
-  computed: {
-    columns: function columns() {
-      if (this.list_transaction.trans.length == 0) {
-        return [];
+    },
+    num_pages: function num_pages() {
+      if (!this.list_transaction.trans) {
+        return;
       }
 
-      return Object.keys(this.list_transaction.trans[0]);
+      return Math.ceil(Object.keys(this.list_transaction.trans).length / this.elementsPerPage);
+    },
+    get_rows: function get_rows() {
+      var start = (this.currentPage - 1) * this.elementsPerPage;
+      var end = start + this.elementsPerPage;
+      return (this.list_transaction.trans || "").slice(start, end);
+    },
+    change_page: function change_page(page) {
+      this.currentPage = page;
     }
-  }
+  },
+  computed: {}
 });
 
 /***/ }),
@@ -19922,6 +19964,80 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "transaction-manager" }, [
+    _c("div", { staticClass: "row mb-3" }, [
+      _c("div", { staticClass: "col-6 form-inline" }, [
+        _c("label", { staticClass: "mr-2" }, [_vm._v("Show")]),
+        _vm._v(" "),
+        _c("div", [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.elementsPerPage,
+                  expression: "elementsPerPage"
+                }
+              ],
+              staticClass: "form-control form-control-sm",
+              attrs: { name: "", id: "" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.elementsPerPage = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c("option", { attrs: { value: "3" } }, [_vm._v("3")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "5" } }, [_vm._v("5")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "10" } }, [_vm._v("10")])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "ml-2" }, [_vm._v("entries")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-6 form-inline justify-content-end" }, [
+        _c("label", [_vm._v("Search id:")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.search,
+              expression: "search"
+            }
+          ],
+          staticClass: "form-control ml-2",
+          attrs: { type: "text", placeholder: "Search title.." },
+          domProps: { value: _vm.search },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.search = $event.target.value
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
     _c(
       "table",
       {
@@ -19966,7 +20082,7 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.list_transaction.trans, function(trans, index) {
+          _vm._l(_vm.get_rows(), function(trans, index) {
             return _c("tr", { key: trans.id }, [
               _c("td", [_vm._v(_vm._s(trans.id))]),
               _vm._v(" "),
@@ -20197,6 +20313,28 @@ var render = function() {
           0
         )
       ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "pagination justify-content-end" },
+      _vm._l(_vm.num_pages(), function(i) {
+        return _c(
+          "div",
+          {
+            key: i,
+            staticClass: "number",
+            class: [i == _vm.currentPage ? "active" : ""],
+            on: {
+              click: function($event) {
+                return _vm.change_page(i)
+              }
+            }
+          },
+          [_vm._v("\n            " + _vm._s(i) + "\n        ")]
+        )
+      }),
+      0
     )
   ])
 }

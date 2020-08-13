@@ -1,5 +1,32 @@
 <template>
     <div class="transaction-manager">
+        <div class="row mb-3">
+            <div class="col-6 form-inline">
+                <label class="mr-2">Show</label>
+                <div>
+                    <select
+                        class="form-control form-control-sm"
+                        name=""
+                        id=""
+                        v-model="elementsPerPage"
+                    >
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <span class="ml-2">entries</span>
+            </div>
+            <div class="col-6 form-inline justify-content-end">
+                <label>Search id:</label>
+                <input
+                    type="text"
+                    v-model="search"
+                    placeholder="Search title.."
+                    class="form-control ml-2"
+                />
+            </div>
+        </div>
         <table class="table table-bordered" id="" width="100%" cellspacing="0">
             <thead>
                 <tr>
@@ -29,10 +56,7 @@
                 </tr>
             </tfoot>
             <tbody>
-                <tr
-                    v-for="(trans, index) in list_transaction.trans"
-                    :key="trans.id"
-                >
+                <tr v-for="(trans, index) in get_rows()" :key="trans.id">
                     <td>{{ trans.id }}</td>
                     <td>{{ trans.users.full_name }}</td>
                     <td>{{ trans.created_at }}</td>
@@ -139,6 +163,17 @@
                 </tr>
             </tbody>
         </table>
+        <div class="pagination justify-content-end">
+            <div
+                class="number"
+                v-for="i in num_pages()"
+                v-bind:class="[i == currentPage ? 'active' : '']"
+                v-on:click="change_page(i)"
+                :key="i"
+            >
+                {{ i }}
+            </div>
+        </div>
         <!-- {{ list_transaction.trans[3] }} -->
     </div>
 </template>
@@ -147,8 +182,11 @@
 export default {
     data() {
         return {
+            currentPage: 1,
+            elementsPerPage: 5,
             ascending: false,
             sortColumn: "",
+            search: "",
             user_role: this.$userRole,
             seller: {
                 seller_id: this.$userId,
@@ -218,7 +256,7 @@ export default {
                     });
             }
         },
-        sortTable: function sortTable(col, sortable) {
+        sortTable: function(col, sortable) {
             if (sortable) {
                 if (this.sortColumn === col) {
                     this.ascending = !this.ascending;
@@ -230,11 +268,8 @@ export default {
                 var ascending = this.ascending;
 
                 if (col.indexOf(".") > -1) {
-                    // alert("hello found inside your_string");
                     col = col.split(".");
                     var len = col.length;
-                    // alert("hello found inside your_string" + col[0]);
-                    // this.list_transaction.trans = Object.values(this.list_transaction.trans).sort((a, b) => a.users.full_name.localeCompare(b.users.full_name));
                     this.list_transaction.trans.sort(function(a, b) {
                         var i = 0;
                         while (i < len) {
@@ -261,16 +296,28 @@ export default {
                     return 0;
                 });
             }
+        },
+
+        num_pages: function() {
+            if (!this.list_transaction.trans) {
+                return;
+            }
+            return Math.ceil(
+                Object.keys(this.list_transaction.trans).length /
+                    this.elementsPerPage
+            );
+        },
+        get_rows: function() {
+            var start = (this.currentPage - 1) * this.elementsPerPage;
+            var end = start + this.elementsPerPage;
+            return (this.list_transaction.trans || "").slice(start, end);
+        },
+        change_page: function(page) {
+            this.currentPage = page;
         }
     },
-    computed: {
-        columns: function columns() {
-            if (this.list_transaction.trans.length == 0) {
-                return [];
-            }
-            return Object.keys(this.list_transaction.trans[0]);
-        }
-    }
+
+    computed: {}
 };
 </script>
 
