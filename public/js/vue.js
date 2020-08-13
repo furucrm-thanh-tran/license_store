@@ -2081,15 +2081,51 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      ascending: false,
+      sortColumn: "",
       user_role: this.$userRole,
       seller: {
         seller_id: this.$userId,
         seller_name: this.$userName
       },
       errors: [],
+      headerTable: [{
+        name: "Code bill",
+        col: "id",
+        sortable: true
+      }, {
+        name: "Customer",
+        col: "users.full_name",
+        sortable: true
+      }, {
+        name: "Date of purchase",
+        col: "created_at",
+        sortable: true
+      }, {
+        name: "Seller",
+        col: "managers.full_name",
+        sortable: false
+      }, {
+        name: "Process",
+        col: "status",
+        sortable: true
+      }, {
+        name: "Total money",
+        col: "total_money",
+        sortable: true
+      }, {
+        name: "Action",
+        col: "",
+        sortable: false
+      }],
       list_transaction: [] // selectTransaction: {}
 
     };
@@ -2128,6 +2164,62 @@ __webpack_require__.r(__webpack_exports__);
           _this2.errors = error.response.data.errors.name;
         });
       }
+    },
+    sortTable: function sortTable(col, sortable) {
+      if (sortable) {
+        if (this.sortColumn === col) {
+          this.ascending = !this.ascending;
+        } else {
+          this.ascending = true;
+          this.sortColumn = col;
+        }
+
+        var ascending = this.ascending;
+
+        if (col.indexOf(".") > -1) {
+          // alert("hello found inside your_string");
+          col = col.split(".");
+          var len = col.length; // alert("hello found inside your_string" + col[0]);
+          // this.list_transaction.trans = Object.values(this.list_transaction.trans).sort((a, b) => a.users.full_name.localeCompare(b.users.full_name));
+
+          this.list_transaction.trans.sort(function (a, b) {
+            var i = 0;
+
+            while (i < len) {
+              a = a[col[i]];
+              b = b[col[i]];
+              i++;
+            }
+
+            if (a < b) {
+              return ascending ? -1 : 1;
+            } else if (a > b) {
+              return ascending ? 1 : -1;
+            } else {
+              return 0;
+            }
+          });
+        }
+
+        this.list_transaction.trans.sort(function (a, b) {
+          if (a[col] > b[col]) {
+            return ascending ? 1 : -1;
+          } else if (a[col] < b[col]) {
+            return ascending ? -1 : 1;
+          }
+
+          return 0;
+        });
+      }
+    }
+  },
+  computed: {
+    columns: function columns() {
+      if (this.list_transaction.trans.length == 0) {
+        return [];
+      }
+
+      return Object.keys(this.list_transaction.trans[0]);
     }
   }
 });
@@ -19837,9 +19929,40 @@ var render = function() {
         attrs: { id: "", width: "100%", cellspacing: "0" }
       },
       [
-        _vm._m(0),
+        _c("thead", [
+          _c(
+            "tr",
+            _vm._l(_vm.headerTable, function(header) {
+              return _c(
+                "th",
+                {
+                  key: header.key,
+                  on: {
+                    click: function($event) {
+                      return _vm.sortTable(header.col, header.sortable)
+                    }
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(header.name) +
+                      "\n                    "
+                  ),
+                  header.col == _vm.sortColumn
+                    ? _c("span", {
+                        staticClass: "arrow",
+                        class: _vm.ascending ? "arrow_up" : "arrow_down"
+                      })
+                    : _vm._e()
+                ]
+              )
+            }),
+            0
+          )
+        ]),
         _vm._v(" "),
-        _vm._m(1),
+        _vm._m(0),
         _vm._v(" "),
         _c(
           "tbody",
@@ -20078,28 +20201,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Code bill")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Customer ID")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Date of purchase")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Seller")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Process")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Total money")]),
-        _vm._v(" "),
-        _c("th", { attrs: { "data-orderable": "false" } })
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
