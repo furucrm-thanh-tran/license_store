@@ -20,7 +20,7 @@
                                     </thead>
                                         <tbody id="cart_product">
                                             @foreach(Cart::content() as $row)
-                                            <tr>
+                                            <tr id="{{$row->rowId}}">
                                                 <td class="pro_id" data-id="{{$row->rowId}}"><?php echo $row->name; ?></td>
                                                 <td>
                                                     <input data-qty="{{$row->qty}}" class="qty" type="number" min="0" onfocus="focusFunction()" value="<?php echo $row->qty; ?>"/>
@@ -94,33 +94,31 @@
                 });
             $.ajax(
             {
-                url: "cart/"+id,
+                url: "cart/delete",
                 type: 'GET',
                 data: {
                     "id": id,
-                    "_method": 'DELETE',
                 },
                 success: function (data)
                 {
                     console.log("it Work");
                     alert('Record has been deleted successfully !!!!');
-                    window.location.reload();
-
+                    document.getElementById(id).remove();
                 }
             });
-            console.log(id,token);
         });
     </script>
     {{-- end delete --}}
 
 
     <script type = "text/javascript">
-        $(".get_item").click(function(){
-            $.ajaxSetup({
+    $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
+        $(".get_item").click(function(){
+
             var datalist_id = $(".remove_item").map(function() {
                 return $(this).data("id");
             }).get();
@@ -130,21 +128,16 @@
             for(i=0; i<datalist_id.length; i++){
                 id=datalist_id[i];
                 qty=get_qty[i+1].value;
-
                 $.ajax({
-                    url: "cart/update/"+id+"/"+qty,
+                    url: "cart/update",
                     type: 'PUT',
                     data: {
                         "id": id,
                         "qty": qty,
                     },
-
                 });
-                console.log("it Work");
-                console.log(id+" "+qty);
             };
             alert('Record has been update successfully !!!!');
-            window.location.reload();
         });
     </script>
 
@@ -153,11 +146,7 @@
     <script>
         $(".action_payment").click(function(e){
         e.preventDefault();
-        $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+
         var amount = document.getElementById("amount").value;
         var card_number = document.getElementById("card_number").value
         var user_id = document.getElementById("user_id").value

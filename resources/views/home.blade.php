@@ -33,17 +33,16 @@
     <div class="row">
         <div class="col-md-3">
             <div class="osahan-account-page-left shadow-sm bg-white h-100">
-                <a class="nav-link active" id="all" href="/home">All</a>
-                <a class="nav-link active" id="new" href="/home_new">New</a>
-                <a class="nav-link active" id="update" href="/home_update">Update</a>
-                <a class="nav-link active" id="view" href="/home_view">View</a>
-                <a class="nav-link active" id="buy" href="/home_buy">Buy</a>
+                <a class="nav-link active " type="button" onclick="sortListNew()" id="new">New</a>
+                <a class="nav-link active" type="button" onclick="sortListUpdate()" id="update">Update</a>
+                <a class="nav-link active" type="button" onclick="sortListView()" id="view">View</a>
+                <a class="nav-link active" type="button" onclick="sortListBuy()" id="buy">Buy</a>
             </div>
         </div>
         <div class="col-md-9">
-            <div class="row">
+            <div class="row list_pro">
                 @foreach ($product as $p)
-                    <div class="col-md-3 mt-3">
+                    <div class="col-md-3 mt-3 sort" data-view="{{ $p->view }}" data-buy="{{ $p->buy }}" data-new="{{ $p->created_at }}" data-update="{{ $p->updated_at }}">
 
                         <div class="card">
                             <div class="card-body">
@@ -90,7 +89,7 @@
                 }
             });
             $.ajax({
-                url: "cart/add/" + id + "/" + name + "/" + qty + "/" + price,
+                url: "cart/add",
                 type: 'POST',
                 data: {
                     "id": id,
@@ -102,14 +101,13 @@
                     console.log("it Work");
                 }
             });
-            console.log(id, token);
         });
 
         // ADD View//////////
         $(".btn-view").click(function() {
             var id = $(this).data("id");
             $.ajax({
-                url: "/insert_view/" + id,
+                url: "/insert_view",
                 type: "GET",
                 data: {
                     "id": id,
@@ -128,7 +126,72 @@
             document.getElementById("icon_pro").src = icon_pro;
             document.getElementById("price").innerHTML = "$"+price_license ;
         });
+    </script>
+    <script>
+        function sortListView() {
+            var $wrapper = $('.list_pro');
+            $wrapper.find('.sort').sort(function(a, b) {
+                    return +b.dataset.view - +a.dataset.view;
+                })
+                .appendTo($wrapper);
+            var view = $("#view");
+            view.addClass("bg-primary text-white");
+            var buy = $("#buy");
+            buy.removeClass("bg-primary text-white");
+            var newdate = $("#new");
+            newdate.removeClass("bg-primary text-white");
+            var updatedate = $("#update");
+            updatedate.removeClass("bg-primary text-white");
+        }
 
+        function sortListBuy() {
+            var $wrapper = $('.list_pro');
+            $wrapper.find('.sort').sort(function(a, b) {
+                    return +b.dataset.buy - +a.dataset.buy;
+                })
+                .appendTo($wrapper);
+            var buy = $("#buy");
+            buy.addClass("bg-primary text-white");
+            var view = $("#view");
+            view.removeClass("bg-primary text-white");
+            var newdate = $("#new");
+            newdate.removeClass("bg-primary text-white");
+            var updatedate = $("#update");
+            updatedate.removeClass("bg-primary text-white");
+        }
+
+        function sortListNew() {
+            var $wrapper = $('.list_pro');
+            $wrapper.find('.sort').sort(function(a, b) {
+                return new Date(b.dataset.new) - new Date(a.dataset.new);
+            })
+            .appendTo($wrapper);
+
+            var newdate = $("#new");
+            newdate.addClass("bg-primary text-white");
+            var buy = $("#buy");
+            buy.removeClass("bg-primary text-white");
+            var view = $("#view");
+            view.removeClass("bg-primary text-white");
+            var updatedate = $("#update");
+            updatedate.removeClass("bg-primary text-white");
+        }
+        function sortListUpdate() {
+            var $wrapper = $('.list_pro');
+            $wrapper.find('.sort').sort(function(a, b) {
+                return new Date(b.dataset.update) - new Date(a.dataset.update);
+            })
+            .appendTo($wrapper);
+
+            var updatedate = $("#update");
+            updatedate.addClass("bg-primary text-white");
+            var newdate = $("#new");
+            newdate.removeClass("bg-primary text-white");
+            var buy = $("#buy");
+            buy.removeClass("bg-primary text-white");
+            var view = $("#view");
+            view.removeClass("bg-primary text-white");
+        }
 
     </script>
 

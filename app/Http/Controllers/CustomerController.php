@@ -29,8 +29,9 @@ class CustomerController extends Controller
     {
         return view('emails.SendMail');
     }
-    public function insert_view($id)
+    public function insert_view(Request $request)
     {
+        $id = $request->id;
         $product = Product::find($id);
         $view = $product->view;
         $product->view = $view+1;
@@ -61,16 +62,6 @@ class CustomerController extends Controller
 
     }
 
-    public function seller_send_mail(){
-        $user_email ="hoailinh031098@gmail.com";
-        $details = [
-            'title' => 'New Product !!!!',
-            'email'=>$user_email,
-            'link'=>'http://127.0.0.1:8000/frm_check_mail'
-        ];
-        dispatch(new SendSellerEmail($details));
-        return "It Work !!!!";
-    }
     public function frm_check_mail(){
         return view('customer.cus_check_mail');
     }
