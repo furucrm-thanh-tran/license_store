@@ -6,6 +6,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 window.Vue = require('vue');
 
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -19,6 +20,17 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('transaction-manager', require('./components/TransactionManager.vue').default);
+Vue.prototype.$userRole = document.querySelector("meta[name='user_role']").getAttribute('content');
+Vue.prototype.$userId = document.querySelector("meta[name='user_id']").getAttribute('content');
+Vue.prototype.$userName = document.querySelector("meta[name='user_name']").getAttribute('content');
+
+import moment from 'moment';
+
+Vue.filter('formatDate', function (value) {
+    if (value) {
+        return moment(String(value)).format('YYYY-MM-DD hh:mm:ss')
+    }
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
