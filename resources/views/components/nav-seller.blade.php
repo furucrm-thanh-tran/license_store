@@ -24,7 +24,7 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('seller.customermanager') }}">
+        <a class="nav-link" href="{{ route('customermanager.index') }}">
             {{-- <a class="nav-link" href="/admin/sellermanager"> --}}
                 <i class="fas fa-fw fa-users"></i>
                 <span>Custommer</span>

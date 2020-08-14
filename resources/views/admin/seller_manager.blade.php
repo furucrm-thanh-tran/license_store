@@ -242,42 +242,6 @@
 
 <script type="text/javascript">
     $(function() {
-
-        // $.ajaxSetup({
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //     }
-        // });
-
-        // $('#btnCreate').click(function() {
-        //     $('#saveBtn').val("create-Seller");
-        //     $('#frmCreate').trigger("reset");
-        //     $('#createSeller').modal('show');
-        // });
-
-        // $('#saveBtn').click(function(e) {
-        //     e.preventDefault();
-        //     $(this).html('Sending..');
-
-        //     $.ajax({
-        //         data: $('#frmCreate').serialize(),
-        //         url: "",
-        //         type: "POST",
-        //         dataType: 'json',
-        //         success: function(data) {
-
-        //             $('#frmCreate').trigger("reset");
-        //             $('#createSeller').modal('hide');
-        //             table.draw();
-
-        //         },
-        //         error: function(data) {
-        //             console.log('Error:', data);
-        //             $('#saveBtn').html('Save Changes');
-        //         }
-        //     });
-        // });
-
         /* Edit seller */
         $('#dataTable').on('click', '#edit-seller', function() {
             var seller_id = $(this).data('id');
