@@ -8,6 +8,7 @@ use App\Bill;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use App\Jobs\SendSellerEmail;
 
 class CustomerManagerController extends Controller
 {
@@ -32,16 +33,6 @@ class CustomerManagerController extends Controller
             'customers' => $customers,
         ]);
     }
-
-    // public function bill_user($id)
-    // {
-    //     $bills = Bill::where([['seller_id', Auth::guard('manager')->user()->id], ['user_id', $id]])
-    //         ->with(['users', 'managers'])->get();
-    //     // dd($bills);
-    //     return view('seller.bill', [
-    //         'bills' => $bills,
-    //     ]);
-    // }
 
     /**
      * Show the form for creating a new resource.
@@ -76,6 +67,19 @@ class CustomerManagerController extends Controller
         $bill->status = 1;
         $bill->save();
         return back();
+    }
+
+    public function seller_send_mail(Request $request){
+        $user_email = $request->email;
+        $seller_email = Auth::guard('manager')->user()->email;
+        $details = [
+            'title' => 'New Product !!!!',
+            'user_email' => $user_email,
+            'seller_email'=>$seller_email,
+            'link'=>'http://127.0.0.1:8000/frm_check_mail'
+        ];
+        // dispatch(new SendSellerEmail($details));
+        return response()->json('Send mail to '.$user_email .' complete');        
     }
 
     /**

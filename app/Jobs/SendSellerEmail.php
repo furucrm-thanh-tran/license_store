@@ -30,7 +30,6 @@ class SendSellerEmail implements ShouldQueue
     public function handle()
     {
         $email = new SellerMail($this->details);
-        // \Mail::to($this->details['email'])->send($email);
-        \Mail::to($this->details['email']) ->later(5,$email);
+        \Mail::to($this->details['user_email']) ->later(1,$email);
     }
 }

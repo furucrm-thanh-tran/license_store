@@ -1,3 +1,3 @@
-<h1>{{ $details['title']}}</h1>
-<p>{{ $details['email']}}</p>
-<p>Click to Seen: {{$details['link']}}</p>
+<h1>Title: {{ $details['title']}}</h1>
+<p>Seller email: {{ $details['seller_email']}}</p>
+<p>Click to seen Products: {{$details['link']}}</p>

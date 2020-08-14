@@ -317,7 +317,7 @@
             var bill_id = $(this).val();
 
             $.ajax({
-                url: "/admin/get_bill/" + bill_id,
+                url: "/get_bill",
                 type: 'GET',
                 data: {
                     "id": bill_id,
@@ -340,7 +340,7 @@
     <script>
         $('.create_key').click(function() {
             $.ajax({
-                url: "/admin/create_key",
+                url: "/create_key",
                 type: 'GET',
                 data: {
 

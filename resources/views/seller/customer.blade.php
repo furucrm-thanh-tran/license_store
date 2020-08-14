@@ -42,7 +42,7 @@
                         <td>{{ $cus->users->email }}</td>
                         <td>{{ $cus->users->phone }}</td>
                         <td>
-                            <button class="btn" data-toggle="modal" data-target=""><i class="fa fa-envelope"></i></button>
+                            <button id="btn_send" class="btn" data-toggle="modal" data-email="{{ $cus->users->email }}" data-target=""><i class="fa fa-envelope"></i></button>
                             <a href="{{ route('customermanager.edit', $cus->users->id) }}" class="btn"><i class="fas fa-arrow-right"></i></a>
                         </td>
                     </tr>
@@ -61,5 +61,31 @@
 
 <!-- Page level custom scripts -->
 <script src="/js/demo/datatables-demo.js"></script>
+
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
+
+<script>
+    $('#btn_send').click(function() {
+        $email = $(this).data('email')
+        $.ajax({
+            url: "/seller/seller_send_mail",
+            type: 'GET',
+            data: {
+                'email': $email,
+            },
+
+            success: function(data) {
+                alert(data);
+                console.log(data);
+            }
+        });
+    });
+</script>
 
 @endsection

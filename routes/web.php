@@ -75,16 +75,21 @@ Route::prefix('admin')->middleware('is_admin')->group(function () {
     Route::post('/transactionmanager/{id}', 'AdminController@updateTransaction');
     Route::resource('/transaction', 'TransactionController');
 
-    Route::resource('/license', 'LicenseController');
-    Route::get('/get_bill/{id}', 'LicenseController@get_bill');
-    Route::get('/create_key', 'LicenseController@create_key');
+    // Route::resource('/license', 'LicenseController');
 });
-// Route::get('get_id/{id}', 'AdminController@get_id')->name('admin.get_id');
+
+//Licenses
+Route::resource('/license', 'LicenseController');
+Route::get('/get_bill', 'LicenseController@get_bill');
+Route::get('/create_key', 'LicenseController@create_key');
 
 Route::get('/hello/newadmin/register', 'RegisterAdminController@showAdminRegister')->name('newadmin.register');
 Route::post('/hello/newadmin/register', 'RegisterAdminController@createAdmin')->name('newadmin.register.submit');
 // Route::post('/hello/newadmin/login', 'RegisterAdminController@checkLogin')->name('newadmin.login.submit');
 
+// CheckMail
+Route::get('/frm_check_mail', 'CustomerController@frm_check_mail');
+Route::get('/check_mail', 'CustomerController@check_mail')->name('check_mail');
 
 // Seller routes
 Route::prefix('seller')->middleware('is_seller')->group(function () {
@@ -101,13 +106,11 @@ Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::put('profile/{id}', 'SellerController@update');
     Route::get('profile/{id}/edit', 'SellerController@edit');
 
-    Route::get('/seller_send_mail', 'CustomerController@seller_send_mail');
-    Route::get('/frm_check_mail', 'CustomerController@frm_check_mail');
-    Route::get('/check_mail', 'CustomerController@check_mail')->name('check_mail');
+    Route::get('/seller_send_mail', 'Seller\CustomerManagerController@seller_send_mail');
+
+
     Route::resource('/customermanager', 'Seller\CustomerManagerController');
     Route::get('/bill/detail/{id}', 'ManagerController@billDetail')->name('seller.bill-detail');
 
-    Route::resource('/license', 'LicenseController');
-    Route::get('/get_bill/{id}', 'LicenseController@get_bill');
-    Route::get('/create_key', 'LicenseController@create_key');
+    // Route::resource('/license_seller', 'LicenseController');
 });

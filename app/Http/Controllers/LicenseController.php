@@ -81,8 +81,9 @@ class LicenseController extends Controller
         ]);
     }
 
-    public function get_bill($bill_id)
+    public function get_bill(Request $request)
     {
+        $bill_id = $request->id;
         $bills = Bill::where('id', $bill_id)
             ->with(['users', 'managers'])->get();
         return response()->json($bills);
