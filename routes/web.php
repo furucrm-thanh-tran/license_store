@@ -30,7 +30,7 @@ Route::get('/home_new', 'CustomerController@index_new');
 Route::get('/home_update', 'CustomerController@index_update');
 Route::get('/home_view', 'CustomerController@index_view');
 Route::get('/home_buy', 'CustomerController@index_buy');
-Route::get('/insert_view/{id}', 'CustomerController@insert_view');
+Route::get('/insert_view', 'CustomerController@insert_view');
 // profile
 Route::get('/profile', 'HomeController@profile')->name('profile');
 
@@ -41,9 +41,10 @@ Route::get('card', 'HomeController@paymentprofile_edit')->name('edit_card_item')
 
 // cart
 Route::get('shoppingcart', 'HomeController@shopping_cart')->name('cart');
-Route::get('cart/{id}', 'HomeController@del_cart_item')->name('del_cart_item');
-Route::put('cart/update/{id}/{qty}', 'HomeController@upd_cart_item')->name('upd_cart_item');
-Route::post('cart/add/{id}/{name}/{qty}/{price}', 'HomeController@add_cart_item')->name('add_cart_item');
+Route::get('cart/delete', 'HomeController@del_cart_item')->name('del_cart_item');
+Route::put('cart/update', 'HomeController@upd_cart_item')->name('upd_cart_item');
+// Route::post('cart/add/{id}/{name}/{qty}/{price}', 'HomeController@add_cart_item')->name('add_cart_item');
+Route::post('cart/add', 'HomeController@add_cart_item')->name('add_cart_item');
 Route::get('info_cus/{id}', 'CustomerController@edit_info_cus')->name('edit_info_cus');
 Route::post('create_bill', 'HomeController@create_bill')->name('create_bill');
 /// Bill

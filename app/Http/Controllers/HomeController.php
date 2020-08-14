@@ -120,17 +120,24 @@ class HomeController extends Controller
             ->select(DB::raw('RIGHT(number_card,4) as number_card'))->get();
         return view('customer.shopping_cart')->with('data', $data);
     }
-    public function add_cart_item($id, $name, $qty, $price)
+    public function add_cart_item(Request $request)
     {
+        $id = $request->id;
+        $name = $request->name;
+        $qty = $request->qty;
+        $price = $request->price;
         $data = Cart::add($id, $name, $qty, $price);
     }
-    public function upd_cart_item($id, $qty)
+    public function upd_cart_item(Request $request)
     {
+        $id = $request->id;
+        $qty = $request->qty;
         $rowId = $id;
         Cart::update($rowId, $qty);
     }
-    public function del_cart_item($id)
+    public function del_cart_item(Request $request)
     {
+        $id = $request->id;
         $rowId = $id;
         Cart::remove($rowId);
     }
