@@ -47,7 +47,7 @@
                         <button class="btn" type="submit" data-toggle="modal" onclick="return confirm('Are you sure ????');"><i class="fa fa-trash"></i></button>
                     </form>
                     @else
-                    <a class="btn" href="{{ route('seller.license-key') }}"><i class="fa fa-plus"></i></a>
+                    <a class="btn" href="{{ route('license.show', $product->id) }}"><i class="fa fa-plus"></i></a>
                     <button class="btn" id="seller_showproduct" data-toggle="modal" data-id="{{ $product->id }}"><i class="fa fa-eye"></i></button>
                     @endif
                 </div>

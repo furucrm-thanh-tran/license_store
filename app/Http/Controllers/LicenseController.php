@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Bill_Product;
 use App\Http\Controllers\Controller;
@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\License;
 use App\Bill;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
 
 class LicenseController extends Controller
 {
@@ -43,7 +44,7 @@ class LicenseController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'product_key' => ['required', 'string', 'max:12', 'unique:licenses'],
+            'product_key' => ['required', 'string', 'max:50', 'unique:licenses'],
             'activation_date' => ['required'],
             'expiration_date' => ['required'],
             'pro_id' => ['required'],
@@ -80,15 +81,18 @@ class LicenseController extends Controller
         ]);
     }
 
-    public function get_id($bill_id)
+    public function get_bill($bill_id)
     {
-        $bill = Bill::findOrFail($bill_id);
-        $user_id = $bill->user_id;
-        $seller_id = $bill->seller_id;
-
-        return Response::make($bill);
+        $bills = Bill::where('id', $bill_id)
+            ->with(['users', 'managers'])->get();
+        return response()->json($bills);
     }
 
+    public function create_key()
+    {
+        $key = Str::random(20);
+        return Response::make($key);
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -97,8 +101,10 @@ class LicenseController extends Controller
      */
     public function edit($id)
     {
-        $license = License::findOrFail($id);
-        return Response::make($license);
+        // $license = License::findOrFail($id);
+        $licenses = License::with(['users', 'managers'])->where('id', $id)->get();
+        // return Response::make($license);
+        return response()->json($licenses);
     }
 
     /**
@@ -110,13 +116,13 @@ class LicenseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $validatedData = $request->validate([
-        //     'product_key' => ['required', 'string', 'max:12', 'unique:licenses'],
-        //     'activation_date' => ['required'],
-        //     'expiration_date' => ['required'],
-        //     'user_id' => ['required'],
-        //     'seller_id' => ['required'],
-        // ]);
+        $validatedData = $request->validate([
+            'product_key' => ['required', 'string', 'max:50', 'unique:licenses,product_key,' .$id],
+            'activation_date' => ['required'],
+            'expiration_date' => ['required'],
+            'user_id' => ['required'],
+            'seller_id' => ['required'],
+        ]);
 
         $license = License::findOrFail($id);
         $license->product_key =  $request->product_key;

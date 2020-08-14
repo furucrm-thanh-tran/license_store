@@ -95,13 +95,11 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <!-- <label for="pro_id">Product ID</label> -->
                         <input id="" type="hidden" class="form-control" name="pro_id" value="{{ $id }}" readonly>
                     </div>
                     <div class="form-group">
-                        <button id="create_key">License key</button>
-                        <!-- <label for="product_key">License key</label> -->
-                        <input id="product_key" type="text" class="form-control @error('product-key') is-invalid @enderror" name="product_key" value="{{ old('product-key') }}" required autocomplete="product-key" autofocus placeholder="Enter license key">
+                        <button id="create_key" type="button" class="create_key btn btn-outline-dark mb-2"><i class="fas fa-key"></i> License key</button>
+                        <input id="product_key" type="text" class="key form-control @error('product-key') is-invalid @enderror" name="product_key" value="" required autocomplete="product-key" autofocus placeholder="Enter license key">
 
                         @error('product-key')
                         <span class="invalid-feedback" role="alert">
@@ -120,11 +118,13 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <!-- <label for="customer">Customer ID</label> -->
+                        <label for="customer">Customer Name</label>
+                        <input class="form-control user_name" type="text" value="" id="user_name" name="user_name" readonly>
                         <input class="form-control user_id" type="hidden" value="" id="user_id" name="user_id" readonly>
                     </div>
                     <div class="form-group">
-                        <!-- <label for="customer">Seller ID</label> -->
+                        <label for="seller">Seller Name</label>
+                        <input class="form-control seller_name" type="text" value="" id="seller_name" name="seller_name" readonly>
                         <input class="form-control seller_id" type="hidden" value="" id="seller_id" name="seller_id" readonly>
                     </div>
 
@@ -168,8 +168,8 @@
                 <div class="modal-body">
                     <input id="id" type="hidden" class="form-control" name="id" value="" readonly>
                     <div class="form-group">
-                        <label for="product_key_edit">License key</label>
-                        <input id="product_key_edit" type="text" class="form-control @error('product_key') is-invalid @enderror" name="product_key" value="{{ old('product_key') }}" required autocomplete="product-key" autofocus placeholder="Enter license key">
+                        <button id="create_key_edit" type="button" class="create_key btn btn-outline-dark mb-2"><i class="fas fa-key"></i> License key</button>
+                        <input id="product_key_edit" type="text" class="key form-control @error('product_key') is-invalid @enderror" name="product_key" value="{{ old('product_key') }}" required autocomplete="product-key" autofocus placeholder="Enter license key">
 
                         @error('product_key')
                         <span class="invalid-feedback" role="alert">
@@ -188,11 +188,13 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <!-- <label for="customer">Customer ID</label> -->
+                        <label for="customer">Customer Name</label>
+                        <input class="form-control user_name" type="text" value="" id="user_name_edit" name="user_name" readonly>
                         <input class="form-control user_id" type="hidden" value="" id="user_id_edit" name="user_id" readonly>
                     </div>
                     <div class="form-group">
-                        <!-- <label for="customer">Seller ID</label> -->
+                        <label for="seller">Seller Name</label>
+                        <input class="form-control seller_name" type="text" value="" id="seller_name_edit" name="seller_name" readonly>
                         <input class="form-control seller_id" type="hidden" value="" id="seller_id_edit" name="seller_id" readonly>
                     </div>
 
@@ -315,18 +317,38 @@
             var bill_id = $(this).val();
 
             $.ajax({
-                url: "/admin/get_id/" + bill_id,
+                url: "/admin/get_bill/" + bill_id,
                 type: 'GET',
                 data: {
                     "id": bill_id,
                 },
                 success: function(data) {
-                    $user_id = data.user_id;
-                    $seller_id = data.seller_id;
-
+                    $user_id = data[0].user_id;
+                    $seller_id = data[0].seller_id;
+                    $user_name = data[0].users.full_name;
+                    $sell_name = data[0].managers.full_name;
                     $('.seller_id').val($seller_id);
                     $('.user_id').val($user_id);
-                    console.log($user_id + " " + $seller_id);
+                    $('.user_name').val($user_name);
+                    $('.seller_name').val($sell_name);
+                    console.log($user_id + " " + $seller_id + " " + $user_name + " " + $sell_name);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $('.create_key').click(function() {
+            $.ajax({
+                url: "/admin/create_key",
+                type: 'GET',
+                data: {
+
+                },
+
+                success: function(data) {
+                    $('.key').val(data);
+                    console.log(data);
                 }
             });
         });
@@ -339,12 +361,14 @@
                 var id = $(this).data('id');
                 $.get(id + '/edit', function(data) {
                     $('#edit-key').modal('show');
-                    $('#id').val(data.id);
-                    $('#product_key_edit').val(data.product_key);
-                    $('#activation-date-edit').val(data.activation_date);
-                    $('#expiration-date-edit').val(data.expiration_date);
-                    $('#user_id_edit').val(data.user_id);
-                    $('#seller_id_edit').val(data.seller_id);
+                    $('#id').val(data[0].id);
+                    $('#product_key_edit').val(data[0].product_key);
+                    $('#activation-date-edit').val(data[0].activation_date);
+                    $('#expiration-date-edit').val(data[0].expiration_date);
+                    $('#user_id_edit').val(data[0].user_id);
+                    $('#seller_id_edit').val(data[0].seller_id);
+                    $('#user_name_edit').val(data[0].users.full_name);
+                    $('#seller_name_edit').val(data[0].managers.full_name);
                     $('#update_license').attr('action', id);
                 })
             });
