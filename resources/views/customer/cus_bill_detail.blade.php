@@ -4,8 +4,13 @@
     <div class="bg-white card payments-item mb-2 shadow-sm">
         <h4 class="font-weight-bold mt-3  mb-4 col-7">Bill Detail</h4>
         <table class="table table-borderless">
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Line Total</th>
+            </tr>
             @foreach ($data as $d)
-
                 <tr>
                     <td class="name">{{$d->products->name_pro}}</td>
                     <td class="price" >${{$d->products->price_license}}</td>

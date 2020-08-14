@@ -59,10 +59,12 @@
                                 <div class="btn-ground text-center">
                                     <a href="/login" class="add_to_card btn btn-primary"><i
                                             class="fa fa-shopping-cart"></i></a>
-                                    <button name="{{ $p->id }}" class="btn btn-primary btn-view"
-                                        data-toggle="modal" data-target="#viewProduct" data-view="{{ $p->view }}"
-                                        data-id="{{ $p->id }}">
-                                        <i class="fa fa-search"></i></button>
+                                    <button name="{{ $p->id }}" class="btn btn-primary btn-view" data-toggle="modal"
+                                        data-target="#viewProduct" data-view="{{ $p->view }}" data-id="{{ $p->id }}"
+                                        data-name_pro="{{ $p->name_pro }}" data-description_pro="{{ $p->description_pro }}"
+                                        data-icon_pro="{{ $p->icon_pro }}" data-price_license="{{ $p->price_license }}">
+                                        <i class="fa fa-search"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -71,42 +73,6 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade product_view" id="viewProduct">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Thông tin sản phẩm</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6 product_img">
-                            <img src="/img/samsung.jpg" class="img-responsive">
-                        </div>
-                        <div class="col-md-6 product_content">
-                            <h4>Máy Tính Bảng Samsung Galaxy Tab A8 8" T295 (2019)</h4>
-                            <p>
-                                (10 views)
-                            </p>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                                been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
-                                galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy
-                                text of the printing and typesetting industry.</p>
-                            <h3 class="cost"><span class="fa fa-dollar-sign"></span> 75.00</h3>
-                            <input type="number" value="1" min="1" max="1000" step="1" />
-                            <div class="space-ten"></div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 @endsection
 
 @section('script')
@@ -152,7 +118,17 @@
                     document.getElementById(id).innerHTML = data;
                 }
             });
+            var name_pro = $(this).data("name_pro");
+            var description_pro = $(this).data("description_pro");
+            var icon_pro = $(this).data("icon_pro");
+            var price_license = $(this).data("price_license");
+            document.getElementById("name_pro").innerHTML = name_pro;
+            document.getElementById("description_pro").innerHTML = description_pro;
+            document.getElementById("icon_pro").src = icon_pro;
+            document.getElementById("price").innerHTML = "$"+price_license ;
         });
+
+        /////Product Detail//////
 
     </script>
 

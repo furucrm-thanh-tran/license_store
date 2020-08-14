@@ -24,7 +24,7 @@ class CreateBillProductsTable extends Migration
             $table->foreignId('bill_id')
                 ->constrained('bills')
                 ->onDelete('cascade');
-                
+
             $table->timestamps();
         });
     }

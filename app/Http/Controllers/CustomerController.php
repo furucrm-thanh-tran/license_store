@@ -2,27 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Bill_Product;
 use App\User;
-use App\Payment;
 use App\Product;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Session;
-use Stripe;
-use Cart;
-use Exception;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
-use Intervention\Image\Facades\Image;
-
+use App\Jobs\SendSellerEmail;
 class CustomerController extends Controller
 {
     public function edit_info_cus(Request $request, $id)
     {
-        // $validator = $request->validate([
-        //     'email'=>'required|unique:users',
-        // ]);
         $cus = User::find($id);
         $cus->full_name = $request->name;
         $cus->phone = $request->phone;
@@ -35,9 +24,6 @@ class CustomerController extends Controller
     {
         $product = product::all();
         return view('index')->with('product', $product);
-        // foreach ($product as $product) {
-        //     echo $product->name_pro ."<br>";
-        // }
     }
     public function email()
     {
@@ -70,11 +56,33 @@ class CustomerController extends Controller
     }
     public function index_buy()
     {
-        $product = Bill_Product::select('id','amount_licenses','pro_id')->get();
-        foreach($product as $p){
-            $n = $p->pro_id;
-            echo $p;
+        $product=Product::orderBy('buy', 'desc')->get();
+        return view('home')->with('product', $product);
+
+    }
+
+    public function seller_send_mail(){
+        $user_email ="hoailinh031098@gmail.com";
+        $details = [
+            'title' => 'New Product !!!!',
+            'email'=>$user_email,
+            'link'=>'http://127.0.0.1:8000/frm_check_mail'
+        ];
+        dispatch(new SendSellerEmail($details));
+        return "It Work !!!!";
+    }
+    public function frm_check_mail(){
+        return view('customer.cus_check_mail');
+    }
+    public function check_mail(Request $request){
+        $email = $request->email;
+        $data = User::where('email',$email)->first();
+        if ($data!=null){
+            return view('auth.login');
+        }else{
+            return view('auth.register');
         }
 
     }
+
 }

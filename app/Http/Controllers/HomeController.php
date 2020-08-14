@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 use App\payment;
 use App\Bill;
 use App\Bill_Product;
+use App\Jobs\SendCusEmail;
+use App\Mail\CusMail;
 use Illuminate\Support\Facades\DB;
 use Error;
 use Stripe;
 use Cart;
 use Exception;
-use Validator;
 use Illuminate\Support\Facades\Response;
 use Intervention\Image\Facades\Image;
 class HomeController extends Controller
@@ -47,22 +48,6 @@ class HomeController extends Controller
         $response = Response::make($icon_file->encode('jpeg'));
         return $response;
     }
-    // public function index_new()
-    // {
-    //     $product = Product::orderBy('created_at', 'desc')->get();
-    //     return view('home')->with('product', $product);
-    // }
-    // public function index_update()
-    // {
-    //     $product = Product::orderBy('updated_at', 'desc')->get();
-    //     return view('home')->with('product', $product);
-    // }
-
-    // public function index_view()
-    // {
-    //     $product = Product::orderBy('view', 'desc')->get();
-    //     return view('home')->with('product', $product);
-    // }
 
     public function frm_insertcard()
     {
@@ -85,7 +70,6 @@ class HomeController extends Controller
         $payment->user_id = $id;
         $payment->save();
         return redirect()->route('profile');
-        // return redirect()->route('profile');
     }
 
     public function profile()
@@ -129,18 +113,13 @@ class HomeController extends Controller
           $data->save();
           return back();
     }
-
-
-    // Cart
     public function shopping_cart(Request $request)
     {
         $id = Auth::user()->id;
         $data = payment::where('user_id', '=', $id)
             ->select(DB::raw('RIGHT(number_card,4) as number_card'))->get();
-        //   return $data;
         return view('customer.shopping_cart')->with('data', $data);
     }
-
     public function add_cart_item($id, $name, $qty, $price)
     {
         $data = Cart::add($id, $name, $qty, $price);
@@ -150,7 +129,6 @@ class HomeController extends Controller
         $rowId = $id;
         Cart::update($rowId, $qty);
     }
-
     public function del_cart_item($id)
     {
         $rowId = $id;
@@ -163,9 +141,7 @@ class HomeController extends Controller
         $user_id = $request->user_id;
         $user_email = Auth::user()->email;
         $apikey = env("STRIPE_API_KEY");
-        // return $card_number ." " .$amount ." " .$user_id;
         $data = payment::where('number_card', 'like', '%' . $card_number)->select('number_card', 'cvc', 'exp_month', 'exp_year')->first();
-        // return $data;
         try {
             Stripe\Stripe::setApiKey($apikey);
             $Stoken = Stripe\Token::create([
@@ -176,56 +152,40 @@ class HomeController extends Controller
                     'exp_year' => $data->exp_year,
                 ],
             ]);
-            //   return $Stoken;
-
             $Scharge = Stripe\Charge::create([
                 "amount" => $amount * 100,
                 "currency" => "usd",
                 "source" => $Stoken->id,
                 "description" => "Test payment from itsolutionstuff.com.",
             ]);
-            // return $Scharge->outcome->seller_message;
-            // return $Scharge;
             $bill = new Bill();
             $bill->user_id = $user_id;
             $bill->total_money = $amount;
             $bill->save();
             foreach (Cart::content() as $row) {
-                // echo $row->id ." " .$row->name ." " .$row->qty ." " .$row->price ." ";
                 $bill_product = new Bill_Product();
                 $bill_product->amount_licenses = $row->qty;
                 $bill_product->pro_id = $row->id;
                 $bill_product->bill_id = $bill->id;
                 $bill_product->save();
+                $qty =$row->qty;
+                $product = Product::find($row->id)->increment('buy',$qty);
             }
-
-
-
-
             $details = [
                 'title' => 'Thank you !!!!!',
                 'total' => $amount,
                 'date' => $bill->created_at,
                 'card' => $card_number,
-                'status' => $Scharge->outcome->seller_message
+                'status' => $Scharge->outcome->seller_message,
+                'email'=>$user_email
             ];
-
-            \Mail::to($user_email)->send(new \App\Mail\SendMail($details));
             Cart::destroy();
+            dispatch(new SendCusEmail($details));
             return response()->json([
                 'success' => $Scharge->outcome->seller_message
             ]);
-            // return $product->id ." " .$product->name ." " .$product->qty ." " .$product->price;
-            // return $product;
         } catch (\Stripe\Exception\CardException $e) {
             // Since it's a decline, \Stripe\Exception\CardException will be caught
-            'Status is:' . $e->getHttpStatus() . '<br>';
-            'Load:' . $e->getError()->load . '<br>';
-            'Type is:' . $e->getError()->type . '<br>';
-            'Code is:' . $e->getError()->code . '<br>';
-            // param is '' in this case
-            'Param is:' . $e->getError()->param . '<br>';
-            'Status:' . ' failed' . '<br>';
             'Message is:' . $e->getError()->message . '<br>';
             // return Session::flash('erorr', $e->getError()->message);
             return response()->json([
@@ -254,7 +214,6 @@ class HomeController extends Controller
             return response()->json([
                 'success' => "Card is empty !!!!!!!!"
             ]);
-            // Something else happened, completely unrelated to Stripe
         }
     }
 
@@ -262,15 +221,12 @@ class HomeController extends Controller
     {
         $bill = Bill::with('bill__products:id,amount_licenses,pro_id,bill_id', 'products:name_pro,price_license')->where('user_id', $id)->get();
         return view('customer.cus_list_bills')->with('bill', $bill);
-        // return $bill[0]." " .$bill[0]->products[0] ." " .$bill[0]->bill__products[0];
-
     }
 
     public function bill_detail($id)
     {
         $data = Bill_Product::with('products:id,name_pro,price_license')->where('bill_id', $id)->get();
         return view('customer.cus_bill_detail')->with('data', $data);
-        // return $data[1]->products ." " .$data[1]->amount_licenses;
     }
 
 }

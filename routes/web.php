@@ -33,6 +33,7 @@ Route::get('/home_buy','CustomerController@index_buy');
 Route::get('/insert_view/{id}','CustomerController@insert_view');
 // profile
 Route::get('/profile', 'HomeController@profile')->name('profile');
+
 Route::get('/frm_insertcard', 'HomeController@frm_insertcard')->name('frm_insertcard');
 Route::get('/insertcard/{id}', 'HomeController@insertcard')->name('insertcard');
 Route::get('card/{id}', 'HomeController@paymentprofile_delete')->name('del_card_item');
@@ -100,3 +101,7 @@ Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::put('profile/{id}', 'SellerController@update');
     Route::get('profile/{id}/edit', 'SellerController@edit');
 });
+
+Route::get('/seller_send_mail', 'CustomerController@seller_send_mail');
+Route::get('/frm_check_mail','CustomerController@frm_check_mail');
+Route::get('/check_mail', 'CustomerController@check_mail')->name('check_mail');

@@ -9,14 +9,18 @@
                     <th>Bill ID</th>
                     <th>Price Total</th>
                     <th>Date</th>
+                    <th>Option</th>
                 </tr>
                 @foreach ($bill as $b)
                     <tr>
-                        <td>
-                        <a class="bill_detail" href="{{route("bill_detail",$b->id)}}">{{$b->id}}</a>
-                        </td>
+                        <td>{{$b->id}}</td>
                         <td>${{$b->total_money}}</td>
                         <td>{{$b->created_at}}</td>
+                        <td>
+                            <a class="bill_detail" href="{{route("bill_detail",$b->id)}}">Detail</a>
+                            /
+                        <a href="#{{$b->seller_id}}">Send Question</a>
+                        </td>
                     </tr>
                 @endforeach
             </table>
