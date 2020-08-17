@@ -2187,17 +2187,14 @@ __webpack_require__.r(__webpack_exports__);
       // this.selectTransaction = { ...transaction }
       transaction.isAssign = !transaction.isAssign;
     },
-    updateTransaction: function updateTransaction(index) {
+    updateTransaction: function updateTransaction(trans) {
       var _this2 = this;
 
       if (confirm("Are you sure?")) {
-        axios.put("transaction/" + this.list_transaction.trans[index].id, {
+        axios.put("transaction/" + trans.id, {
           seller: this.seller.seller_id
         }).then(function (response) {
-          _this2.list_transaction.trans[index].seller_id = _this2.seller.seller_id, _this2.list_transaction.trans[index].managers = Object.assign({}, _this2.list_transaction.trans[index].managers, {
-            full_name: _this2.seller.seller_name
-          });
-          _this2.list_transaction.trans[index].isAssign = false;
+          _this2.getListTransaction();
         })["catch"](function (error) {
           _this2.errors = error.response.data.errors.name;
         });
@@ -41274,7 +41271,7 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.get_rows(), function(trans, index) {
+          _vm._l(_vm.get_rows(), function(trans) {
             return _c("tr", { key: trans.id }, [
               _c("td", [_vm._v(_vm._s(trans.id))]),
               _vm._v(" "),
@@ -41332,7 +41329,7 @@ var render = function() {
                                         : $$selectedVal[0]
                                     },
                                     function($event) {
-                                      return _vm.updateTransaction(index)
+                                      return _vm.updateTransaction(trans)
                                     }
                                   ]
                                 }
@@ -41481,7 +41478,7 @@ var render = function() {
                           attrs: { disabled: trans.seller_id },
                           on: {
                             click: function($event) {
-                              return _vm.updateTransaction(index)
+                              return _vm.updateTransaction(trans)
                             }
                           }
                         },

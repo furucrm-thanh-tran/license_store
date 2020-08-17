@@ -56,7 +56,7 @@
                 </tr>
             </tfoot>
             <tbody>
-                <tr v-for="(trans, index) in get_rows()" :key="trans.id">
+                <tr v-for="(trans) in get_rows()" :key="trans.id">
                     <td>{{ trans.id }}</td>
                     <td>{{ trans.users.full_name }}</td>
                     <td>{{ trans.created_at | formatDate }}</td>
@@ -76,7 +76,7 @@
                                     name="seller"
                                     class="select2"
                                     style="width: 100%;"
-                                    @change="updateTransaction(index)"
+                                    @change="updateTransaction(trans)"
                                 >
                                     <option value="" disabled selected
                                         >Select your option</option
@@ -150,7 +150,7 @@
                             <button
                                 class="btn btn-primary"
                                 :disabled="trans.seller_id"
-                                @click="updateTransaction(index)"
+                                @click="updateTransaction(trans)"
                             >
                                 Get
                             </button>
@@ -229,27 +229,17 @@ export default {
             // this.selectTransaction = { ...transaction }
             transaction.isAssign = !transaction.isAssign;
         },
-        updateTransaction: function(index) {
+        updateTransaction: function(trans) {
             if (confirm("Are you sure?")) {
                 axios
                     .put(
-                        "transaction/" + this.list_transaction.trans[index].id,
+                        "transaction/" + trans.id,
                         {
                             seller: this.seller.seller_id
                         }
                     )
                     .then(response => {
-                        (this.list_transaction.trans[
-                            index
-                        ].seller_id = this.seller.seller_id),
-                            (this.list_transaction.trans[
-                                index
-                            ].managers = Object.assign(
-                                {},
-                                this.list_transaction.trans[index].managers,
-                                { full_name: this.seller.seller_name }
-                            ));
-                        this.list_transaction.trans[index].isAssign = false;
+                        this.getListTransaction()
                     })
                     .catch(error => {
                         this.errors = error.response.data.errors.name;
