@@ -2121,6 +2121,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2214,7 +2220,7 @@ __webpack_require__.r(__webpack_exports__);
         if (col.indexOf(".") > -1) {
           col = col.split(".");
           var len = col.length;
-          this.list_transaction.trans.sort(function (a, b) {
+          this.filtedList.sort(function (a, b) {
             var i = 0;
 
             while (i < len) {
@@ -2233,7 +2239,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
 
-        this.list_transaction.trans.sort(function (a, b) {
+        this.filtedList.sort(function (a, b) {
           if (a[col] > b[col]) {
             return ascending ? 1 : -1;
           } else if (a[col] < b[col]) {
@@ -2245,22 +2251,39 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     num_pages: function num_pages() {
-      if (!this.list_transaction.trans) {
+      if (!this.filtedList) {
         return;
       }
 
-      return Math.ceil(Object.keys(this.list_transaction.trans).length / this.elementsPerPage);
+      return Math.ceil(Object.keys(this.filtedList).length / this.elementsPerPage);
     },
     get_rows: function get_rows() {
       var start = (this.currentPage - 1) * this.elementsPerPage;
       var end = start + this.elementsPerPage;
-      return (this.list_transaction.trans || "").slice(start, end);
+      return (this.filtedList || "").slice(start, end);
     },
     change_page: function change_page(page) {
+      if (page < 1 || page > this.num_pages()) {
+        return;
+      }
+
       this.currentPage = page;
     }
   },
-  computed: {}
+  computed: {
+    filtedList: function filtedList() {
+      var _this3 = this;
+
+      if (!this.list_transaction.trans) {
+        return;
+      }
+
+      this.currentPage = 1;
+      return this.list_transaction.trans.filter(function (trans) {
+        return String(trans.id).toLowerCase().includes(_this3.search.toLowerCase()) || String(trans.users.full_name).toLowerCase().includes(_this3.search.toLowerCase());
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -41213,7 +41236,7 @@ var render = function() {
             }
           ],
           staticClass: "form-control ml-2",
-          attrs: { type: "text", placeholder: "Search title.." },
+          attrs: { type: "text", placeholder: "Search bill, customer..." },
           domProps: { value: _vm.search },
           on: {
             input: function($event) {
@@ -41509,23 +41532,53 @@ var render = function() {
     _c(
       "div",
       { staticClass: "pagination justify-content-end" },
-      _vm._l(_vm.num_pages(), function(i) {
-        return _c(
+      [
+        _c(
           "div",
           {
-            key: i,
             staticClass: "number",
-            class: [i == _vm.currentPage ? "active" : ""],
+            class: { active: _vm.currentPage === 1 },
             on: {
               click: function($event) {
-                return _vm.change_page(i)
+                return _vm.change_page(_vm.currentPage - 1)
               }
             }
           },
-          [_vm._v("\n            " + _vm._s(i) + "\n        ")]
+          [_vm._v("\n            Prev\n        ")]
+        ),
+        _vm._v(" "),
+        _vm._l(_vm.num_pages(), function(i) {
+          return _c(
+            "div",
+            {
+              key: i,
+              staticClass: "number",
+              class: [i == _vm.currentPage ? "active" : ""],
+              on: {
+                click: function($event) {
+                  return _vm.change_page(i)
+                }
+              }
+            },
+            [_vm._v("\n            " + _vm._s(i) + "\n        ")]
+          )
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "number",
+            class: { active: _vm.currentPage === _vm.num_pages() },
+            on: {
+              click: function($event) {
+                return _vm.change_page(_vm.currentPage + 1)
+              }
+            }
+          },
+          [_vm._v("\n            Next\n        ")]
         )
-      }),
-      0
+      ],
+      2
     )
   ])
 }

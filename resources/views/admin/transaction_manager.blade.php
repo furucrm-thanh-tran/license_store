@@ -62,10 +62,7 @@
 
 @section('script')
     <!-- Page level plugins -->
-    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="/vendor/select2/dist/js/select2.min.js"></script>
-    <script src="/js/demo/datatables-demo.js"></script>
-
     <!-- Page level custom scripts -->
 
 
