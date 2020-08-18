@@ -151,7 +151,7 @@ class HomeController extends Controller
         $item = Cart::subtotal();
         $vowels = ",";
         $amount = str_replace($vowels, "", "$item");
-        $user_id = $request->user_id;
+        $user_id = Auth::user()->id;
         $user_email = Auth::user()->email;
         $apikey = env("STRIPE_API_KEY");
         $data = payment::where('number_card', 'like', '%' . $card_number)->select('number_card', 'cvc', 'exp_month', 'exp_year')->first();
@@ -227,7 +227,7 @@ class HomeController extends Controller
             return "e5";
         } catch (Exception $e) {
             return response()->json([
-                'success' => "Card is empty !!!!!!!!"
+                'success' => "Error !!!$e"
             ]);
         }
     }

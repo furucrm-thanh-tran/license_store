@@ -71,8 +71,6 @@
                                             </div>
                                     @endif
                             </div>
-                            <input type="text" id="pro_count" class="collapse" value="{{Cart::count()}}">
-                            <input type="text" id="user_id" class="collapse" value="{{$p->user_id}}">
                             <input type="submit" data-amount="<?php echo Cart::initial();?>"  id="amount" name="amount" class="btn btn-primary action_payment mt-3 col-12" value="<?php echo Cart::initial();?>">
                         </div>
                     </div>
@@ -147,13 +145,11 @@
         $(".action_payment").click(function(e){
         e.preventDefault();
         var card_number = document.getElementById("card_number").value
-        var user_id = document.getElementById("user_id").value
         $.ajax({
                     url: "create_bill",
                     type: 'POST',
                     data: {
                         "card_number":card_number,
-                        "user_id":user_id,
                     },
                     success:function(data){
                     console.log(data);
@@ -162,7 +158,7 @@
                 }
 
                 });
-                // console.log(result1);
+                console.log(user_id);
 
     });
     </script>
