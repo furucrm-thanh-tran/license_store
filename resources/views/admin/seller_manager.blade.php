@@ -209,7 +209,8 @@
                         <td>{{$sellermanager->phone}}</td>
                         <td>
                             <div class="d-flex flex-nowrap justify-content-center">
-                                <button class="btn" id="edit-seller" data-toggle="modal" data-id="{{ $sellermanager->id }}"><i class="fa fa-edit"></i></button>
+                                <a class="btn" href="{{ route('seller_manager.edit',$sellermanager->id) }}"><i class="fa fa-edit"></i></a>
+                                <!-- <button class="btn" id="edit-seller" data-toggle="modal" data-id="{{ $sellermanager->id }}"><i class="fa fa-edit"></i></button> -->
                                 <form action="{{ route('seller_manager.destroy',$sellermanager->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
@@ -239,8 +240,15 @@
         $('#message-success').delay(3000).fadeOut();
     });
 </script>
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+        }
+    });
+</script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     $(function() {
         /* Edit seller */
         $('#dataTable').on('click', '#edit-seller', function() {
@@ -251,18 +259,11 @@
                 $('#edit_name').val(data.full_name);
                 $('#edit_email').val(data.email);
                 $('#edit_phone').val(data.phone);
-                $('#update_seller').attr('action', 'seller_manager/' + data.id);
+                $('#update_seller').attr('action', 'seller_manager/' + seller_id);
             })
         });
     });
-</script>
-<script>
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-        }
-    });
-</script>
+</script> -->
 
 <script>
     $(document).ready(function() {

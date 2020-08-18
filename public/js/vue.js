@@ -2127,6 +2127,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2167,7 +2172,7 @@ __webpack_require__.r(__webpack_exports__);
         sortable: true
       }, {
         name: "Action",
-        col: "",
+        col: "action",
         sortable: false
       }],
       list_transaction: [] // selectTransaction: {}
@@ -2258,8 +2263,9 @@ __webpack_require__.r(__webpack_exports__);
       return Math.ceil(Object.keys(this.filtedList).length / this.elementsPerPage);
     },
     get_rows: function get_rows() {
-      var start = (this.currentPage - 1) * this.elementsPerPage;
-      var end = start + this.elementsPerPage;
+      var elementsPerPage = parseInt(this.elementsPerPage);
+      var start = (this.currentPage - 1) * elementsPerPage;
+      var end = start + elementsPerPage;
       return (this.filtedList || "").slice(start, end);
     },
     change_page: function change_page(page) {
@@ -2278,8 +2284,8 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
-      this.currentPage = 1;
       return this.list_transaction.trans.filter(function (trans) {
+        // this.currentPage = 1;
         return String(trans.id).toLowerCase().includes(_this3.search.toLowerCase()) || String(trans.users.full_name).toLowerCase().includes(_this3.search.toLowerCase());
       });
     }
@@ -41176,436 +41182,438 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "transaction-manager" }, [
-    _c("div", { staticClass: "row mb-3" }, [
-      _c("div", { staticClass: "col-6 form-inline" }, [
-        _c("label", { staticClass: "mr-2" }, [_vm._v("Show")]),
-        _vm._v(" "),
-        _c("div", [
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.elementsPerPage,
-                  expression: "elementsPerPage"
+    _c("div", { staticClass: "container-fluid" }, [
+      _c("div", { staticClass: "row mb-3" }, [
+        _c("div", { staticClass: "col-6 form-inline" }, [
+          _c("label", { staticClass: "mr-2" }, [_vm._v("Show")]),
+          _vm._v(" "),
+          _c("div", [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.elementsPerPage,
+                    expression: "elementsPerPage"
+                  }
+                ],
+                staticClass: "form-control form-control-sm",
+                attrs: { name: "", id: "" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.elementsPerPage = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
                 }
-              ],
-              staticClass: "form-control form-control-sm",
-              attrs: { name: "", id: "" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.elementsPerPage = $event.target.multiple
-                    ? $$selectedVal
-                    : $$selectedVal[0]
-                }
-              }
-            },
-            [
-              _c("option", { attrs: { value: "3" } }, [_vm._v("3")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "5" } }, [_vm._v("5")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "10" } }, [_vm._v("10")])
-            ]
-          )
+              },
+              [
+                _c("option", { attrs: { value: "3" } }, [_vm._v("3")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "5" } }, [_vm._v("5")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "10" } }, [_vm._v("10")])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "ml-2" }, [_vm._v("entries")])
         ]),
         _vm._v(" "),
-        _c("span", { staticClass: "ml-2" }, [_vm._v("entries")])
+        _c("div", { staticClass: "col-6 form-inline justify-content-end" }, [
+          _c("label", [_vm._v("Search")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.search,
+                expression: "search"
+              }
+            ],
+            staticClass: "form-control ml-2",
+            attrs: { type: "text", placeholder: "Search bill, customer..." },
+            domProps: { value: _vm.search },
+            on: {
+              keyup: function($event) {
+                _vm.currentPage = 1
+              },
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.search = $event.target.value
+              }
+            }
+          })
+        ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-6 form-inline justify-content-end" }, [
-        _c("label", [_vm._v("Search id:")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.search,
-              expression: "search"
-            }
-          ],
-          staticClass: "form-control ml-2",
-          attrs: { type: "text", placeholder: "Search bill, customer..." },
-          domProps: { value: _vm.search },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.search = $event.target.value
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "table",
-      {
-        staticClass: "table table-bordered",
-        attrs: { id: "", width: "100%", cellspacing: "0" }
-      },
-      [
-        _c("thead", [
-          _c(
-            "tr",
-            _vm._l(_vm.headerTable, function(header) {
-              return _c(
-                "th",
-                {
-                  key: header.key,
-                  on: {
-                    click: function($event) {
-                      return _vm.sortTable(header.col, header.sortable)
+      _c(
+        "table",
+        {
+          staticClass: "table table-bordered",
+          attrs: { id: "", width: "100%", cellspacing: "0" }
+        },
+        [
+          _c("thead", [
+            _c(
+              "tr",
+              _vm._l(_vm.headerTable, function(header) {
+                return _c(
+                  "th",
+                  {
+                    key: header.key,
+                    on: {
+                      click: function($event) {
+                        return _vm.sortTable(header.col, header.sortable)
+                      }
                     }
-                  }
-                },
-                [
+                  },
+                  [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(header.name) +
+                        "\n                    "
+                    ),
+                    header.col == _vm.sortColumn
+                      ? _c("span", {
+                          staticClass: "arrow",
+                          class: _vm.ascending ? "arrow_up" : "arrow_down"
+                        })
+                      : _vm._e()
+                  ]
+                )
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("tfoot", [
+            _c(
+              "tr",
+              _vm._l(_vm.headerTable, function(header) {
+                return _c("th", { key: header.key }, [
                   _vm._v(
                     "\n                    " +
                       _vm._s(header.name) +
-                      "\n                    "
-                  ),
-                  header.col == _vm.sortColumn
-                    ? _c("span", {
-                        staticClass: "arrow",
-                        class: _vm.ascending ? "arrow_up" : "arrow_down"
-                      })
-                    : _vm._e()
-                ]
-              )
-            }),
-            0
-          )
-        ]),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.get_rows(), function(trans) {
-            return _c("tr", { key: trans.id }, [
-              _c("td", [_vm._v(_vm._s(trans.id))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(trans.users.full_name))]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(_vm._s(_vm._f("formatDate")(trans.created_at)))
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                trans.seller_id
-                  ? _c("div", [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(trans.managers.full_name) +
-                          "\n                    "
-                      )
-                    ])
-                  : _c("div", [
-                      trans.isAssign == false
-                        ? _c("span", { staticClass: "text-danger" }, [
-                            _vm._v("Anonymous")
-                          ])
-                        : _c("span", { staticClass: "text-danger" }, [
-                            _c(
-                              "select",
-                              {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.seller,
-                                    expression: "seller"
-                                  }
-                                ],
-                                staticClass: "select2",
-                                staticStyle: { width: "100%" },
-                                attrs: { name: "seller" },
-                                on: {
-                                  change: [
-                                    function($event) {
-                                      var $$selectedVal = Array.prototype.filter
-                                        .call($event.target.options, function(
-                                          o
-                                        ) {
-                                          return o.selected
-                                        })
-                                        .map(function(o) {
-                                          var val =
-                                            "_value" in o ? o._value : o.value
-                                          return val
-                                        })
-                                      _vm.seller = $event.target.multiple
-                                        ? $$selectedVal
-                                        : $$selectedVal[0]
-                                    },
-                                    function($event) {
-                                      return _vm.updateTransaction(trans)
+                      "\n                "
+                  )
+                ])
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.get_rows(), function(trans) {
+              return _c("tr", { key: trans.id }, [
+                _c("td", [_vm._v(_vm._s(trans.id))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(trans.users.full_name))]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(_vm._s(_vm._f("formatDate")(trans.created_at)))
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  trans.seller_id
+                    ? _c("div", [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(trans.managers.full_name) +
+                            "\n                    "
+                        )
+                      ])
+                    : _c("div", [
+                        trans.isAssign == false
+                          ? _c("span", { staticClass: "text-danger" }, [
+                              _vm._v("Anonymous")
+                            ])
+                          : _c("span", { staticClass: "text-danger" }, [
+                              _c(
+                                "select",
+                                {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.seller,
+                                      expression: "seller"
                                     }
-                                  ]
+                                  ],
+                                  staticClass: "select2",
+                                  staticStyle: { width: "100%" },
+                                  attrs: { name: "seller" },
+                                  on: {
+                                    change: [
+                                      function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.seller = $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      },
+                                      function($event) {
+                                        return _vm.updateTransaction(trans)
+                                      }
+                                    ]
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "option",
+                                    {
+                                      attrs: {
+                                        value: "",
+                                        disabled: "",
+                                        selected: ""
+                                      }
+                                    },
+                                    [_vm._v("Select your option")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "optgroup",
+                                    {
+                                      attrs: {
+                                        label:
+                                          "Người bán được nhiều license nhất"
+                                      }
+                                    },
+                                    _vm._l(_vm.list_transaction.best, function(
+                                      best
+                                    ) {
+                                      return _c(
+                                        "option",
+                                        {
+                                          key: best.seller_id,
+                                          domProps: {
+                                            value: {
+                                              seller_id: best.seller_id,
+                                              seller_name:
+                                                best.managers.full_name
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(best.managers.full_name)
+                                          )
+                                        ]
+                                      )
+                                    }),
+                                    0
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "optgroup",
+                                    {
+                                      attrs: {
+                                        label:
+                                          "Người có thời gian làm việc lâu nhất"
+                                      }
+                                    },
+                                    _vm._l(_vm.list_transaction.long, function(
+                                      long
+                                    ) {
+                                      return _c(
+                                        "option",
+                                        {
+                                          key: long.id,
+                                          domProps: {
+                                            value: {
+                                              seller_id: long.id,
+                                              seller_name: long.full_name
+                                            }
+                                          }
+                                        },
+                                        [_vm._v(_vm._s(long.full_name))]
+                                      )
+                                    }),
+                                    0
+                                  )
+                                ]
+                              )
+                            ])
+                      ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  trans.status === 1
+                    ? _c("span", { staticClass: "text-success" }, [
+                        _vm._v("Complete")
+                      ])
+                    : trans.status === null
+                    ? _c("span", { staticClass: "text-warning" }, [
+                        _vm._v("Pending...")
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v("$ " + _vm._s(trans.total_money))]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm.user_role == 1
+                    ? _c("span", [
+                        trans.isAssign === false
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                attrs: {
+                                  id: "assign-seller",
+                                  disabled: trans.seller_id
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.selectTransaction(trans)
+                                  }
                                 }
                               },
                               [
-                                _c(
-                                  "option",
-                                  {
-                                    attrs: {
-                                      value: "",
-                                      disabled: "",
-                                      selected: ""
-                                    }
-                                  },
-                                  [_vm._v("Select your option")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "optgroup",
-                                  {
-                                    attrs: {
-                                      label: "Người bán được nhiều license nhất"
-                                    }
-                                  },
-                                  _vm._l(_vm.list_transaction.best, function(
-                                    best
-                                  ) {
-                                    return _c(
-                                      "option",
-                                      {
-                                        key: best.seller_id,
-                                        domProps: {
-                                          value: {
-                                            seller_id: best.seller_id,
-                                            seller_name: best.managers.full_name
-                                          }
-                                        }
-                                      },
-                                      [_vm._v(_vm._s(best.managers.full_name))]
-                                    )
-                                  }),
-                                  0
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "optgroup",
-                                  {
-                                    attrs: {
-                                      label:
-                                        "Người có thời gian làm việc lâu nhất"
-                                    }
-                                  },
-                                  _vm._l(_vm.list_transaction.long, function(
-                                    long
-                                  ) {
-                                    return _c(
-                                      "option",
-                                      {
-                                        key: long.id,
-                                        domProps: {
-                                          value: {
-                                            seller_id: long.id,
-                                            seller_name: long.full_name
-                                          }
-                                        }
-                                      },
-                                      [_vm._v(_vm._s(long.full_name))]
-                                    )
-                                  }),
-                                  0
+                                _vm._v(
+                                  "\n                            Assign\n                        "
                                 )
                               ]
                             )
-                          ])
-                    ])
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                trans.status === 1
-                  ? _c("span", { staticClass: "text-success" }, [
-                      _vm._v("Complete")
-                    ])
-                  : trans.status === null
-                  ? _c("span", { staticClass: "text-warning" }, [
-                      _vm._v("Pending...")
-                    ])
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("td", [_vm._v("$ " + _vm._s(trans.total_money))]),
-              _vm._v(" "),
-              _c("td", [
-                _vm.user_role == 1
-                  ? _c("span", [
-                      trans.isAssign === false
-                        ? _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-primary",
-                              attrs: {
-                                id: "assign-seller",
-                                disabled: trans.seller_id
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.selectTransaction(trans)
+                          : _vm._e(),
+                        _vm._v(" "),
+                        trans.isAssign === true
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-danger",
+                                attrs: {
+                                  id: "assign-seller",
+                                  disabled: trans.seller_id
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.selectTransaction(trans)
+                                  }
                                 }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                            Assign\n                        "
-                              )
-                            ]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      trans.isAssign === true
-                        ? _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-danger",
-                              attrs: {
-                                id: "assign-seller",
-                                disabled: trans.seller_id
                               },
-                              on: {
-                                click: function($event) {
-                                  return _vm.selectTransaction(trans)
-                                }
+                              [
+                                _vm._v(
+                                  "\n                            Cancel\n                        "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ])
+                    : _c("span", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { disabled: trans.seller_id },
+                            on: {
+                              click: function($event) {
+                                return _vm.updateTransaction(trans)
                               }
-                            },
-                            [
-                              _vm._v(
-                                "\n                            Cancel\n                        "
-                              )
-                            ]
-                          )
-                        : _vm._e()
-                    ])
-                  : _c("span", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { disabled: trans.seller_id },
-                          on: {
-                            click: function($event) {
-                              return _vm.updateTransaction(trans)
                             }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                            Get\n                        "
-                          )
-                        ]
-                      )
-                    ]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn",
-                    attrs: { href: "bill/detail/" + trans.id }
-                  },
-                  [_c("i", { staticClass: "fas fa-info text-info" })]
-                )
+                          },
+                          [
+                            _vm._v(
+                              "\n                            Get\n                        "
+                            )
+                          ]
+                        )
+                      ]),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn",
+                      attrs: { href: "bill/detail/" + trans.id }
+                    },
+                    [_c("i", { staticClass: "fas fa-info text-info" })]
+                  )
+                ])
               ])
-            ])
-          }),
-          0
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "pagination justify-content-end" },
-      [
-        _c(
-          "div",
-          {
-            staticClass: "number",
-            class: { active: _vm.currentPage === 1 },
-            on: {
-              click: function($event) {
-                return _vm.change_page(_vm.currentPage - 1)
-              }
-            }
-          },
-          [_vm._v("\n            Prev\n        ")]
-        ),
-        _vm._v(" "),
-        _vm._l(_vm.num_pages(), function(i) {
-          return _c(
+            }),
+            0
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "pagination justify-content-end" },
+        [
+          _c(
             "div",
             {
-              key: i,
               staticClass: "number",
-              class: [i == _vm.currentPage ? "active" : ""],
+              class: { active: _vm.currentPage === 1 },
               on: {
                 click: function($event) {
-                  return _vm.change_page(i)
+                  return _vm.change_page(_vm.currentPage - 1)
                 }
               }
             },
-            [_vm._v("\n            " + _vm._s(i) + "\n        ")]
-          )
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "number",
-            class: { active: _vm.currentPage === _vm.num_pages() },
-            on: {
-              click: function($event) {
-                return _vm.change_page(_vm.currentPage + 1)
+            [_vm._v("\n            Prev\n        ")]
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.num_pages(), function(i) {
+            return _c(
+              "div",
+              {
+                key: i,
+                staticClass: "number",
+                class: [i == _vm.currentPage ? "active" : ""],
+                on: {
+                  click: function($event) {
+                    return _vm.change_page(i)
+                  }
+                }
+              },
+              [_vm._v("\n            " + _vm._s(i) + "\n        ")]
+            )
+          }),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "number",
+              class: { active: _vm.currentPage === _vm.num_pages() },
+              on: {
+                click: function($event) {
+                  return _vm.change_page(_vm.currentPage + 1)
+                }
               }
-            }
-          },
-          [_vm._v("\n            Next\n        ")]
-        )
-      ],
-      2
-    )
+            },
+            [_vm._v("\n            Next\n        ")]
+          )
+        ],
+        2
+      )
+    ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tfoot", [
-      _c("tr", [
-        _c("th", [_vm._v("Code bill")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Customer ID")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Date of purchase")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Seller")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Process")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Total money")]),
-        _vm._v(" "),
-        _c("th")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

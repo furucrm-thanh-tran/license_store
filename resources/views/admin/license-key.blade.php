@@ -205,12 +205,22 @@
 
                     <div class="form-group">
                         <label for="activation-date-edit">Activation date</label>
-                        <input class="form-control" type="date" value="" id="activation-date-edit" name="activation_date">
+                        <input class="form-control @error('activation_date') is-invalid @enderror" type="date" value="" id="activation-date-edit" name="activation_date">
+                        @error('activation_date')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
 
                     <div class="form-group">
                         <label for="activation-date-edit">Expiration date</label>
-                        <input class="form-control" type="date" value="" id="expiration-date-edit" name="expiration_date">
+                        <input class="form-control @error('expiration_date') is-invalid @enderror" type="date" value="" id="expiration-date-edit" name="expiration_date">
+                        @error('expiration_date')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                 </div>
 
@@ -286,144 +296,145 @@
             </table>
         </div>
     </div>
-    @endsection
+</div>
+@endsection
 
-    @section('script')
-    <!-- Page level plugins -->
-    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="/js/upload-img.js"></script>
-    <script src="/js/bootstrap-input-spinner.js"></script>
-    <script src="/vendor/select2/dist/js/select2.min.js"></script>
+@section('script')
+<!-- Page level plugins -->
+<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="/js/upload-img.js"></script>
+<script src="/js/bootstrap-input-spinner.js"></script>
+<script src="/vendor/select2/dist/js/select2.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="/js/demo/datatables-demo.js"></script>
+<!-- Page level custom scripts -->
+<script src="/js/demo/datatables-demo.js"></script>
 
-    <script>
-        $(function() {
-            $('#message-success').delay(3000).fadeOut();
+<script>
+    $(function() {
+        $('#message-success').delay(3000).fadeOut();
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            closeOnSelect: false,
         });
-    </script>
+    });
+</script>
 
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2({
-                closeOnSelect: false,
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#btnAdd').click(function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                data: $('#frmCreate').serialize(),
+                url: "{{ route('license.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    if (data.errors) {
+                        $('.alert-danger').html('');
+
+                        $.each(data.errors, function(key, value) {
+                            $('.alert-danger').show();
+                            $('.alert-success').hide();
+                            $('.alert-danger').append('<li>' + value + '</li>');
+                        });
+                        $('#btnAdd').html('Save Changes');
+                    } else {
+                        $('.alert-danger').hide();
+                        $('.alert-success').show();
+                        $('.alert-success').html(data.success);
+                        $('#frmCreate').trigger("reset");
+                        $('#btnAdd').html('Submit');
+                    }
+                }
             });
         });
-    </script>
+    });
+</script>
 
-    <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+<script>
+    $('.select2').change(function() {
+        var bill_id = $(this).val();
+
+        $.ajax({
+            url: "/get_bill",
+            type: 'GET',
+            data: {
+                "id": bill_id,
+            },
+            success: function(data) {
+                $user_id = data[0].user_id;
+                $seller_id = data[0].seller_id;
+                $user_name = data[0].users.full_name;
+                if ($seller_id != null) {
+                    $sell_name = data[0].managers.full_name;
+                } else {
+                    $sell_name = '';
+                }
+
+                $('.seller_id').val($seller_id);
+                $('.seller_name').val($sell_name);
+                $('.user_id').val($user_id);
+                $('.user_name').val($user_name);
+
+                console.log($user_id + " " + $seller_id + " " + $user_name + " " + $sell_name);
             }
         });
-    </script>
+    });
+</script>
 
-    <script>
-        $(document).ready(function() {
-            $('#btnAdd').click(function(e) {
-                e.preventDefault();
+<script>
+    $('.create_key').click(function() {
+        $.ajax({
+            url: "/create_key",
+            type: 'GET',
+            data: {
 
-                $.ajax({
-                    data: $('#frmCreate').serialize(),
-                    url: "{{ route('license.store') }}",
-                    type: "POST",
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.errors) {
-                            $('.alert-danger').html('');
+            },
 
-                            $.each(data.errors, function(key, value) {
-                                $('.alert-danger').show();
-                                $('.alert-success').hide();
-                                $('.alert-danger').append('<li>' + value + '</li>');
-                            });
-                            $('#btnAdd').html('Save Changes');
-                        } else {
-                            $('.alert-danger').hide();
-                            $('.alert-success').show();
-                            $('.alert-success').html(data.success);
-                            $('#frmCreate').trigger("reset");
-                            $('#btnAdd').html('Submit');
-                        }
-                    }
-                });
-            });
+            success: function(data) {
+                $('.key').val(data);
+                console.log(data);
+            }
         });
-    </script>
+    });
+</script>
 
-    <script>
-        $('.select2').change(function() {
-            var bill_id = $(this).val();
-
-            $.ajax({
-                url: "/get_bill",
-                type: 'GET',
-                data: {
-                    "id": bill_id,
-                },
-                success: function(data) {
-                    $user_id = data[0].user_id;
-                    $seller_id = data[0].seller_id;
-                    $user_name = data[0].users.full_name;
-                    if ($seller_id != null) {
-                        $sell_name = data[0].managers.full_name;
-                    } else {
-                        $sell_name = '';
-                    }
-
-                    $('.seller_id').val($seller_id);
-                    $('.seller_name').val($sell_name);
-                    $('.user_id').val($user_id);
-                    $('.user_name').val($user_name);
-
-                    console.log($user_id + " " + $seller_id + " " + $user_name + " " + $sell_name);
+<script type="text/javascript">
+    $(function() {
+        /* Edit License */
+        $('#dataTable').on('click', '#edit-license', function() {
+            var id = $(this).data('id');
+            $.get(id + '/edit', function(data) {
+                $('#edit-key').modal('show');
+                $('#id').val(data[0].id);
+                $('#product_key_edit').val(data[0].product_key);
+                $('#activation-date-edit').val(data[0].activation_date);
+                $('#expiration-date-edit').val(data[0].expiration_date);
+                $('#user_id_edit').val(data[0].user_id);
+                $('#seller_id_edit').val(data[0].seller_id);
+                $('#user_name_edit').val(data[0].users.full_name);
+                if (data[0].seller_id != null) {
+                    $('#seller_name_edit').val(data[0].managers.full_name);
+                } else {
+                    $('#seller_name_edit').val(data[0].seller_id);
                 }
-            });
+                $('#update_license').attr('action', id);
+            })
         });
-    </script>
-
-    <script>
-        $('.create_key').click(function() {
-            $.ajax({
-                url: "/create_key",
-                type: 'GET',
-                data: {
-
-                },
-
-                success: function(data) {
-                    $('.key').val(data);
-                    console.log(data);
-                }
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(function() {
-            /* Edit License */
-            $('#dataTable').on('click', '#edit-license', function() {
-                var id = $(this).data('id');
-                $.get(id + '/edit', function(data) {
-                    $('#edit-key').modal('show');
-                    $('#id').val(data[0].id);
-                    $('#product_key_edit').val(data[0].product_key);
-                    $('#activation-date-edit').val(data[0].activation_date);
-                    $('#expiration-date-edit').val(data[0].expiration_date);
-                    $('#user_id_edit').val(data[0].user_id);
-                    $('#seller_id_edit').val(data[0].seller_id);
-                    $('#user_name_edit').val(data[0].users.full_name);
-                    if (data[0].seller_id != null) {
-                        $('#seller_name_edit').val(data[0].managers.full_name);
-                    } else {
-                        $('#seller_name_edit').val(data[0].seller_id);
-                    }
-                    $('#update_license').attr('action', id);
-                })
-            });
-        });
-    </script>
-    @endsection
+    });
+</script>
+@endsection

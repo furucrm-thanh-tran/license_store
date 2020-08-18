@@ -22,7 +22,7 @@
             <!-- Modal Header -->
             <div class="modal-header">
                 <h5 class="modal-title">Create a new product</h5>
-                <button onclick="return location.reload()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -171,7 +171,8 @@
     <div class="card-header py-3 d-inline-flex justify-content-between align-items-center" id="test">
         <h6 class="m-0 font-weight-bold text-primary">DataTable Product</h6>
         <div>
-            <button class="btn btn-outline-dark" data-toggle="modal" data-target="#createProduct"><i class="fa fa-user-plus"></i> Add product</button>
+            <a class="btn btn-outline-dark" href="{{ route('product_manager.create') }}"><i class="fa fa-user-plus"></i> Add product</a>
+            <!-- <button class="btn btn-outline-dark" data-toggle="modal" data-target="#createProduct"><i class="fa fa-user-plus"></i> Add product</button> -->
         </div>
     </div>
     <div class="card-body">
@@ -205,66 +206,21 @@
     });
 </script>
 
-<!-- <script>
-    $(document).ready(function() {
-        $('#btnAdd').click(function(e) {
-            e.preventDefault();
-            $name = $('#product-name').val();
-            $des = $('#description').val();
-            $icon = $('#icon_pro').val();
-            $price = $('#icon_pro').val()
-            // console.log($a+$b+$c);
-
-            $.ajax({
-                // data: $('#frmCreate').serialize(),
-                data: {
-                    'name_pro': $name,
-                    'description_pro': $des,
-                    'icon_pro': $icon,
-                    'price_license': $price,
-                },
-                url: "{{ route('product_manager.store') }}",
-                type: "POST",
-                dataType: 'json',
-                success: function(data) {
-                    if (data.errors) {
-                        // $('#frmCreate').trigger("reset");
-                        $('.alert-danger').html('');
-
-                        $.each(data.errors, function(key, value) {
-                            $('.alert-danger').show();
-                            $('.alert-success').hide();
-                            $('.alert-danger').append('<li>' + value + '</li>');
-                        });
-                        $('#btnAdd').html('Save Changes');
-                    } else {
-                        $('.alert-danger').hide();
-                        $('.alert-success').show();
-                        $('.alert-success').html(data.success);
-                        $('#frmCreate').trigger("reset");
-                        $('#btnAdd').html('Submit');
-                    }
-                }
-            });
-        });
-    });
-</script> -->
-
 <script type="text/javascript">
     $(function() {
         /* Edit product */
-        $('#dataTable').on('click', '#edit-product', function() {
-            var pro_id = $(this).data('id');
-            $.get('product_manager/' + pro_id + '/edit', function(data) {
-                $('#editProduct').modal('show');
-                $('#product_id').val(data.id);
-                $('#pro_edit').val(data.name_pro);
-                $('#des_edit').val(data.description_pro);
-                $('#price_edit').val(data.price_license);
-                $("#img_pro").attr('src', data.icon_pro);
-                $('#update_product').attr('action', 'product_manager/' + pro_id);
-            })
-        });
+        // $('#dataTable').on('click', '#edit-product', function() {
+        //     var pro_id = $(this).data('id');
+        //     $.get('product_manager/' + pro_id + '/edit', function(data) {
+        //         $('#editProduct').modal('show');
+        //         $('#product_id').val(data.id);
+        //         $('#pro_edit').val(data.name_pro);
+        //         $('#des_edit').val(data.description_pro);
+        //         $('#price_edit').val(data.price_license);
+        //         $("#img_pro").attr('src', data.icon_pro);
+        //         $('#update_product').attr('action', 'product_manager/' + pro_id);
+        //     })
+        // });
         /* Show product */
         $('#dataTable').on('click', '#show-product', function() {
             var pro_id = $(this).data('id');
