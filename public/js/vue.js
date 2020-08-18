@@ -2131,6 +2131,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2283,8 +2284,8 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
-      this.currentPage = 1;
       return this.list_transaction.trans.filter(function (trans) {
+        // this.currentPage = 1;
         return String(trans.id).toLowerCase().includes(_this3.search.toLowerCase()) || String(trans.users.full_name).toLowerCase().includes(_this3.search.toLowerCase());
       });
     }
@@ -41245,6 +41246,9 @@ var render = function() {
             attrs: { type: "text", placeholder: "Search bill, customer..." },
             domProps: { value: _vm.search },
             on: {
+              keyup: function($event) {
+                _vm.currentPage = 1
+              },
               input: function($event) {
                 if ($event.target.composing) {
                   return

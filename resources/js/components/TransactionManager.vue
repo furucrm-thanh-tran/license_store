@@ -25,6 +25,7 @@
                     v-model="search"
                     placeholder="Search bill, customer..."
                     class="form-control ml-2"
+                    v-on:keyup="currentPage = 1"
                 />
             </div>
         </div>
@@ -322,8 +323,8 @@ export default {
             if (!this.list_transaction.trans) {
                 return;
             }
-            this.currentPage = 1;
             return (this.list_transaction.trans).filter(trans => {
+                // this.currentPage = 1;
                 return String(trans.id)
                     .toLowerCase()
                     .includes(this.search.toLowerCase()) ||
