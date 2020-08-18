@@ -17,7 +17,9 @@ class CreateFeedbackTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-
+            $table->string('answer');
+            $table->boolean('status');
+            
             //foreignKey
             $table->foreignId('seller_id')
                 ->constrained('managers')
