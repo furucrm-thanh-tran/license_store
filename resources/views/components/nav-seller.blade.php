@@ -26,15 +26,22 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('customermanager.index') }}">
             {{-- <a class="nav-link" href="/admin/sellermanager"> --}}
-                <i class="fas fa-fw fa-users"></i>
-                <span>Custommer</span>
-            </a>
+            <i class="fas fa-fw fa-users"></i>
+            <span>Custommer</span>
+        </a>
     </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
-    <a class="nav-link" href="{{ route('seller.transactionmanager') }}">
+        <a class="nav-link" href="{{ route('seller.transactionmanager') }}">
             <i class="fas fa-fw fa-receipt"></i>
             <span>Trasaction</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('feedback.index') }}">
+            <i class="fas fa-comments"></i>
+            <span>Feedback</span>
         </a>
     </li>

@@ -68,7 +68,6 @@ class SellerManagerController extends Controller
             'phone' => $request->phone,
         ]);
         return response()->json(['success' => 'Seller saved successfully.']);
-        // return redirect(route('seller_manager.index'))->with('success', 'Seller has been added');
     }
     /**
      * Display the specified resource.
@@ -90,7 +89,10 @@ class SellerManagerController extends Controller
     public function edit($id)
     {
         $sellermanager = Manager::findOrFail($id);
-        return response()->json($sellermanager);
+        return view('admin/edit-seller', [
+            'sellermanager' => $sellermanager,
+        ]);
+        // return response()->json($sellermanager);
     }
 
     /**

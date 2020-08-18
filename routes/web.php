@@ -83,7 +83,6 @@ Route::get('/create_key', 'LicenseController@create_key');
 
 Route::get('/hello/newadmin/register', 'RegisterAdminController@showAdminRegister')->name('newadmin.register');
 Route::post('/hello/newadmin/register', 'RegisterAdminController@createAdmin')->name('newadmin.register.submit');
-// Route::post('/hello/newadmin/login', 'RegisterAdminController@checkLogin')->name('newadmin.login.submit');
 
 
 // Seller routes
@@ -100,14 +99,16 @@ Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::put('profile/{id}', 'SellerController@update');
     Route::get('profile/{id}/edit', 'SellerController@edit');
 
-    Route::get('/seller_send_mail', 'CustomerController@seller_send_mail');
+    Route::get('/seller_send_mail', 'Seller\CustomerManagerController@seller_send_mail');
     Route::get('/frm_check_mail', 'CustomerController@frm_check_mail');
     Route::get('/check_mail', 'CustomerController@check_mail')->name('check_mail');
+    
     Route::resource('/customermanager', 'Seller\CustomerManagerController');
     Route::resource('/bill','BillController');
 
     Route::get('/bill/detail/{id}', 'ManagerController@billDetail')->name('seller.bill-detail');
 
+    Route::resource('/feedback', 'FeedbackController');
 });
 
 Route::get('test','HomeController@test');
