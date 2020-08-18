@@ -38,7 +38,7 @@ class ProductManagerController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin/create_product');
     }
 
     /**
@@ -72,7 +72,7 @@ class ProductManagerController extends Controller
         $product->price_license = $request->price_license;
         $product->save();
 
-        return redirect()->back()->with('success', 'Product store in database successfully');
+        return redirect()->route('product_manager.index')->with('success', 'Product store in database successfully');
     }
 
     /**
@@ -96,7 +96,10 @@ class ProductManagerController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        return response()->json($product);
+        return view('admin/edit_product', [
+            'product' => $product,
+        ]);
+        // return response()->json($product);
     }
 
     /**
@@ -129,7 +132,7 @@ class ProductManagerController extends Controller
         $product->price_license = $request->price_license;
         $product->save();
 
-        return redirect()->back()->with('success', 'Product update in database successfully');
+        return redirect()->route('product_manager.index')->with('success', 'Product update in database successfully');
     }
 
     /**

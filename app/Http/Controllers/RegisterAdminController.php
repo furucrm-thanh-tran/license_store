@@ -12,18 +12,6 @@ class RegisterAdminController extends Controller
         return view('admin.register');
     }
 
-    // public function checkLogin(Request $request)
-    // {
-    //     // $code=config('code.code_check');
-    //     $id=env('ID_KEY');
-    //     $pass=env('PASS_KEY');
-    //     if($request->id==$id && $request->password==$pass){
-    //         return redirect()->back()->with('success', 'Check login success');            
-    //     };
-
-    //     return redirect('/welcome')->with('error', 'Faillllllllllll.....');
-    // }
-
     public function createAdmin(Request $request)
     {
         $code=config('code.code_check');

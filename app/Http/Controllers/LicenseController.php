@@ -105,9 +105,7 @@ class LicenseController extends Controller
      */
     public function edit($id)
     {
-        // $license = License::findOrFail($id);
         $licenses = License::with(['users', 'managers'])->where('id', $id)->get();
-        // return Response::make($license);
         return response()->json($licenses);
     }
 
@@ -121,14 +119,12 @@ class LicenseController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            // 'product_key' => ['required', 'string', 'max:50', 'unique:licenses,product_key,' .$id],
             'activation_date' => ['required'],
             'expiration_date' => ['required', 'after:activation_date'],
             'user_id' => ['required'],
         ]);
 
         $license = License::findOrFail($id);
-        // $license->product_key =  $request->product_key;
         $license->activation_date = $request->activation_date;
         $license->expiration_date = $request->expiration_date;
         $license->user_id =  $request->user_id;

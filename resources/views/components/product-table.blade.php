@@ -40,7 +40,9 @@
                     @if(Auth::guard('manager')->user()->role == 1)
                     <a class="btn" href="{{ route('license.show', $product->id) }}"><i class="fa fa-plus"></i></a>
                     <button class="btn" id="show-product" data-toggle="modal" data-id="{{ $product->id }}"><i class="fa fa-eye"></i></button>
-                    <button class="btn" id="edit-product" data-id="{{ $product->id }}" data-toggle="modal"><i class="fa fa-edit"></i></button>
+
+                    <a class="btn" href="{{ route('product_manager.edit', $product->id) }}"><i class="fa fa-edit"></i></a>
+                    <!-- <button class="btn" id="edit-product" data-id="{{ $product->id }}" data-toggle="modal"><i class="fa fa-edit"></i></button> -->
                     <form action="{{ route('product_manager.destroy',$product->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
