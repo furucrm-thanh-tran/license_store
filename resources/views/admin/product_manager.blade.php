@@ -22,13 +22,13 @@
             <!-- Modal Header -->
             <div class="modal-header">
                 <h5 class="modal-title">Create a new product</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button onclick="return location.reload()" type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
             <!-- Modal body -->
-            <form action="{{ route('product_manager.store') }}" method="POST" enctype="multipart/form-data">
+            <form id="frmCreate" action="{{ route('product_manager.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -64,7 +64,7 @@
                     <div class="form-group">
                         <label for="customFile">Icon</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input file-upload @error('icon_pro') is-invalid @enderror"  name="icon_pro">
+                            <input id="icon_pro" type="file" class="custom-file-input file-upload @error('icon_pro') is-invalid @enderror" name="icon_pro">
                             <label class="custom-file-label" for="customFile">Choose file</label>
                             @error('icon_pro')
                             <span class="invalid-feedback" role="alert">
@@ -78,9 +78,13 @@
                     </div>
                 </div>
 
+                <!-- Message -->
+                <div class="alert alert-danger" style="display:none"></div>
+                <div class="alert alert-success" style="display:none"></div>
+
                 <!-- Modal footer -->
                 <div class="modal-footer border-top-0 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button id="btnAdd" type="submit" class="btn btn-success">Submit</button>
                 </div>
             </form>
         </div>
@@ -192,6 +196,59 @@
         $('#message-success').delay(3000).fadeOut();
     });
 </script>
+
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+        }
+    });
+</script>
+
+<!-- <script>
+    $(document).ready(function() {
+        $('#btnAdd').click(function(e) {
+            e.preventDefault();
+            $name = $('#product-name').val();
+            $des = $('#description').val();
+            $icon = $('#icon_pro').val();
+            $price = $('#icon_pro').val()
+            // console.log($a+$b+$c);
+
+            $.ajax({
+                // data: $('#frmCreate').serialize(),
+                data: {
+                    'name_pro': $name,
+                    'description_pro': $des,
+                    'icon_pro': $icon,
+                    'price_license': $price,
+                },
+                url: "{{ route('product_manager.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    if (data.errors) {
+                        // $('#frmCreate').trigger("reset");
+                        $('.alert-danger').html('');
+
+                        $.each(data.errors, function(key, value) {
+                            $('.alert-danger').show();
+                            $('.alert-success').hide();
+                            $('.alert-danger').append('<li>' + value + '</li>');
+                        });
+                        $('#btnAdd').html('Save Changes');
+                    } else {
+                        $('.alert-danger').hide();
+                        $('.alert-success').show();
+                        $('.alert-success').html(data.success);
+                        $('#frmCreate').trigger("reset");
+                        $('#btnAdd').html('Submit');
+                    }
+                }
+            });
+        });
+    });
+</script> -->
 
 <script type="text/javascript">
     $(function() {

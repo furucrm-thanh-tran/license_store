@@ -32,14 +32,13 @@
             <!-- Modal Header -->
             <div class="modal-header">
                 <h5 class="modal-title">Create new seller account</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button onclick="return location.reload()" type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
             <!-- Modal body -->
             <form id="frmCreate" action="{{ route('seller_manager.store') }}" method="POST">
-            <!-- <form id="frmCreate"> -->
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -97,10 +96,12 @@
                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm password">
                     </div>
                 </div>
-
+                <!-- Message -->
+                <div class="alert alert-danger" style="display:none"></div>
+                <div class="alert alert-success" style="display:none"></div>
                 <!-- Modal footer -->
                 <div class="modal-footer border-top-0 d-flex justify-content-center">
-                    <button id="saveBtn" type="submit" class="btn btn-success">Submit</button>
+                    <button id="btnAdd" type="submit" class="btn btn-success">Submit</button>
                 </div>
             </form>
         </div>
@@ -158,10 +159,9 @@
                         @enderror
                     </div>
                 </div>
-
                 <!-- Modal footer -->
                 <div class="modal-footer border-top-0 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button id="btnUpdate" type="submit" class="btn btn-success">Submit</button>
                 </div>
             </form>
         </div>
@@ -253,6 +253,47 @@
                 $('#edit_phone').val(data.phone);
                 $('#update_seller').attr('action', 'seller_manager/' + data.id);
             })
+        });
+    });
+</script>
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+        }
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#btnAdd').click(function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                data: $('#frmCreate').serialize(),
+                url: "{{ route('seller_manager.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    if (data.errors) {
+                        $('#frmCreate').trigger("reset");
+                        $('.alert-danger').html('');
+
+                        $.each(data.errors, function(key, value) {
+                            $('.alert-danger').show();
+                            $('.alert-success').hide();
+                            $('.alert-danger').append('<li>' + value + '</li>');
+                        });
+                        $('#btnAdd').html('Save Changes');
+                    } else {
+                        $('.alert-danger').hide();
+                        $('.alert-success').show();
+                        $('.alert-success').html(data.success);
+                        $('#frmCreate').trigger("reset");
+                        $('#btnAdd').html('Submit');
+                    }
+                }
+            });
         });
     });
 </script>
