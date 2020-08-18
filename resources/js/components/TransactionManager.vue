@@ -1,6 +1,7 @@
 <template>
     <div class="transaction-manager">
-        <div class="row mb-3">
+        <div class="container-fluid">
+            <div class="row mb-3">
             <div class="col-6 form-inline">
                 <label class="mr-2">Show</label>
                 <div>
@@ -18,7 +19,7 @@
                 <span class="ml-2">entries</span>
             </div>
             <div class="col-6 form-inline justify-content-end">
-                <label>Search id:</label>
+                <label>Search</label>
                 <input
                     type="text"
                     v-model="search"
@@ -46,13 +47,12 @@
             </thead>
             <tfoot>
                 <tr>
-                    <th>Code bill</th>
-                    <th>Customer ID</th>
-                    <th>Date of purchase</th>
-                    <th>Seller</th>
-                    <th>Process</th>
-                    <th>Total money</th>
-                    <th></th>
+                    <th
+                        v-for="header in headerTable"
+                        :key="header.key"
+                    >
+                        {{ header.name }}
+                    </th>
                 </tr>
             </tfoot>
             <tbody>
@@ -163,6 +163,8 @@
                 </tr>
             </tbody>
         </table>
+
+        <!-- Pagination -->
         <div class="pagination justify-content-end">
             <div class="number" :class="{'active' : currentPage === 1}" @click="change_page(currentPage - 1)">
                 Prev
@@ -180,6 +182,8 @@
                 Next
             </div>
         </div>
+        </div>
+
         <!-- {{ list_transaction.trans[3] }} -->
     </div>
 </template>
@@ -206,7 +210,7 @@ export default {
                 { name: "Seller", col: "managers.full_name", sortable: false },
                 { name: "Process", col: "status", sortable: true },
                 { name: "Total money", col: "total_money", sortable: true },
-                { name: "Action", col: "", sortable: false }
+                { name: "Action", col: "action", sortable: false }
             ],
             list_transaction: []
             // selectTransaction: {}
@@ -300,8 +304,9 @@ export default {
             );
         },
         get_rows: function() {
-            var start = (this.currentPage - 1) * this.elementsPerPage;
-            var end = start + this.elementsPerPage;
+            var elementsPerPage = parseInt(this.elementsPerPage);
+            var start = (this.currentPage - 1) * elementsPerPage;
+            var end = start + elementsPerPage;
             return (this.filtedList || "").slice(start, end);
         },
         change_page: function(page) {
