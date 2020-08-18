@@ -108,6 +108,7 @@ Route::prefix('seller')->middleware('is_seller')->group(function () {
 
     Route::get('/bill/detail/{id}', 'ManagerController@billDetail')->name('seller.bill-detail');
 
+    Route::resource('/feedback', 'FeedbackController');
 });
 
 Route::get('test','HomeController@test');
