@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Seller;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Bill;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Response;
-use App\Jobs\SendSellerEmail;
+use App\Bill_Product;
 
-class CustomerManagerController extends Controller
+class BillController extends Controller
 {
     public function __construct()
     {
@@ -23,15 +20,7 @@ class CustomerManagerController extends Controller
      */
     public function index()
     {
-        $customers = Bill::where('seller_id', Auth::guard('manager')->user()->id)
-            ->with(['users', 'managers'])
-            ->select('user_id', DB::raw('count(*) as total'))
-            ->groupBy('user_id')
-            ->get();
-
-        return view('seller.customer', [
-            'customers' => $customers,
-        ]);
+        //
     }
 
     /**
@@ -63,20 +52,8 @@ class CustomerManagerController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    public function seller_send_mail(Request $request){
-        $user_email = $request->email;
-        $seller_email = Auth::guard('manager')->user()->email;
-        $details = [
-            'title' => 'New Product !!!!',
-            'user_email' => $user_email,
-            'seller_email'=>$seller_email,
-            'link'=>'http://127.0.0.1:8000/frm_check_mail'
-        ];
-        dispatch(new SendSellerEmail($details));
-        return response()->json('Send mail to '.$user_email .' complete');        
+        $list = Bill_Product::with(['products:id,name_pro,price_license'])->where('bill_id', $id)->get();
+        return view('bill-detail', ['list' => $list]);
     }
 
     /**
@@ -87,8 +64,13 @@ class CustomerManagerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $bills = Bill::where([['seller_id', Auth::guard('manager')->user()->id], ['user_id', $id]])
+            ->with(['users', 'managers'])->get();
+        return view('seller.bill', [
+            'bills' => $bills,
+        ]);
     }
+
     /**
      * Update the specified resource in storage.
      *
@@ -98,7 +80,10 @@ class CustomerManagerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $bill = Bill::findOrFail($id);
+        $bill->status = 1;
+        $bill->save();
+        return redirect()->back();
     }
 
     /**

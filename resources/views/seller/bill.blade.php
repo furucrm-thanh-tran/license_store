@@ -82,22 +82,22 @@
                 <thead>
                     <tr>
                         <th>Code bill</th>
-                        <th>Customer Name</th>                        
+                        <th>Customer Name</th>
                         <th>Seller</th>
                         <th>Total money</th>
                         <th>Date of purchase</th>
-                        <th>Process</th>                        
+                        <th>Process</th>
                         <th data-orderable="false"></th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
                         <th>Code bill</th>
-                        <th>Customer Name</th>                        
+                        <th>Customer Name</th>
                         <th>Seller</th>
                         <th>Total money</th>
                         <th>Date of purchase</th>
-                        <th>Process</th>                        
+                        <th>Process</th>
                         <th></th>
                     </tr>
                 </tfoot>
@@ -105,7 +105,7 @@
                     @foreach($bills as $bill)
                     <tr>
                         <td>{{ $bill->id }}</td>
-                        <td>{{ $bill->users->full_name }}</td>                        
+                        <td>{{ $bill->users->full_name }}</td>
                         <td>{{ $bill->managers->full_name }}</td>
                         <td>{{ $bill->total_money }}</td>
                         <td>{{ $bill->created_at }}</td>
@@ -113,13 +113,19 @@
                         <td><span class="text-success">Complete</span></td>
                         <td>
                             <button class="btn" disabled><i class="fa fa-check text-mute"></i></button>
-                            <a href="{{ route('seller.bill-detail', $bill->id) }}" class="btn"><i class="fas fa-info text-info"></i></a>
+                            <a href="{{ route('bill.show', $bill->id) }}" class="btn"><i class="fas fa-info text-info"></i></a>
                         </td>
                         @else
                         <td><span class="text-warning">Pending...</span></td>
                         <td>
-                            <a href="{{ route('customermanager.show', $bill->id) }}" class="btn"  onclick="return confirm('Are you sure ????');"><i class="fa fa-check text-success"></i></a>
-                            <a href="{{ route('seller.bill-detail', $bill->id) }}" class="btn"><i class="fas fa-info text-info"></i></a>
+                            <div class="d-flex flex-nowrap justify-content-center">
+                                <form action="{{ route('bill.update', $bill->id) }}" method="POST">
+                                    @method('PATCH')
+                                    @csrf
+                                    <button type="submit" class="btn" onclick="return confirm('Are you sure ????');"><i class="fa fa-check text-success"></i></button>
+                                </form>
+                                <a href="{{ route('bill.show', $bill->id) }}" class="btn"><i class="fas fa-info text-info"></i></a>
+                            </div>
                         </td>
                         @endif
                     </tr>

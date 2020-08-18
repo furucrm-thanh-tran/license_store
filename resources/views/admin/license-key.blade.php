@@ -85,13 +85,13 @@
             <!-- Modal Header -->
             <div class="modal-header">
                 <h5 class="modal-title">Add new license key</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button onclick="return location.reload()" type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
             <!-- Modal body -->
-            <form action="{{ route('license.store') }}" method="POST">
+            <form id="frmCreate" action="{{ route('license.store') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -110,7 +110,7 @@
 
                     <div class="form-group">
                         <label>Choose a bill</label>
-                        <select name="" id="select_bill" class="select2" style="width: 100%;">
+                        <select name="" id="select_bill" class="select2" style="width: 100%;" required>
                             <option value="" disabled selected>Select your option</option>
                             @foreach($bills as $bill)
                             <option>{{ $bill->bills->id }}</option>
@@ -139,9 +139,13 @@
                     </div>
                 </div>
 
+                <!-- Message -->
+                <div class="alert alert-danger" style="display:none"></div>
+                <div class="alert alert-success" style="display:none"></div>
+
                 <!-- Modal footer -->
                 <div class="modal-footer border-top-0 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button id="btnAdd" type="submit" class="btn btn-success">Submit</button>
                 </div>
             </form>
         </div>
@@ -168,8 +172,9 @@
                 <div class="modal-body">
                     <input id="id" type="hidden" class="form-control" name="id" value="" readonly>
                     <div class="form-group">
-                        <button id="create_key_edit" type="button" class="create_key btn btn-outline-dark mb-2"><i class="fas fa-key"></i> License key</button>
-                        <input id="product_key_edit" type="text" class="key form-control @error('product_key') is-invalid @enderror" name="product_key" value="{{ old('product_key') }}" required autocomplete="product-key" autofocus placeholder="Enter license key">
+                        <label for="">License key</label>
+                        <!-- <button id="create_key_edit" type="button" class="create_key btn btn-outline-dark mb-2"><i class="fas fa-key"></i> License key</button> -->
+                        <input id="product_key_edit" type="text" class="key form-control @error('product_key') is-invalid @enderror" name="product_key" value="" readonly>
 
                         @error('product_key')
                         <span class="invalid-feedback" role="alert">
@@ -257,7 +262,11 @@
                     <tr>
                         <td>{{ $license->products->id }}</td>
                         <td>{{ $license->product_key }}</td>
+                        @if ($license->seller_id != null)
                         <td>{{ $license->managers->full_name }}</td>
+                        @else
+                        <td>{{ $license->seller_id }}</td>
+                        @endif
                         <td>{{ $license->users->full_name }}</td>
                         <td>{{ $license->activation_date }}</td>
                         <td>{{ $license->expiration_date }}</td>
@@ -313,6 +322,39 @@
     </script>
 
     <script>
+        $(document).ready(function() {
+            $('#btnAdd').click(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    data: $('#frmCreate').serialize(),
+                    url: "{{ route('license.store') }}",
+                    type: "POST",
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.errors) {
+                            $('.alert-danger').html('');
+
+                            $.each(data.errors, function(key, value) {
+                                $('.alert-danger').show();
+                                $('.alert-success').hide();
+                                $('.alert-danger').append('<li>' + value + '</li>');
+                            });
+                            $('#btnAdd').html('Save Changes');
+                        } else {
+                            $('.alert-danger').hide();
+                            $('.alert-success').show();
+                            $('.alert-success').html(data.success);
+                            $('#frmCreate').trigger("reset");
+                            $('#btnAdd').html('Submit');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
         $('.select2').change(function() {
             var bill_id = $(this).val();
 
@@ -326,11 +368,17 @@
                     $user_id = data[0].user_id;
                     $seller_id = data[0].seller_id;
                     $user_name = data[0].users.full_name;
-                    $sell_name = data[0].managers.full_name;
+                    if ($seller_id != null) {
+                        $sell_name = data[0].managers.full_name;
+                    } else {
+                        $sell_name = '';
+                    }
+
                     $('.seller_id').val($seller_id);
+                    $('.seller_name').val($sell_name);
                     $('.user_id').val($user_id);
                     $('.user_name').val($user_name);
-                    $('.seller_name').val($sell_name);
+
                     console.log($user_id + " " + $seller_id + " " + $user_name + " " + $sell_name);
                 }
             });
@@ -368,7 +416,11 @@
                     $('#user_id_edit').val(data[0].user_id);
                     $('#seller_id_edit').val(data[0].seller_id);
                     $('#user_name_edit').val(data[0].users.full_name);
-                    $('#seller_name_edit').val(data[0].managers.full_name);
+                    if (data[0].seller_id != null) {
+                        $('#seller_name_edit').val(data[0].managers.full_name);
+                    } else {
+                        $('#seller_name_edit').val(data[0].seller_id);
+                    }
                     $('#update_license').attr('action', id);
                 })
             });
