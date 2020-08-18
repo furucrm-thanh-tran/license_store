@@ -75,7 +75,11 @@ Route::prefix('admin')->middleware('is_admin')->group(function () {
     Route::post('/transactionmanager/{id}', 'AdminController@updateTransaction');
     Route::resource('/transaction', 'TransactionController');
 });
-// Route::get('get_id/{id}', 'AdminController@get_id')->name('admin.get_id');
+
+//Licenses
+Route::resource('/license', 'LicenseController');
+Route::get('/get_bill', 'LicenseController@get_bill');
+Route::get('/create_key', 'LicenseController@create_key');
 
 Route::get('/hello/newadmin/register', 'RegisterAdminController@showAdminRegister')->name('newadmin.register');
 Route::post('/hello/newadmin/register', 'RegisterAdminController@createAdmin')->name('newadmin.register.submit');
