@@ -106,7 +106,9 @@
             });
         });
     </script>
-    {{-- end delete --}}
+
+
+
 
 
     <script type = "text/javascript">
@@ -158,7 +160,6 @@
                 }
 
                 });
-                console.log(user_id);
 
     });
     </script>

@@ -20,7 +20,7 @@
                             <a class="bill_detail" href="{{ route('bill_detail', $b->id) }}">Detail</a>
                             /
                             <a id="send_question" class="check_seller" type="button" data-seller="{{ $b->seller_id }}"
-                                data-toggle="modal" data-target="#myModal" href="#{{ $b->seller_id }}">Send
+                                data-toggle="modal" data-target="#modal_qes" href="#{{ $b->seller_id }}">Send
                                 Question</a>
                         </td>
                     </tr>
@@ -30,7 +30,7 @@
     </div>
 
     {{-- Model --}}
-    <div class="modal fade" id="myModal">
+    <div class="modal fade" id="modal_qes">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
@@ -43,12 +43,12 @@
                 <!-- Modal body -->
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="usr">Title:</label>
+                        <label>Title:</label>
                         <input type="text" class="form-control" id="title">
                     </div>
                     <div class="form-group">
-                        <label for="comment">Description:</label>
-                        <textarea class="form-control" rows="5" id="description" name="text"></textarea>
+                        <label>Description:</label>
+                        <textarea class="form-control" rows="5" id="des"></textarea>
                     </div>
                 </div>
 
@@ -102,7 +102,7 @@
             console.log(seller_id);
             $("#action_send_question").click(function() {
                 var title = $("#title").val();
-                var des = $("#description").val();
+                var des = $("#des").val();
                 // console.log(seller_id+" "+title+" "+des);
                 $.ajaxSetup({
                     headers: {
@@ -115,13 +115,13 @@
                     data: {
                         "seller_id": seller_id,
                         "title": title,
-                        "description": des,
+                        "des": des,
                     },
-
                     success: function(data) {
                         console.log(data);
-                        alert(data.title+data.seller_id);
-                        // location.reload();
+                        alert(data.status);
+                        $("#title").val('');
+                        $("#des").val('');
                     }
                     // console.log(id+exp_month+exp_year);
                 });

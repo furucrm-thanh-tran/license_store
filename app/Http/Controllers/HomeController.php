@@ -18,6 +18,7 @@ use Cart;
 use Exception;
 use Illuminate\Support\Facades\Response;
 use Intervention\Image\Facades\Image;
+use PhpOption\None;
 
 class HomeController extends Controller
 {
@@ -122,18 +123,15 @@ class HomeController extends Controller
     public function shopping_cart(Request $request)
     {
         $id = Auth::user()->id;
+        Cart::restore($id);
+        $cart = Cart::content();
         $data = payment::where('user_id', '=', $id)
             ->select(DB::raw('RIGHT(number_card,4) as number_card'))->get();
-        return view('customer.shopping_cart')->with('data', $data);
-    }
+        return view('customer.shopping_cart')->with([
+            'data' => $data,
+            'cart' => $cart
+        ]);
 
-    public function add_cart_item(Request $request)
-    {
-        $id = $request->id;
-        $name = $request->name;
-        $qty = $request->qty;
-        $price = $request->price;
-        $data = Cart::add($id, $name, $qty, $price);
     }
     public function upd_cart_item(Request $request)
     {
@@ -198,6 +196,7 @@ class HomeController extends Controller
                 'email' => $user_email
             ];
             Cart::destroy();
+            Cart::erase($user_id);
             dispatch(new SendCusEmail($details));
             return response()->json([
                 'success' => $Scharge->outcome->seller_message
@@ -246,34 +245,39 @@ class HomeController extends Controller
         $data = Bill_Product::with('products:id,name_pro,price_license')->where('bill_id', $id)->get();
         return view('customer.cus_bill_detail')->with('data', $data);
     }
-    public function feedback_add(Request $request){
+    public function feedback_add(Request $request)
+    {
         $seller_id = $request->seller_id;
         $title = $request->title;
         $des = $request->des;
         $user_id = Auth::user()->id;
-        // $data = new Feedback();
+
+        $data = new Feedback();
+        $data->title = $title;
+        $data->description = $des;
+        $data->seller_id = $seller_id;
+        $data->user_id = $user_id;
+        $data->save();
         return response()->json([
-            'title' => $title,
-            'seller_id' => $seller_id,
-
-
+            'status' => "Complete !!!",
         ]);
-
-
     }
 
-    // public function test(){
-    //     $item = Cart::subtotal();
-    //     // $item1 = "10,000.00";
-    //     $vowels = ",";
-    //     $onlyconsonants = str_replace($vowels,"","$item");
+    public function feedback_index(){
+        $user_id = Auth::user()->id;
+        $data = Feedback::find($user_id)->get();
+        return view('customer.cus_feedback')->with('data', $data);
+    }
+    public function test(){
 
-    //     // if ($item == $item1){
-    //     //     return $item;
-    //     // }else{
-    //         return $onlyconsonants;
-    //     // }
-
-    // }
-
+        $user= Auth::user()->id;
+        // Cart::store($user);
+        // Cart::restore($user);
+        // Cart::erase($user);
+        // To store a cart instance named 'wishlist'
+        // Cart::instance('wishlist')->store($user);
+        $data = Cart::content();
+        // $data=Cart::instance('username')->merge('savedcart');
+        return $data;
+    }
 }
