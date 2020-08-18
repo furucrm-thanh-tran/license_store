@@ -72,8 +72,8 @@
                                     @endif
                             </div>
                             <input type="text" id="pro_count" class="collapse" value="{{Cart::count()}}">
-                            <input type="text" id="user_id" class="collapse" value="{{Auth::user()->id}}">
-                            <input type="submit"  id="amount" name="amount" class="btn btn-primary action_payment mt-3 col-12" value="<?php echo Cart::initial();?>">
+                            <input type="text" id="user_id" class="collapse" value="{{$p->user_id}}">
+                            <input type="submit" data-amount="<?php echo Cart::initial();?>"  id="amount" name="amount" class="btn btn-primary action_payment mt-3 col-12" value="<?php echo Cart::initial();?>">
                         </div>
                     </div>
                 </div>
@@ -146,20 +146,14 @@
     <script>
         $(".action_payment").click(function(e){
         e.preventDefault();
-
-        var amount = document.getElementById("amount").value;
         var card_number = document.getElementById("card_number").value
         var user_id = document.getElementById("user_id").value
         $.ajax({
                     url: "create_bill",
                     type: 'POST',
                     data: {
-                        // "rowId": rowId,
-                        "amount": amount,
                         "card_number":card_number,
                         "user_id":user_id,
-                        // "pro_count":pro_count,
-                        // "i":i
                     },
                     success:function(data){
                     console.log(data);
@@ -168,14 +162,14 @@
                 }
 
                 });
-                // console.log(rowId);
+                // console.log(result1);
 
     });
     </script>
 
     <script>
         var str = document.getElementById("amount").value;
-        var result = str.replace(/,/g, "");
+        var result = str.replace(str, "Payment for $"+str);
         document.getElementById("amount").value = result;
 
     </script>

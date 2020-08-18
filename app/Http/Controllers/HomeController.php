@@ -17,6 +17,7 @@ use Cart;
 use Exception;
 use Illuminate\Support\Facades\Response;
 use Intervention\Image\Facades\Image;
+
 class HomeController extends Controller
 {
     /**
@@ -76,7 +77,7 @@ class HomeController extends Controller
     {
         try {
             $id = Auth::user()->id;
-            $data = payment::where('user_id', '=', $id)->select(DB::raw('RIGHT(number_card,4) as number_card'),'id','exp_month', 'exp_year')->get();
+            $data = payment::where('user_id', '=', $id)->select(DB::raw('RIGHT(number_card,4) as number_card'), 'id', 'exp_month', 'exp_year')->get();
             return view('customer.profile')->with('data', $data);
         } catch (Error $e) {
             return redirect()->route('frm_insertcard');
@@ -88,30 +89,33 @@ class HomeController extends Controller
         return back();
     }
 
-    public function paymentprofile_edit(Request $request){
-        $apikey=env("STRIPE_API_KEY");
+    public function paymentprofile_edit(Request $request)
+    {
+        $apikey = env("STRIPE_API_KEY");
         Stripe\Stripe::setApiKey($apikey);
-        $exp_month = $request->card_expmonth;
-        $exp_year = $request->card_expyear;
-        $card_number = $request->card_number;
-        $data = Payment::where('number_card', 'like', '%' . $card_number)->select('id','number_card', 'cvc','exp_month','exp_year')->first();
-        try{
-            $test=Stripe\Token::create([
+        $exp_month = $request->exp_month;
+        $exp_year = $request->exp_year;
+        $card_number = $request->number_card;
+        $data = Payment::where('number_card', 'like', '%' . $card_number)->select('id', 'number_card', 'cvc', 'exp_month', 'exp_year')->first();
+        try {
+            $test = Stripe\Token::create([
                 'card' => [
-                  'number' => $data->number_card,
-                  'exp_month' => $exp_month,
-                  'exp_year' => $exp_year,
-                  'cvc' => $data->cvc,
+                    'number' => $data->number_card,
+                    'exp_month' => $exp_month,
+                    'exp_year' => $exp_year,
+                    'cvc' => $data->cvc,
                 ],
-              ]);
-        }catch(\Stripe\Exception\CardException $e){
+            ]);
+        } catch (\Stripe\Exception\CardException $e) {
             $error = $e->getError()->message;
-            return redirect('profile')->with('status',"Edit Erorr: " .$error);
+            return redirect('profile')->with('status', "Edit Erorr: " . $error);
         }
-          $data->exp_month = $exp_month;
-          $data->exp_year = $exp_year;
-          $data->save();
-          return back();
+        $data->exp_month = $exp_month;
+        $data->exp_year = $exp_year;
+        $data->save();
+        return response()->json([
+            'success' => 'Update Complete !!!!!'
+        ]);
     }
     public function shopping_cart(Request $request)
     {
@@ -144,7 +148,9 @@ class HomeController extends Controller
     public function create_bill(Request $request)
     {
         $card_number = $request->card_number;
-        $amount = $request->amount;
+        $item = Cart::subtotal();
+        $vowels = ",";
+        $amount = str_replace($vowels, "", "$item");
         $user_id = $request->user_id;
         $user_email = Auth::user()->email;
         $apikey = env("STRIPE_API_KEY");
@@ -175,16 +181,18 @@ class HomeController extends Controller
                 $bill_product->pro_id = $row->id;
                 $bill_product->bill_id = $bill->id;
                 $bill_product->save();
-                $qty =$row->qty;
-                $product = Product::find($row->id)->increment('buy',$qty);
+                $qty = $row->qty;
+                $product = Product::find($row->id)->increment('buy', $qty);
             }
+
+
             $details = [
                 'title' => 'Thank you !!!!!',
                 'total' => $amount,
                 'date' => $bill->created_at,
                 'card' => $card_number,
                 'status' => $Scharge->outcome->seller_message,
-                'email'=>$user_email
+                'email' => $user_email
             ];
             Cart::destroy();
             dispatch(new SendCusEmail($details));
@@ -204,7 +212,7 @@ class HomeController extends Controller
         } catch (\Stripe\Exception\InvalidRequestException $e) {
             // Invalid parameters were supplied to Stripe's API
             return response()->json([
-                'success' => "Cart is empty"
+                'success' => "Cart is empty $amount"
             ]);
         } catch (\Stripe\Exception\AuthenticationException $e) {
             // Authentication with Stripe's API failed
@@ -235,5 +243,19 @@ class HomeController extends Controller
         $data = Bill_Product::with('products:id,name_pro,price_license')->where('bill_id', $id)->get();
         return view('customer.cus_bill_detail')->with('data', $data);
     }
+
+    // public function test(){
+    //     $item = Cart::subtotal();
+    //     // $item1 = "10,000.00";
+    //     $vowels = ",";
+    //     $onlyconsonants = str_replace($vowels,"","$item");
+
+    //     // if ($item == $item1){
+    //     //     return $item;
+    //     // }else{
+    //         return $onlyconsonants;
+    //     // }
+
+    // }
 
 }

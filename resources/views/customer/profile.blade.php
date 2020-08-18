@@ -73,12 +73,14 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form action="{{ route('edit_card_item') }}">
+                {{-- <form action="{{ route('edit_card_item') }}">
+                    --}}
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label>Last 4</label>
-                            <input name="card_number" id="card_number" class='form-control card-expiry-month' disabled>
+                            <label>Number Card</label>
+                            <h6 id="edit_number_card">Last 4</h6>
+
                         </div>
 
                         <div class="form-group">
@@ -94,16 +96,15 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="modal-footer border-top-0 d-flex justify-content-center">
-                        <input type="submit" class="btn btn-success" value="Submit">
+                        <input type="submit" id="update_card" class="btn btn-success" value="Submit">
                     </div>
-                </form>
+                    {{--
+                </form> --}}
             </div>
         </div>
     </div>
 
-
-
-
+    {{-- --end model edit card-- --}}
 
     <div class="container">
         <div class="row">
@@ -112,16 +113,10 @@
                     <div class="border-bottom p-4">
                         <div class="osahan-user text-center">
                             <div class="osahan-user-media">
-                                {{-- <img class="mb-3 rounded-pill shadow-sm mt-1"
-                                    src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="gurdeep singh osahan">
-                                --}}
                                 <div class="osahan-user-media-body">
                                     <h6 class="mb-2">{{ Auth::user()->full_name }}</h6>
                                     <p class="mb-1">{{ Auth::user()->phone }}</p>
                                     <p>{{ Auth::user()->email }}</p>
-                                    {{-- <button class="btn btn-outline-dark float-right"
-                                        data-toggle="modal" data-target="#editProfile">Edit Profile</button>
-                                    --}}
                                     <p class="mb-0 text-black font-weight-bold"><a class="text-primary mr-3"
                                             data-toggle="modal" data-target="#editProfile" href="#">EDIT</a></p>
                                 </div>
@@ -167,7 +162,7 @@
                                                             <a class="text-danger m-lg-3 edit_card" data-toggle="modal"
                                                                 data-month="{{ $p->exp_month }}"
                                                                 data-year="{{ $p->exp_year }}"
-                                                                data-id="{{ $p->number_card }}" href="#card_modal"
+                                                                data-number_card="{{ $p->number_card }}" href="#card_modal"
                                                                 onclick="edit_card(this)">EDIT</a>
                                                         </p>
                                                     </div>
@@ -206,12 +201,37 @@
 
     <script>
         function edit_card(card) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             var month = $(card).data('month');
             var year = $(card).data('year');
-            var id = $(card).data('id');
+            var number_card = $(card).data('number_card');
             document.getElementById('card_expmonth').value = month;
             document.getElementById('card_expyear').value = year;
-            document.getElementById('card_number').value = id;
+            document.getElementById('edit_number_card').innerHTML = "**** **** **** " + number_card;
+            // action update---------
+            $("#update_card").click(function() {
+                var exp_month = document.getElementById("card_expmonth").value;
+                var exp_year = document.getElementById("card_expyear").value;
+                $.ajax({
+                    url: "card/edit",
+                    type: 'POST',
+                    data: {
+                        "number_card": number_card,
+                        "exp_month": exp_month,
+                        "exp_year": exp_year,
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        alert(data.success);
+                        location.reload();
+                    }
+                    // console.log(id+exp_month+exp_year);
+                });
+            });
         }
 
     </script>

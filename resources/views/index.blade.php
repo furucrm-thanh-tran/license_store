@@ -31,7 +31,7 @@
 @section('content')
     <x-product-detail />
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="osahan-account-page-left shadow-sm bg-white h-100">
                 <a class="nav-link active " type="button" onclick="sortListNew()" id="new">New</a>
                 <a class="nav-link active" type="button" onclick="sortListUpdate()" id="update">Update</a>
@@ -39,11 +39,11 @@
                 <a class="nav-link active" type="button" onclick="sortListBuy()" id="buy">Buy</a>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-10">
             <div class="row list_pro">
                 @foreach ($product as $p)
-                    <div data-view="{{ $p->view }}" data-buy="{{ $p->buy }}" data-new="{{ $p->created_at }}" data-update="{{ $p->updated_at }}"
-                        class="sort col-md-3 mt-3">
+                    <div data-view="{{ $p->view }}" data-buy="{{ $p->buy }}" data-new="{{ $p->created_at }}"
+                        data-update="{{ $p->updated_at }}" class="sort col-md-3 mt-3">
 
                         <div class="card">
                             <div class="card-body">
@@ -60,8 +60,12 @@
                                     <a>Buy: </a><a>{{ $p->buy }}</a>
                                 </div>
                                 <div class="btn-ground text-center">
-                                    <a href="/login" class="add_to_card btn btn-primary"><i
-                                            class="fa fa-shopping-cart"></i></a>
+                                    {{-- <a href="/login"
+                                        class="add_to_card btn btn-primary"><i class="fa fa-shopping-cart"></i></a>
+                                    --}}
+                                    <button class="add_to_card btn btn-primary" id="card_add" data-id="{{ $p->id }}"
+                                        data-price="{{ $p->price_license }}" data-name="{{ $p->name_pro }}" data-qty="1"><i
+                                            class="fa fa-shopping-cart"></i></button>
                                     <button name="{{ $p->id }}" class="btn btn-primary btn-view" data-toggle="modal"
                                         data-target="#viewProduct" data-view="{{ $p->view }}" data-id="{{ $p->id }}"
                                         data-name_pro="{{ $p->name_pro }}" data-description_pro="{{ $p->description_pro }}"
@@ -112,6 +116,28 @@
             document.getElementById("price").innerHTML = "$" + price_license;
         });
 
+        $(".add_to_card").click(function() {
+            var id = $(this).data("id");
+            var name = $(this).data("name");
+            var price = $(this).data("price");
+            var qty = $(this).data("qty");
+            var i =Storage;
+            console.log(i);
+            $.ajax({
+                url: "cart/add",
+                type: 'POST',
+                data: {
+                    "id": id,
+                    "name": name,
+                    "price": price,
+                    "qty": qty
+                },
+                success: function(data) {
+                    console.log("it Work");
+                }
+            });
+        });
+
         /////Product Detail//////
 
     </script>
@@ -152,9 +178,9 @@
         function sortListNew() {
             var $wrapper = $('.list_pro');
             $wrapper.find('.sort').sort(function(a, b) {
-                return new Date(b.dataset.new) - new Date(a.dataset.new);
-            })
-            .appendTo($wrapper);
+                    return new Date(b.dataset.new) - new Date(a.dataset.new);
+                })
+                .appendTo($wrapper);
 
             var newdate = $("#new");
             newdate.addClass("bg-primary text-white");
@@ -165,12 +191,13 @@
             var updatedate = $("#update");
             updatedate.removeClass("bg-primary text-white");
         }
+
         function sortListUpdate() {
             var $wrapper = $('.list_pro');
             $wrapper.find('.sort').sort(function(a, b) {
-                return new Date(b.dataset.update) - new Date(a.dataset.update);
-            })
-            .appendTo($wrapper);
+                    return new Date(b.dataset.update) - new Date(a.dataset.update);
+                })
+                .appendTo($wrapper);
 
             var updatedate = $("#update");
             updatedate.addClass("bg-primary text-white");
