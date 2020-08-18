@@ -31,9 +31,7 @@ class SendCusEmail implements ShouldQueue
      */
     public function handle()
     {
-        // $when = now()->addMinutes(5);
         $email = new CusMail($this->details);
-        // \Mail::to($this->details['email'])->send($email);
-        \Mail::to($this->details['email']) ->later(5,$email);
+        \Mail::to($this->details['email'])->send($email);
     }
 }

@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Product;
+use App\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Jobs\SendSellerEmail;
+use Exception;
+use PhpOption\None;
+use Illuminate\Support\Facades\DB;
+
 class CustomerController extends Controller
 {
     public function edit_info_cus(Request $request, $id)
@@ -74,6 +79,43 @@ class CustomerController extends Controller
             return view('auth.register');
         }
 
+    }
+    public function add_cart_item(Request $request)
+    {
+        $id = $request->id;
+        $name = $request->name;
+        $qty = $request->qty;
+        $price = $request->price;
+        $data = Cart::add($id, $name, $qty, $price);
+    }
+
+    public function shopping_cart(Request $request)
+    {
+
+        try{
+            $id = Auth::user()->id;
+            $data = payment::where('user_id', '=', $id)
+            ->select(DB::raw('RIGHT(number_card,4) as number_card'))->get();
+        return view('customer.shopping_cart')->with('data', $data);
+
+        }catch(Exception $e){
+
+            return view('auth.login');
+        }
+
+    }
+    public function upd_cart_item(Request $request)
+    {
+        $id = $request->id;
+        $qty = $request->qty;
+        $rowId = $id;
+        Cart::update($rowId, $qty);
+    }
+    public function del_cart_item(Request $request)
+    {
+        $id = $request->id;
+        $rowId = $id;
+        Cart::remove($rowId);
     }
 
 }

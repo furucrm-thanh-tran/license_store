@@ -43,7 +43,7 @@
                         <td>{{ $cus->users->phone }}</td>
                         <td>
                             <button id="btn_send" class="btn" data-toggle="modal" data-email="{{ $cus->users->email }}" data-target=""><i class="fa fa-envelope"></i></button>
-                            <a href="{{ route('customermanager.edit', $cus->users->id) }}" class="btn"><i class="fas fa-arrow-right"></i></a>
+                            <a href="{{ route('bill.edit', $cus->users->id) }}" class="btn"><i class="fas fa-arrow-right"></i></a>
                         </td>
                     </tr>
                     @endforeach

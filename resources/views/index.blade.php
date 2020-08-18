@@ -125,6 +125,28 @@
             document.getElementById("price").innerHTML = "$" + price_license;
         });
 
+        $(".add_to_card").click(function() {
+            var id = $(this).data("id");
+            var name = $(this).data("name");
+            var price = $(this).data("price");
+            var qty = $(this).data("qty");
+            var i =Storage;
+            console.log(i);
+            $.ajax({
+                url: "cart/add",
+                type: 'POST',
+                data: {
+                    "id": id,
+                    "name": name,
+                    "price": price,
+                    "qty": qty
+                },
+                success: function(data) {
+                    console.log("it Work");
+                }
+            });
+        });
+
         /////Product Detail//////
 
     </script>

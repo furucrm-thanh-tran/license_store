@@ -9,6 +9,7 @@ use App\License;
 use App\Bill;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class LicenseController extends Controller
 {
@@ -43,14 +44,17 @@ class LicenseController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'product_key' => ['required', 'string', 'max:50', 'unique:licenses'],
             'activation_date' => ['required'],
-            'expiration_date' => ['required'],
+            'expiration_date' => ['required', 'after:activation_date'],
             'pro_id' => ['required'],
             'user_id' => ['required'],
-            'seller_id' => ['required'],
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
+        }
 
         License::create([
             'product_key' => $request->product_key,
@@ -59,9 +63,8 @@ class LicenseController extends Controller
             'pro_id' => $request->pro_id,
             'user_id' => $request->user_id,
             'seller_id' => $request->seller_id,
-        ]);    
-
-        return redirect()->back()->with('success', 'Product key has been added');
+        ]);
+        return response()->json(['success' => 'Product key saved successfully.']);
     }
 
     /**
@@ -118,15 +121,14 @@ class LicenseController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'product_key' => ['required', 'string', 'max:50', 'unique:licenses,product_key,' .$id],
+            // 'product_key' => ['required', 'string', 'max:50', 'unique:licenses,product_key,' .$id],
             'activation_date' => ['required'],
-            'expiration_date' => ['required'],
+            'expiration_date' => ['required', 'after:activation_date'],
             'user_id' => ['required'],
-            'seller_id' => ['required'],
         ]);
 
         $license = License::findOrFail($id);
-        $license->product_key =  $request->product_key;
+        // $license->product_key =  $request->product_key;
         $license->activation_date = $request->activation_date;
         $license->expiration_date = $request->expiration_date;
         $license->user_id =  $request->user_id;

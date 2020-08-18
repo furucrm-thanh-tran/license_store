@@ -31,7 +31,7 @@
 @section('content')
     <x-product-detail />
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="osahan-account-page-left shadow-sm bg-white h-100">
                 <a class="nav-link active " type="button" onclick="sortListNew()" id="new">New</a>
                 <a class="nav-link active" type="button" onclick="sortListUpdate()" id="update">Update</a>
@@ -39,7 +39,7 @@
                 <a class="nav-link active" type="button" onclick="sortListBuy()" id="buy">Buy</a>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-10">
             <div class="row list_pro">
                 @foreach ($product as $p)
                     <div class="col-md-3 mt-3 sort" data-view="{{ $p->view }}" data-buy="{{ $p->buy }}" data-new="{{ $p->created_at }}" data-update="{{ $p->updated_at }}">

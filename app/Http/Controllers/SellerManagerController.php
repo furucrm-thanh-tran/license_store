@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use SebastianBergmann\Environment\Console;
 use Redirect, Response;
 use DataTables;
+use Exception;
+use Illuminate\Support\Facades\Validator;
 
 class SellerManagerController extends Controller
 {
@@ -26,7 +28,6 @@ class SellerManagerController extends Controller
         return view('admin/seller_manager', [
             'sellermanagers' => $sellermanagers,
         ]);
-
     }
 
     /**
@@ -47,8 +48,7 @@ class SellerManagerController extends Controller
      */
     public function store(Request $request)
     {
-
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'user_name' => ['required', 'string', 'max:255', 'unique:managers'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:managers'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -56,15 +56,19 @@ class SellerManagerController extends Controller
             'phone' => ['required', 'regex:/(0)[0-9]{9}/', 'max:10']
         ]);
 
-        Manager::create([
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
+        }
+
+        $test = Manager::create([
             'user_name' => $request->user_name,
             'password' => bcrypt($request->password),
             'full_name' => $request->full_name,
             'email' => $request->email,
             'phone' => $request->phone,
-        ]);    
-
-        return redirect(route('seller_manager.index'))->with('success', 'Seller has been added');
+        ]);
+        return response()->json(['success' => 'Seller saved successfully.']);
+        // return redirect(route('seller_manager.index'))->with('success', 'Seller has been added');
     }
     /**
      * Display the specified resource.
@@ -99,7 +103,7 @@ class SellerManagerController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:managers,email,' .$id],           
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:managers,email,' . $id],
             'full_name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'regex:/(0)[0-9]{9}/', 'max:10']
         ]);
