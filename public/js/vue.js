@@ -2121,6 +2121,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2187,17 +2193,14 @@ __webpack_require__.r(__webpack_exports__);
       // this.selectTransaction = { ...transaction }
       transaction.isAssign = !transaction.isAssign;
     },
-    updateTransaction: function updateTransaction(index) {
+    updateTransaction: function updateTransaction(trans) {
       var _this2 = this;
 
       if (confirm("Are you sure?")) {
-        axios.put("transaction/" + this.list_transaction.trans[index].id, {
+        axios.put("transaction/" + trans.id, {
           seller: this.seller.seller_id
         }).then(function (response) {
-          _this2.list_transaction.trans[index].seller_id = _this2.seller.seller_id, _this2.list_transaction.trans[index].managers = Object.assign({}, _this2.list_transaction.trans[index].managers, {
-            full_name: _this2.seller.seller_name
-          });
-          _this2.list_transaction.trans[index].isAssign = false;
+          _this2.getListTransaction();
         })["catch"](function (error) {
           _this2.errors = error.response.data.errors.name;
         });
@@ -2217,7 +2220,7 @@ __webpack_require__.r(__webpack_exports__);
         if (col.indexOf(".") > -1) {
           col = col.split(".");
           var len = col.length;
-          this.list_transaction.trans.sort(function (a, b) {
+          this.filtedList.sort(function (a, b) {
             var i = 0;
 
             while (i < len) {
@@ -2236,7 +2239,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
 
-        this.list_transaction.trans.sort(function (a, b) {
+        this.filtedList.sort(function (a, b) {
           if (a[col] > b[col]) {
             return ascending ? 1 : -1;
           } else if (a[col] < b[col]) {
@@ -2248,22 +2251,39 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     num_pages: function num_pages() {
-      if (!this.list_transaction.trans) {
+      if (!this.filtedList) {
         return;
       }
 
-      return Math.ceil(Object.keys(this.list_transaction.trans).length / this.elementsPerPage);
+      return Math.ceil(Object.keys(this.filtedList).length / this.elementsPerPage);
     },
     get_rows: function get_rows() {
       var start = (this.currentPage - 1) * this.elementsPerPage;
       var end = start + this.elementsPerPage;
-      return (this.list_transaction.trans || "").slice(start, end);
+      return (this.filtedList || "").slice(start, end);
     },
     change_page: function change_page(page) {
+      if (page < 1 || page > this.num_pages()) {
+        return;
+      }
+
       this.currentPage = page;
     }
   },
-  computed: {}
+  computed: {
+    filtedList: function filtedList() {
+      var _this3 = this;
+
+      if (!this.list_transaction.trans) {
+        return;
+      }
+
+      this.currentPage = 1;
+      return this.list_transaction.trans.filter(function (trans) {
+        return String(trans.id).toLowerCase().includes(_this3.search.toLowerCase()) || String(trans.users.full_name).toLowerCase().includes(_this3.search.toLowerCase());
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -41216,7 +41236,7 @@ var render = function() {
             }
           ],
           staticClass: "form-control ml-2",
-          attrs: { type: "text", placeholder: "Search title.." },
+          attrs: { type: "text", placeholder: "Search bill, customer..." },
           domProps: { value: _vm.search },
           on: {
             input: function($event) {
@@ -41274,7 +41294,7 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.get_rows(), function(trans, index) {
+          _vm._l(_vm.get_rows(), function(trans) {
             return _c("tr", { key: trans.id }, [
               _c("td", [_vm._v(_vm._s(trans.id))]),
               _vm._v(" "),
@@ -41332,7 +41352,7 @@ var render = function() {
                                         : $$selectedVal[0]
                                     },
                                     function($event) {
-                                      return _vm.updateTransaction(index)
+                                      return _vm.updateTransaction(trans)
                                     }
                                   ]
                                 }
@@ -41481,7 +41501,7 @@ var render = function() {
                           attrs: { disabled: trans.seller_id },
                           on: {
                             click: function($event) {
-                              return _vm.updateTransaction(index)
+                              return _vm.updateTransaction(trans)
                             }
                           }
                         },
@@ -41512,23 +41532,53 @@ var render = function() {
     _c(
       "div",
       { staticClass: "pagination justify-content-end" },
-      _vm._l(_vm.num_pages(), function(i) {
-        return _c(
+      [
+        _c(
           "div",
           {
-            key: i,
             staticClass: "number",
-            class: [i == _vm.currentPage ? "active" : ""],
+            class: { active: _vm.currentPage === 1 },
             on: {
               click: function($event) {
-                return _vm.change_page(i)
+                return _vm.change_page(_vm.currentPage - 1)
               }
             }
           },
-          [_vm._v("\n            " + _vm._s(i) + "\n        ")]
+          [_vm._v("\n            Prev\n        ")]
+        ),
+        _vm._v(" "),
+        _vm._l(_vm.num_pages(), function(i) {
+          return _c(
+            "div",
+            {
+              key: i,
+              staticClass: "number",
+              class: [i == _vm.currentPage ? "active" : ""],
+              on: {
+                click: function($event) {
+                  return _vm.change_page(i)
+                }
+              }
+            },
+            [_vm._v("\n            " + _vm._s(i) + "\n        ")]
+          )
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "number",
+            class: { active: _vm.currentPage === _vm.num_pages() },
+            on: {
+              click: function($event) {
+                return _vm.change_page(_vm.currentPage + 1)
+              }
+            }
+          },
+          [_vm._v("\n            Next\n        ")]
         )
-      }),
-      0
+      ],
+      2
     )
   ])
 }

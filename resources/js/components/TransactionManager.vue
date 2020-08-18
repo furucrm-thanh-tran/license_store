@@ -22,7 +22,7 @@
                 <input
                     type="text"
                     v-model="search"
-                    placeholder="Search title.."
+                    placeholder="Search bill, customer..."
                     class="form-control ml-2"
                 />
             </div>
@@ -56,7 +56,7 @@
                 </tr>
             </tfoot>
             <tbody>
-                <tr v-for="(trans, index) in get_rows()" :key="trans.id">
+                <tr v-for="trans in get_rows()" :key="trans.id">
                     <td>{{ trans.id }}</td>
                     <td>{{ trans.users.full_name }}</td>
                     <td>{{ trans.created_at | formatDate }}</td>
@@ -76,7 +76,7 @@
                                     name="seller"
                                     class="select2"
                                     style="width: 100%;"
-                                    @change="updateTransaction(index)"
+                                    @change="updateTransaction(trans)"
                                 >
                                     <option value="" disabled selected
                                         >Select your option</option
@@ -150,7 +150,7 @@
                             <button
                                 class="btn btn-primary"
                                 :disabled="trans.seller_id"
-                                @click="updateTransaction(index)"
+                                @click="updateTransaction(trans)"
                             >
                                 Get
                             </button>
@@ -164,6 +164,9 @@
             </tbody>
         </table>
         <div class="pagination justify-content-end">
+            <div class="number" :class="{'active' : currentPage === 1}" @click="change_page(currentPage - 1)">
+                Prev
+            </div>
             <div
                 class="number"
                 v-for="i in num_pages()"
@@ -172,6 +175,9 @@
                 :key="i"
             >
                 {{ i }}
+            </div>
+            <div class="number" :class="{'active' : currentPage === num_pages()}" @click="change_page(currentPage + 1)">
+                Next
             </div>
         </div>
         <!-- {{ list_transaction.trans[3] }} -->
@@ -229,27 +235,14 @@ export default {
             // this.selectTransaction = { ...transaction }
             transaction.isAssign = !transaction.isAssign;
         },
-        updateTransaction: function(index) {
+        updateTransaction: function(trans) {
             if (confirm("Are you sure?")) {
                 axios
-                    .put(
-                        "transaction/" + this.list_transaction.trans[index].id,
-                        {
-                            seller: this.seller.seller_id
-                        }
-                    )
+                    .put("transaction/" + trans.id, {
+                        seller: this.seller.seller_id
+                    })
                     .then(response => {
-                        (this.list_transaction.trans[
-                            index
-                        ].seller_id = this.seller.seller_id),
-                            (this.list_transaction.trans[
-                                index
-                            ].managers = Object.assign(
-                                {},
-                                this.list_transaction.trans[index].managers,
-                                { full_name: this.seller.seller_name }
-                            ));
-                        this.list_transaction.trans[index].isAssign = false;
+                        this.getListTransaction();
                     })
                     .catch(error => {
                         this.errors = error.response.data.errors.name;
@@ -270,7 +263,7 @@ export default {
                 if (col.indexOf(".") > -1) {
                     col = col.split(".");
                     var len = col.length;
-                    this.list_transaction.trans.sort(function(a, b) {
+                    this.filtedList.sort(function(a, b) {
                         var i = 0;
                         while (i < len) {
                             a = a[col[i]];
@@ -287,7 +280,7 @@ export default {
                     });
                 }
 
-                this.list_transaction.trans.sort(function(a, b) {
+                this.filtedList.sort(function(a, b) {
                     if (a[col] > b[col]) {
                         return ascending ? 1 : -1;
                     } else if (a[col] < b[col]) {
@@ -299,25 +292,42 @@ export default {
         },
 
         num_pages: function() {
-            if (!this.list_transaction.trans) {
+            if (!this.filtedList) {
                 return;
             }
             return Math.ceil(
-                Object.keys(this.list_transaction.trans).length /
-                    this.elementsPerPage
+                Object.keys(this.filtedList).length / this.elementsPerPage
             );
         },
         get_rows: function() {
             var start = (this.currentPage - 1) * this.elementsPerPage;
             var end = start + this.elementsPerPage;
-            return (this.list_transaction.trans || "").slice(start, end);
+            return (this.filtedList || "").slice(start, end);
         },
         change_page: function(page) {
+            if (page < 1 || page > this.num_pages()){
+                return
+            }
             this.currentPage = page;
         }
     },
 
-    computed: {}
+    computed: {
+        filtedList() {
+            if (!this.list_transaction.trans) {
+                return;
+            }
+            this.currentPage = 1;
+            return (this.list_transaction.trans).filter(trans => {
+                return String(trans.id)
+                    .toLowerCase()
+                    .includes(this.search.toLowerCase()) ||
+                    String(trans.users.full_name)
+                    .toLowerCase()
+                    .includes(this.search.toLowerCase())
+            });
+        }
+    }
 };
 </script>
 
