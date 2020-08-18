@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
+
     public function edit_info_cus(Request $request, $id)
     {
         $cus = User::find($id);
@@ -89,21 +90,21 @@ class CustomerController extends Controller
         $data = Cart::add($id, $name, $qty, $price);
     }
 
-    public function shopping_cart(Request $request)
-    {
+    // public function shopping_cart(Request $request)
+    // {
 
-        try{
-            $id = Auth::user()->id;
-            $data = payment::where('user_id', '=', $id)
-            ->select(DB::raw('RIGHT(number_card,4) as number_card'))->get();
-        return view('customer.shopping_cart')->with('data', $data);
+    //     try{
+    //         $id = Auth::user()->id;
+    //         $data = payment::where('user_id', '=', $id)
+    //         ->select(DB::raw('RIGHT(number_card,4) as number_card'))->get();
+    //     return view('customer.shopping_cart')->with('data', $data);
 
-        }catch(Exception $e){
+    //     }catch(Exception $e){
 
-            return view('auth.login');
-        }
+    //         return view('auth.login');
+    //     }
 
-    }
+    // }
     public function upd_cart_item(Request $request)
     {
         $id = $request->id;

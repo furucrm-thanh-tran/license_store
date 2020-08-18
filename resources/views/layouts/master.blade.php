@@ -28,6 +28,11 @@
             width: 61%;
         }
 
+        .null_seller {
+            pointer-events: none;
+            cursor: default
+        }
+
     </style>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
