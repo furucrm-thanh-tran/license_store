@@ -98,7 +98,7 @@
                     "qty": qty
                 },
                 success: function(data) {
-                    console.log(_token);
+                    console.log("it work !!");
                 }
             });
         });

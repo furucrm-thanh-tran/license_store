@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\payment;
 use App\Bill;
 use App\Bill_Product;
+use App\Feedback;
 use App\Jobs\SendCusEmail;
 use App\Mail\CusMail;
 use Illuminate\Support\Facades\DB;
@@ -117,6 +118,7 @@ class HomeController extends Controller
             'success' => 'Update Complete !!!!!'
         ]);
     }
+
     public function shopping_cart(Request $request)
     {
         $id = Auth::user()->id;
@@ -124,6 +126,7 @@ class HomeController extends Controller
             ->select(DB::raw('RIGHT(number_card,4) as number_card'))->get();
         return view('customer.shopping_cart')->with('data', $data);
     }
+
     public function add_cart_item(Request $request)
     {
         $id = $request->id;
@@ -242,6 +245,21 @@ class HomeController extends Controller
     {
         $data = Bill_Product::with('products:id,name_pro,price_license')->where('bill_id', $id)->get();
         return view('customer.cus_bill_detail')->with('data', $data);
+    }
+    public function feedback_add(Request $request){
+        $seller_id = $request->seller_id;
+        $title = $request->title;
+        $des = $request->des;
+        $user_id = Auth::user()->id;
+        // $data = new Feedback();
+        return response()->json([
+            'title' => $title,
+            'seller_id' => $seller_id,
+
+
+        ]);
+
+
     }
 
     // public function test(){

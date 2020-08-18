@@ -48,7 +48,7 @@
                     </div>
                     <div class="form-group">
                         <label for="comment">Description:</label>
-                        <textarea class="form-control" rows="5" id="comment" name="text"></textarea>
+                        <textarea class="form-control" rows="5" id="description" name="text"></textarea>
                     </div>
                 </div>
 
@@ -100,21 +100,34 @@
         $("#send_question").click(function() {
             var seller_id = $(this).data("seller");
             console.log(seller_id);
-            // $.ajax({
-            //     url: "card/edit",
-            //     type: 'POST',
-            //     data: {
-            //         "number_card": number_card,
-            //         "exp_month": exp_month,
-            //         "exp_year": exp_year,
-            //     },
-            //     success: function(data) {
-            //         console.log(data);
-            //         alert(data.success);
-            //         location.reload();
-            //     }
-            //     // console.log(id+exp_month+exp_year);
-            // });
+            $("#action_send_question").click(function() {
+                var title = $("#title").val();
+                var des = $("#description").val();
+                // console.log(seller_id+" "+title+" "+des);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "feedback/add",
+                    type: 'POST',
+                    data: {
+                        "seller_id": seller_id,
+                        "title": title,
+                        "description": des,
+                    },
+
+                    success: function(data) {
+                        console.log(data);
+                        alert(data.title+data.seller_id);
+                        // location.reload();
+                    }
+                    // console.log(id+exp_month+exp_year);
+                });
+
+            })
+
 
         });
 

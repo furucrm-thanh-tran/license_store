@@ -40,16 +40,17 @@ Route::get('card/{id}', 'HomeController@paymentprofile_delete')->name('del_card_
 Route::post('card/edit', 'HomeController@paymentprofile_edit')->name('edit_card_item');
 
 // cart
-Route::get('shoppingcart', 'HomeController@shopping_cart')->name('cart');
+Route::get('shoppingcart', 'CustomerController@shopping_cart')->name('cart');
 Route::get('cart/delete', 'HomeController@del_cart_item')->name('del_cart_item');
 Route::put('cart/update', 'HomeController@upd_cart_item')->name('upd_cart_item');
-Route::post('cart/add', 'HomeController@add_cart_item')->name('add_cart_item');
+Route::post('cart/add', 'CustomerController@add_cart_item')->name('add_cart_item');
 Route::get('info_cus/{id}', 'CustomerController@edit_info_cus')->name('edit_info_cus');
 Route::post('create_bill', 'HomeController@create_bill')->name('create_bill');
 /// Bill
 Route::get('list_bills/{id}', 'HomeController@list_bills')->name('list_bills');
 Route::get('bill_detail/{id}', 'HomeController@bill_detail')->name('bill_detail');
 // Route::get('bill_detail/{id}','HomeController@bill_detail')->name('bill_detail');
+Route::post('list_bills/feedback/add','HomeController@feedback_add');
 
 // End customer route}}}}}}}}}}}}}}}}}}}}
 
