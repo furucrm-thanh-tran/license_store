@@ -12,6 +12,7 @@
         <meta name="user_role" content="{{ Auth::guard('manager')->user()->role }}" />
         <meta name="user_id" content="{{ Auth::user()->id }}" />
         <meta name="user_name" content="{{ Auth::user()->full_name }}" />
+        <meta name="user_email" content="{{ Auth::user()->email }}" />
     @endif
 
     <title>SB Admin 2 - Dashboard</title>

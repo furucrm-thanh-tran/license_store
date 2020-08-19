@@ -95,7 +95,9 @@
                                                 :value="{
                                                     seller_id: best.seller_id,
                                                     seller_name:
-                                                        best.managers.full_name
+                                                        best.managers.full_name,
+                                                    seller_email:
+                                                        best.managers.email
                                                 }"
                                                 >{{
                                                     best.managers.full_name
@@ -110,7 +112,8 @@
                                                 :key="long.id"
                                                 :value="{
                                                     seller_id: long.id,
-                                                    seller_name: long.full_name
+                                                    seller_name: long.full_name,
+                                                    seller_email: long.email
                                                 }"
                                                 >{{ long.full_name }}</option
                                             >
@@ -213,7 +216,8 @@ export default {
             user_role: this.$userRole,
             seller: {
                 seller_id: this.$userId,
-                seller_name: this.$userName
+                seller_name: this.$userName,
+                seller_email: this.$userEmail
             },
             transaction: [],
             errors: [],
@@ -249,40 +253,56 @@ export default {
                     this.errors = error.response.data.errors.name;
                 });
         },
-        getTransaction: function(id) {
-            axios
-                .get("transaction/" + id)
-                .then(response => {
-                    (this.transaction = response.data);
-                })
-                .catch(error => {
-                    this.errors = error.response.data.errors.name;
-                });
-        },
         selectTransaction: function(transaction) {
             // this.selectTransaction = { ...transaction }
             transaction.isAssign = !transaction.isAssign;
         },
+        sendMail: function(transaction) {
+            axios
+                .post("admin_send_mail", {
+                    customer_email: transaction.users.email,
+                    customer_name: transaction.users.full_name,
+                    seller_email: this.seller.seller_email,
+                    seller_name: this.seller.seller_name,
+                    bill_code: transaction.id
+                    })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    this.error = error.response.data.errors;
+                });
+        },
         updateTransaction: function(trans) {
+            var transaction = []
             if (confirm("Are you sure?")) {
-                this.getTransaction(trans.id);
-                var checkSeller = this.transaction.seller_id;
-                if (checkSeller === null) {
-                    axios
-                        .put("transaction/" + trans.id, {
-                            seller: this.seller.seller_id
-                        })
-                        .then(response => {
+                axios
+                    .get("transaction/" + trans.id)
+                    .then(response => {
+                        transaction = response.data;
+                        var checkSeller = transaction.seller_id;
+                        console.log(checkSeller);
+                        if (checkSeller === null) {
+                            axios
+                                .put("transaction/" + trans.id, {
+                                    seller: this.seller.seller_id
+                                })
+                                .then(response => {
+                                    this.getListTransaction();
+                                })
+                                .catch(error => {
+                                    this.errors =
+                                        error.response.data.errors.name;
+                                });
+                            this.sendMail(trans);
+                        } else {
+                            alert("Can not Get. This bill has been assigned.");
                             this.getListTransaction();
-                        })
-                        .catch(error => {
-                            this.errors = error.response.data.errors.name;
-                        });
-                }
-                else {
-                    alert('Can not Get. This bill has been assigned.')
-                    this.getListTransaction();
-                }
+                        }
+                    })
+                    .catch(error => {
+                        this.errors = error.response.data.errors.name;
+                    });
             }
         },
         sortTable: function(col, sortable) {

@@ -23,6 +23,7 @@ Vue.component('transaction-manager', require('./components/TransactionManager.vu
 Vue.prototype.$userRole = document.querySelector("meta[name='user_role']").getAttribute('content');
 Vue.prototype.$userId = document.querySelector("meta[name='user_id']").getAttribute('content');
 Vue.prototype.$userName = document.querySelector("meta[name='user_name']").getAttribute('content');
+Vue.prototype.$userEmail = document.querySelector("meta[name='user_email']").getAttribute('content');
 
 import moment from 'moment';
 

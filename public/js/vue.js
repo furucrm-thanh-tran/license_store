@@ -2144,6 +2144,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2155,7 +2158,8 @@ __webpack_require__.r(__webpack_exports__);
       user_role: this.$userRole,
       seller: {
         seller_id: this.$userId,
-        seller_name: this.$userName
+        seller_name: this.$userName,
+        seller_email: this.$userEmail
       },
       transaction: [],
       errors: [],
@@ -2207,38 +2211,54 @@ __webpack_require__.r(__webpack_exports__);
         _this.errors = error.response.data.errors.name;
       });
     },
-    getTransaction: function getTransaction(id) {
-      var _this2 = this;
-
-      axios.get("transaction/" + id).then(function (response) {
-        _this2.transaction = response.data;
-      })["catch"](function (error) {
-        _this2.errors = error.response.data.errors.name;
-      });
-    },
     selectTransaction: function selectTransaction(transaction) {
       // this.selectTransaction = { ...transaction }
       transaction.isAssign = !transaction.isAssign;
     },
+    sendMail: function sendMail(transaction) {
+      var _this2 = this;
+
+      axios.post("admin_send_mail", {
+        customer_email: transaction.users.email,
+        customer_name: transaction.users.full_name,
+        seller_email: this.seller.seller_email,
+        seller_name: this.seller.seller_name,
+        bill_code: transaction.id
+      }).then(function (response) {
+        console.log(response.data);
+      })["catch"](function (error) {
+        _this2.error = error.response.data.errors;
+      });
+    },
     updateTransaction: function updateTransaction(trans) {
       var _this3 = this;
 
-      if (confirm("Are you sure?")) {
-        this.getTransaction(trans.id);
-        var checkSeller = this.transaction.seller_id;
+      var transaction = [];
 
-        if (checkSeller === null) {
-          axios.put("transaction/" + trans.id, {
-            seller: this.seller.seller_id
-          }).then(function (response) {
+      if (confirm("Are you sure?")) {
+        axios.get("transaction/" + trans.id).then(function (response) {
+          transaction = response.data;
+          var checkSeller = transaction.seller_id;
+          console.log(checkSeller);
+
+          if (checkSeller === null) {
+            axios.put("transaction/" + trans.id, {
+              seller: _this3.seller.seller_id
+            }).then(function (response) {
+              _this3.getListTransaction();
+            })["catch"](function (error) {
+              _this3.errors = error.response.data.errors.name;
+            });
+
+            _this3.sendMail(trans);
+          } else {
+            alert("Can not Get. This bill has been assigned.");
+
             _this3.getListTransaction();
-          })["catch"](function (error) {
-            _this3.errors = error.response.data.errors.name;
-          });
-        } else {
-          alert('Can not Get. This bill has been assigned.');
-          this.getListTransaction();
-        }
+          }
+        })["catch"](function (error) {
+          _this3.errors = error.response.data.errors.name;
+        });
       }
     },
     sortTable: function sortTable(col, sortable) {
@@ -41442,7 +41462,8 @@ var render = function() {
                                             value: {
                                               seller_id: best.seller_id,
                                               seller_name:
-                                                best.managers.full_name
+                                                best.managers.full_name,
+                                              seller_email: best.managers.email
                                             }
                                           }
                                         },
@@ -41474,7 +41495,8 @@ var render = function() {
                                           domProps: {
                                             value: {
                                               seller_id: long.id,
-                                              seller_name: long.full_name
+                                              seller_name: long.full_name,
+                                              seller_email: long.email
                                             }
                                           }
                                         },
@@ -53979,6 +54001,7 @@ Vue.component('transaction-manager', __webpack_require__(/*! ./components/Transa
 Vue.prototype.$userRole = document.querySelector("meta[name='user_role']").getAttribute('content');
 Vue.prototype.$userId = document.querySelector("meta[name='user_id']").getAttribute('content');
 Vue.prototype.$userName = document.querySelector("meta[name='user_name']").getAttribute('content');
+Vue.prototype.$userEmail = document.querySelector("meta[name='user_email']").getAttribute('content');
 
 Vue.filter('formatDate', function (value) {
   if (value) {
