@@ -53,7 +53,8 @@ class TransactionController extends Controller
      */
     public function show($id)
     {
-        //
+        $bill = Bill::find($id);
+        return json_encode($bill);
     }
 
     /**
