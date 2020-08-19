@@ -16,7 +16,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $trans = Bill::with(['users', 'managers'])->get();
+        $trans = Bill::with(['users', 'managers'])->orderBy('created_at', 'desc')->get();
         $sellers_long = Manager::where('role', 0)->orderBy('created_at', 'desc')->take(5)->get();
         $sellers_best = Bill::with('managers')->whereNotNull('seller_id')->groupBy('seller_id') ->select( DB::raw('seller_id , COUNT(*) as seller_count') )->limit(5)->get();
         $trans_data = array("trans" => $trans, "long" => $sellers_long, "best" => $sellers_best);
