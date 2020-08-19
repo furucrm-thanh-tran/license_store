@@ -2315,7 +2315,6 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return this.list_transaction.trans.filter(function (trans) {
-        var search;
         return String(trans.id).toLowerCase().includes(_this4.search.toLowerCase()) || String(trans.users.full_name).toLowerCase().includes(_this4.search.trim().toLowerCase());
       });
     }

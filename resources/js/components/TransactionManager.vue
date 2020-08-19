@@ -355,7 +355,6 @@ export default {
                 return;
             }
             return this.list_transaction.trans.filter(trans => {
-                var search;
                 return (
                     String(trans.id)
                         .toLowerCase()
