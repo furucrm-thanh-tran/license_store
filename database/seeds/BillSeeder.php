@@ -61,5 +61,23 @@ class BillSeeder extends Seeder
             'updated_at' => '2020-08-04 10:46:57',
 
         ]);
+
+        DB::table('bills')->insert([
+            'total_money' => '2500.00',
+            'status' => NULL,
+            'user_id' => '1',
+            'seller_id' => NULL,
+            'created_at' => '2020-08-13 09:40:58',
+            'updated_at' => '2020-08-17 13:11:14',
+        ]);
+
+        DB::table('bills')->insert([
+            'total_money' => '3500.00',
+            'status' => NULL,
+            'user_id' => '1',
+            'seller_id' => NULL,
+            'created_at' => '2020-08-13 12:47:51',
+            'updated_at' => '2020-08-18 15:39:21',
+        ]);
     }
 }
