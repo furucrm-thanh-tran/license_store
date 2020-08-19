@@ -50,10 +50,13 @@ Route::post('create_bill', 'HomeController@create_bill')->name('create_bill');
 Route::get('list_bills/{id}', 'HomeController@list_bills')->name('list_bills');
 Route::get('bill_detail/{id}', 'HomeController@bill_detail')->name('bill_detail');
 // Route::get('bill_detail/{id}','HomeController@bill_detail')->name('bill_detail');
-Route::post('list_bills/feedback/add','HomeController@feedback_add');
-Route::get('feedback_index','HomeController@feedback_index');
+Route::post('list_bills/feedback/add', 'HomeController@feedback_add');
+Route::get('feedback_index', 'HomeController@feedback_index');
 
 // End customer route}}}}}}}}}}}}}}}}}}}}
+
+Route::get('/frm_check_mail', 'CustomerController@frm_check_mail');
+Route::get('/check_mail', 'CustomerController@check_mail')->name('check_mail');
 
 // Manager routes
 Route::prefix('manager')->group(function () {
@@ -102,15 +105,13 @@ Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::get('profile/{id}/edit', 'SellerController@edit');
 
     Route::get('/seller_send_mail', 'Seller\CustomerManagerController@seller_send_mail');
-    Route::get('/frm_check_mail', 'CustomerController@frm_check_mail');
-    Route::get('/check_mail', 'CustomerController@check_mail')->name('check_mail');
-    
+
     Route::resource('/customermanager', 'Seller\CustomerManagerController');
-    Route::resource('/bill','BillController');
+    Route::resource('/bill', 'BillController');
 
     Route::get('/bill/detail/{id}', 'ManagerController@billDetail')->name('seller.bill-detail');
 
     Route::resource('/feedback', 'FeedbackController');
 });
 
-Route::get('test','HomeController@test');
+Route::get('test', 'HomeController@test');

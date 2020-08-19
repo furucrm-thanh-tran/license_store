@@ -14,11 +14,6 @@ class AdminController extends Controller
         $this->middleware('auth:manager');
     }
 
-    public function sellerManager()
-    {
-        return view('admin.seller_manager');
-    }
-
     public function transactionManager()
     {
         $transactions = Bill::with(['users', 'managers'])->get();
@@ -35,11 +30,6 @@ class AdminController extends Controller
         return response([
             'bill' => $bill
         ], 200);
-    }
-
-    public function productManager()
-    {
-        return view('admin.product_manager');
     }
 
     public function showProfile()

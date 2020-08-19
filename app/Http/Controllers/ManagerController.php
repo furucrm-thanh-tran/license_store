@@ -35,9 +35,4 @@ class ManagerController extends Controller
         // return view('bill-detail', ['list' => json_encode($list)]);
         // return $list;
     }
-
-    public function licenseKey()
-    {
-        return view('admin.license-key');
-    }
 }
