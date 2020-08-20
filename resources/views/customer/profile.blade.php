@@ -1,4 +1,22 @@
 @extends('layouts.master')
+@section('style')
+    <style>
+        .profile-left span {
+            font-size: 13px;
+        }
+
+        .text3d {
+            color: #70869d;
+            letter-spacing: .15em;
+            text-shadow:
+                -1px -1px 1px #efede3,
+                0px 1px 0 #2e2e2e,
+                2px 0px 35px rgba(0, 0, 0, 0.9);
+        }
+
+    </style>
+
+@endsection
 @section('content')
     <!-- The Edit Profile -->
     <div class="modal fade" id="editProfile">
@@ -108,33 +126,32 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
-                <div class="osahan-account-page-left shadow-sm bg-white h-100">
-                    <div class="border-bottom p-4">
-                        <div class="osahan-user text-center">
-                            <div class="osahan-user-media">
-                                <div class="osahan-user-media-body">
-                                    <h6 class="mb-2">{{ Auth::user()->full_name }}</h6>
-                                    <p class="mb-1">{{ Auth::user()->phone }}</p>
-                                    <p>{{ Auth::user()->email }}</p>
-                                    <p class="mb-0 text-black font-weight-bold"><a class="text-primary mr-3"
-                                            data-toggle="modal" data-target="#editProfile" href="#">EDIT</a></p>
-                                </div>
-                            </div>
-                        </div>
+            <div class="col-lg-4 mb-3">
+                <div class="profile-left shadow-sm bg-white">
+                    <div class="border-bottom p-4 overflow-hidden">
+                        <h4><i class="fa fa-user-secret fa-3x"></i> {{ Auth::user()->full_name }}</h4>
+                        <p>
+                            <span><i class="fa fa-phone"></i> {{ Auth::user()->phone }}</span><br>
+                            <span><i class="fa fa-envelope"></i> {{ Auth::user()->email }}</span>
+                            <br />
+                        </p>
+                        <p class="mb-0 text-black font-weight-bold"><a class="text-primary mr-3" data-toggle="modal"
+                                data-target="#editProfile" href="#">EDIT</a></p>
                     </div>
                     <a class="nav-link active" id="list_bills" href="{{ route('list_bills', Auth::user()->id) }}">Purchase
                         History</a>
 
                 </div>
+
             </div>
-            <div class="col-md-9">
+            <div class="col-lg-8">
                 <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade active show" id="payments" role="tabpanel" aria-labelledby="payments-tab">
-                            <div class="row">
-                                <h4 class="font-weight-bold mt-0 mb-4 col-7">Payments</h4>
-                                <a href="{{ url('/frm_insertcard') }}" class="font-weight-bold">Add payment card</a>
+                            <div class="row align-items-center justify-content-between mb-3">
+                                <h4 class="">Payments</h4>
+                                <a href="{{ url('/frm_insertcard') }}" class="btn btn-primary"><i class="fa fa-plus"></i>
+                                    Add card</a>
                             </div>
                             {{-- --SESSION ERORR-- --}}
                             @if (session('status'))
@@ -146,14 +163,18 @@
                             <div class="row">
                                 @foreach ($data as $p)
                                     <div class="col-md-6">
-                                        <div class="bg-white card payments-item mb-4 shadow-sm">
+                                        <div class="card payments-item mb-4 shadow"
+                                            style="background-image: linear-gradient(141deg, #2cb5e8 10%, #1fc8db 51%, #9fb8ad 100%); border-radius: 10px;">
                                             <div class="gold-members p-4">
                                                 <div class="media">
                                                     <div class="media-body">
-                                                        <i class="fa fa-cc-visa fa-4x"></i>
-                                                        <h6 id="card_number" class="mb-1">**** **** ****
+                                                        <p><i class="fab fa-cc-visa fa-3x text-white"></i></p>
+                                                        <h6 id="card_number" class="mb-1 text3d" style="font-size: 18px">**** **** ****
                                                             {{ $p->number_card }}</h6>
-                                                        <p>CVC:***<br>VALID TILL: **/****</p>
+                                                        <p style="font-size: 15px">
+                                                            <span class="text-white"><b>CVC:</b></span> ***<br>
+                                                            <span class="text-white"><b>VALID TILL:</b></span> **/****
+                                                        </p>
                                                         <p class="mb-0 text-black font-weight-bold">
                                                             <a class="text-danger"
                                                                 onclick="return confirm('Are you sure ???');"

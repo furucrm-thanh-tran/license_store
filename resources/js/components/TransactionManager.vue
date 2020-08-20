@@ -378,7 +378,7 @@ export default {
                 return (
                     String(trans.id)
                         .toLowerCase()
-                        .includes(this.search.toLowerCase()) ||
+                        .includes(this.search.trim().toLowerCase()) ||
                     String(trans.users.full_name)
                         .toLowerCase()
                         .includes(this.search.trim().toLowerCase())
