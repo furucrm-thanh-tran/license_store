@@ -54,7 +54,7 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <img src="{{ $p->icon_pro }}" alt="" class="mx-auto d-block img-thumbnail img-fluid">
+                        <img src="{{ $p->icon_pro }}" alt="" class="mx-auto d-block img-thumbnail img-fluid"  style="width:100%">
                         <div class="caption mt-3">
                             <h5 class="pull-right">${{ $p->price_license }}</h5>
                             <h4>{{ $p->name_pro }}</h6>
@@ -173,7 +173,7 @@
         }
 
         function filtedList() {
-            var value = $("#search").val().toLowerCase();
+            var value = $("#search").val().trim().toLowerCase();
             $(".list_pro .sort").filter(function() {
                 $(this).toggle($(this).data("name").toLowerCase().indexOf(value) > -1)
             });

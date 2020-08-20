@@ -1,16 +1,13 @@
 @extends('layouts.master')
 @section('content')
     {{-- Insert payment card --}}
-    <div class="container row">
-        <div class="col-3">
-
-        </div>
-        <div class="card col-6">
-            <div class="card-title col-12 mt-3">
-                <h3 class="panel-title display-td">Payment Details</h3>
-                <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
-            </div>
+    <div class="row justify-content-center">
+        <div class="card w-md-50">
             <div class="card-body">
+                <div class="card-title mt-3">
+                    <h3>Payment Details</h3>
+                    <img class="img-responsive pull-right" src="http://i76.imgup.net/accepted_c22e0.png">
+                </div>
                 <form role="form" action="{{ route('insertcard', Auth::user()->id) }}" class="require-validation"
                     data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_DEVICE_NAME') }}" id="payment-form">
                     @csrf
@@ -69,9 +66,6 @@
                     </div>
                 </form>
             </div>
-        </div>
-        <div class="col-3">
-
         </div>
     </div>
 
