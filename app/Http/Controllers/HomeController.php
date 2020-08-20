@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HttpException;
 use Illuminate\Http\Request;
 use App\payment;
 use App\Bill;
@@ -42,16 +43,8 @@ class HomeController extends Controller
         $product = Product::all();
         return view('home')->with('product', $product);
     }
-    function fetch_icon($icon_id)
-    {
-        $icon = Product::findOrFail($icon_id);
 
-        $icon_file = Image::make($icon->icon_pro);
-
-        $response = Response::make($icon_file->encode('jpeg'));
-        return $response;
-    }
-
+// Profile
     public function frm_insertcard()
     {
         return view('customer.insert_card');
@@ -120,32 +113,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function shopping_cart(Request $request)
-    {
-        $id = Auth::user()->id;
-        Cart::restore($id);
-        $cart = Cart::content();
-        $data = payment::where('user_id', '=', $id)
-            ->select(DB::raw('RIGHT(number_card,4) as number_card'))->get();
-        return view('customer.shopping_cart')->with([
-            'data' => $data,
-            'cart' => $cart
-        ]);
-
-    }
-    public function upd_cart_item(Request $request)
-    {
-        $id = $request->id;
-        $qty = $request->qty;
-        $rowId = $id;
-        Cart::update($rowId, $qty);
-    }
-    public function del_cart_item(Request $request)
-    {
-        $id = $request->id;
-        $rowId = $id;
-        Cart::remove($rowId);
-    }
+// Cart----=-=========
     public function create_bill(Request $request)
     {
         $card_number = $request->card_number;
@@ -193,11 +161,12 @@ class HomeController extends Controller
                 'date' => $bill->created_at,
                 'card' => $card_number,
                 'status' => $Scharge->outcome->seller_message,
-                'email' => $user_email
+                'email' => $user_email,
+                'bill_detail' => Cart::content()
             ];
-            Cart::destroy();
-            Cart::erase($user_id);
+
             dispatch(new SendCusEmail($details));
+            Cart::destroy();
             return response()->json([
                 'success' => $Scharge->outcome->seller_message
             ]);
@@ -229,14 +198,16 @@ class HomeController extends Controller
             return "e5";
         } catch (Exception $e) {
             return response()->json([
-                'success' => "Error !!!$e"
+                'success' => "Card is empty !!!!"
             ]);
         }
     }
 
-    public function list_bills($id)
+// Bills ======= = = = = = == =
+    public function list_bills()
     {
-        $bill = Bill::with('bill__products:id,amount_licenses,pro_id,bill_id', 'products:name_pro,price_license')->where('user_id', $id)->get();
+        $id = Auth::user()->id;
+        $bill = Bill::where('user_id', $id)->with('managers')->get();
         return view('customer.cus_list_bills')->with('bill', $bill);
     }
 
@@ -263,21 +234,10 @@ class HomeController extends Controller
         ]);
     }
 
-    public function feedback_index(){
+    public function feedback_index()
+    {
         $user_id = Auth::user()->id;
-        $data = Feedback::find($user_id)->get();
+        $data = Feedback::where('user_id', $user_id)->with(['managers', 'users'])->get();
         return view('customer.cus_feedback')->with('data', $data);
-    }
-    public function test(){
-
-        $user= Auth::user()->id;
-        // Cart::store($user);
-        // Cart::restore($user);
-        // Cart::erase($user);
-        // To store a cart instance named 'wishlist'
-        // Cart::instance('wishlist')->store($user);
-        $data = Cart::content();
-        // $data=Cart::instance('username')->merge('savedcart');
-        return $data;
     }
 }

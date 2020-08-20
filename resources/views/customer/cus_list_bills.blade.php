@@ -9,6 +9,7 @@
                     <th>Bill ID</th>
                     <th>Price Total</th>
                     <th>Date</th>
+                    <th>Seller Name</th>
                     <th>Option</th>
                 </tr>
                 @foreach ($bill as $b)
@@ -16,6 +17,11 @@
                         <td>{{ $b->id }}</td>
                         <td>${{ $b->total_money }}</td>
                         <td>{{ $b->created_at }}</td>
+                        @if($b->seller_id != null)
+                            <td>{{ $b->managers->full_name }}</td>
+                        @else
+                            <td></td>
+                        @endif
                         <td>
                             <a class="bill_detail" href="{{ route('bill_detail', $b->id) }}">Detail</a>
                             /
@@ -64,7 +70,6 @@
 @endsection
 
 @section('script')
-
     <script>
         $.ajaxSetup({
             headers: {
@@ -86,14 +91,6 @@
                     console.log(datalist_seller[i]);
                 }
             }
-
-
-            // if (check_seller == undefined){
-            //     console.log("null");
-            // }else{
-            //     console.log(check_seller);
-            // }
-
 
         });
 
@@ -125,12 +122,8 @@
                     }
                     // console.log(id+exp_month+exp_year);
                 });
-
             })
-
-
         });
-
     </script>
 
 @endsection

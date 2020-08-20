@@ -92,6 +92,7 @@
             </div>
         @endforeach
     </div>
+<a class="cart-btn btn-success text-white" href="/shoppingcart"><i class="fa fa-shopping-cart "></i> <span class="badge badge-light" id="cart_count">{{Cart::count()}}</span></a>
 @endsection
 
 @section('script')
@@ -143,8 +144,10 @@
                     "qty": qty
                 },
                 success: function(data) {
-                    console.log(data.id + " "+data.name+" "+data.price+" "+data.qty);
+                    console.log(data.id + " " + data.name + " " + data.price + " " + data.qty+" "+data.cart_count);
+                    document.getElementById("cart_count").innerHTML =data.cart_count;
                 }
+
             });
         });
 

@@ -8,18 +8,19 @@
                     <th>Title</th>
                     <th>Description</th>
                     <th>Answer</th>
-                    <th>Answer Seller</th>
+                    <th>Seller</th>
                     <th>Answer at</th>
                 </tr>
-                @foreach ($data as $d)
+                    @foreach ($data as $d)
                     <tr>
                         <td>{{ $d->title }}</td>
                         <td>{{ $d->description }}</td>
                         <td>{{ $d->answer }}</td>
-                        <td>{{ $d->seller_id }}</td>
+                        <td>{{ $d->managers->full_name }}</td>
                         <td>{{ $d->created_at }}</td>
                     </tr>
                 @endforeach
+
             </table>
         </div>
     </div>

@@ -59,10 +59,16 @@
                             <div class="col-12">
                                     {{-- route payment_profile --}}
                                     <select class="form-control"  id="card_number" name="card_number">
-                                        <option>Choose Card !!!!</option>
-                                        @foreach($data as $p)
-                                            <option data-id="{{$p->id}}" value="{{$p->number_card}}">**** **** **** {{$p->number_card}}</option>
-                                        @endforeach
+                                        <option value="null">Choose Card !!!!</option>
+                                        @if ($data == null){
+                                            {{-- data == null --}}
+                                        }
+                                        @else{
+                                            @foreach($data as $p)
+                                                <option data-id="{{$p->id}}" value="{{$p->number_card}}">**** **** **** {{$p->number_card}}</option>
+                                            @endforeach
+                                        }
+                                        @endif
                                     </select>
                                         @if (Session::has('erorr'))
                                             <div class="alert alert-danger alert-dismissible col-12">
@@ -79,9 +85,26 @@
         </div>
     </form>
 </div>
+<!-- The Modal Confirm -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header m-auto">
+                <h5 class="modal-title">Do you already have an account ?</h5>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer m-auto">
+                <a href="/login" type="button" class="btn btn-success" >I have</a>
+                <a href="/register" type="button" class="btn btn-danger">I don't</a>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('script')
+    {{-- Delete Cart Item --}}
     <script>
         $(".remove_item").click(function(){
             var id = $(this).data("id");
@@ -107,10 +130,7 @@
         });
     </script>
 
-
-
-
-
+    {{-- Update Cart item --}}
     <script type = "text/javascript">
     $.ajaxSetup({
                     headers: {
@@ -118,14 +138,27 @@
                     }
                 });
         $(".get_item").click(function(){
-
             var datalist_id = $(".remove_item").map(function() {
                 return $(this).data("id");
             }).get();
             var get_qty = document.getElementsByTagName("input");
             var i = 0;
-
-            for(i=0; i<datalist_id.length; i++){
+            var user_name = document.getElementById("navbarDropdown");
+            if(user_name == null){
+                for(i=0; i<datalist_id.length; i++){
+                id=datalist_id[i];
+                qty=get_qty[i].value;
+                $.ajax({
+                    url: "cart/update",
+                    type: 'PUT',
+                    data: {
+                        "id": id,
+                        "qty": qty,
+                    },
+                });
+            };
+            }else{
+                for(i=0; i<datalist_id.length; i++){
                 id=datalist_id[i];
                 qty=get_qty[i+1].value;
                 $.ajax({
@@ -137,31 +170,36 @@
                     },
                 });
             };
+            }
             alert('Record has been update successfully !!!!');
         });
     </script>
 
-    {{-- Billl --}}
-
+    {{-- Create Billl --}}
     <script>
         $(".action_payment").click(function(e){
-        e.preventDefault();
-        var card_number = document.getElementById("card_number").value
-        $.ajax({
+            e.preventDefault();
+            var card_number = document.getElementById("card_number").value
+            var user_name = document.getElementById("navbarDropdown")
+            if(card_number == "null" && user_name == null){
+                $('#myModal').modal('show');
+            }else{
+                $.ajax({
                     url: "create_bill",
                     type: 'POST',
                     data: {
                         "card_number":card_number,
                     },
                     success:function(data){
-                    console.log(data);
-                    alert(data.success);
-                    location.reload();
-                }
+                        console.log(data);
+                        alert(data.success);
+                        location.reload();
+                    }
 
                 });
+            }
+        });
 
-    });
     </script>
 
     <script>
@@ -179,9 +217,9 @@
     </script>
 
     <script>
-        $("#amount").click(function(){
-            document.getElementById("amount").disabled = true;
-        })
+        // $("#amount").click(function(){
+        //     document.getElementById("amount").disabled = true;
+        // })
     </script>
 
 @endsection

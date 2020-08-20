@@ -12,16 +12,19 @@
     <title>@yield('title')</title>
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <style>
-         .panel-title {
-        display: inline;
-        font-weight: bold;
+        .panel-title {
+            display: inline;
+            font-weight: bold;
         }
+
         .display-table {
             display: table;
         }
+
         .display-tr {
             display: table-row;
         }
+
         .display-td {
             display: table-cell;
             vertical-align: middle;
@@ -30,8 +33,25 @@
 
         .null_seller {
             pointer-events: none;
-            cursor: default
+            cursor: default;
+            color: black;
         }
+
+        .cart-btn {
+            position: fixed;
+            bottom: 50px;
+            right: 30px;
+            z-index: 99;
+            font-size: 20px;
+            border: none;
+            outline: none;
+            background-color: red;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
 
     </style>
     <!-- Bootstrap core CSS -->
@@ -44,11 +64,16 @@
 <body style="background-color: #e2e8f0;">
 
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-        <a class="navbar-brand mr-md-auto" href="/home">License Store</a>
+        @guest
+            <a class="navbar-brand mr-md-auto" href="/">License Store</a>
+            @else
+                <a class="navbar-brand mr-md-auto" href="/home">Home</a>
+        @endguest
+
         <nav class="nav navbar my-2 my-md-0 mr-md-3">
-            <a class="p-2 text-dark" href="#">Features</a>
+            <a class="p-2 text-dark" href="{{route('list_bills')}}">History</a>
             <a class="p-2 text-dark" href="/feedback_index">Q&A</a>
-            <a class="p-2 text-dark" href="{{ route('cart')}}"><i class="fa fa-shopping-cart"></i> Cart</a>
+            <a class="p-2 text-dark" href="{{ route('cart') }}"><i class="fa fa-shopping-cart"></i> Cart</a>
             @guest
                 <a class="nav-link" href="{{ route('login') }}">Login</a>
             @else
@@ -61,7 +86,7 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('profile') }}">Profile</a>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                                 document.getElementById('logout-form').submit();">
+                                                                         document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
                         </a>
 
@@ -107,6 +132,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     @yield('script')
 </body>
 

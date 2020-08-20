@@ -8,9 +8,7 @@ use App\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
-use App\Jobs\SendSellerEmail;
 use Exception;
-use PhpOption\None;
 use Cart;
 use Illuminate\Support\Facades\DB;
 
@@ -32,33 +30,51 @@ class CustomerController extends Controller
         $product = product::all();
         return view('index')->with('product', $product);
     }
-    public function email()
-    {
-        return view('emails.SendMail');
-    }
     public function insert_view(Request $request)
     {
         $id = $request->id;
         $product = Product::find($id);
         $view = $product->view;
-        $product->view = $view+1;
+        $product->view = $view + 1;
         $product->save();
         $newview = $product->view;
         return response::make($newview);
     }
 
-    public function frm_check_mail(){
+    public function frm_check_mail()
+    {
         return view('customer.cus_check_mail');
     }
-    public function check_mail(Request $request){
+    public function check_mail(Request $request)
+    {
         $email = $request->email;
-        $data = User::where('email',$email)->first();
-        if ($data!=null){
+        $data = User::where('email', $email)->first();
+        if ($data != null) {
             return view('auth.login');
-        }else{
+        } else {
             return view('auth.register');
         }
-
+    }
+    public function shopping_cart(Request $request)
+    {
+        try {
+            $id = Auth::user()->id;
+            // Cart::restore($id);
+            $cart = Cart::content();
+            $data = payment::where('user_id', '=', $id)
+                ->select(DB::raw('RIGHT(number_card,4) as number_card'))->get();
+            return view('customer.shopping_cart')->with([
+                'data' => $data,
+                'cart' => $cart
+            ]);
+        } catch (Exception $e) {
+            $cart = Cart::content();
+            $data = null;
+            return view('customer.shopping_cart')->with([
+                'data' => $data,
+                'cart' => $cart
+            ]);
+        }
     }
     public function add_cart_item(Request $request)
     {
@@ -67,18 +83,35 @@ class CustomerController extends Controller
         $qty = $request->qty;
         $price = $request->price;
         $data = Cart::add($id, $name, $qty, $price);
+        $cart_count = Cart::count();
         return response()->json([
             'id' => $id,
             'name' => $name,
             'qty' => $qty,
-            'price' => $price
+            'price' => $price,
+            'cart_count' => $cart_count
         ]);
     }
-    public function test(){
-        $data = Cart::content();
-        $cart = Cart::get("027c91341fd5cf4d2579b49c4b6a90da");
-        return $cart;
+
+    public function upd_cart_item(Request $request)
+    {
+        $id = $request->id;
+        $qty = $request->qty;
+        $rowId = $id;
+        Cart::update($rowId, $qty);
     }
+    public function del_cart_item(Request $request)
+    {
+        $id = $request->id;
+        $rowId = $id;
+        Cart::remove($rowId);
+    }
+    // public function test()
+    // {
+    //     $data = Cart::content();
+    //     $cart = Cart::get("027c91341fd5cf4d2579b49c4b6a90da");
+    //     return $cart;
+    // }
 
     // public function shopping_cart(Request $request)
     // {

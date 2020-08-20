@@ -16,43 +16,29 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', 'CustomerController@index');
-Route::get('fetch_icon/{id}', 'CustomerController@fetch_icon');
-
-// Route::get('/welcome', function () {
-//     return view('welcome');
-// });
-
 Auth::routes();
 
 // Customer routes}}}}}}}}}}}}}}}}}}}}}}}
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home_new', 'CustomerController@index_new');
-Route::get('/home_update', 'CustomerController@index_update');
-Route::get('/home_view', 'CustomerController@index_view');
-Route::get('/home_buy', 'CustomerController@index_buy');
 Route::get('/insert_view', 'CustomerController@insert_view');
 // profile
-Route::get('/profile', 'HomeController@profile')->name('profile');
-
 Route::get('/frm_insertcard', 'HomeController@frm_insertcard')->name('frm_insertcard');
 Route::get('/insertcard/{id}', 'HomeController@insertcard')->name('insertcard');
+Route::get('/profile', 'HomeController@profile')->name('profile');
 Route::get('card/{id}', 'HomeController@paymentprofile_delete')->name('del_card_item');
 Route::post('card/edit', 'HomeController@paymentprofile_edit')->name('edit_card_item');
-
 // cart
-Route::get('shoppingcart', 'HomeController@shopping_cart')->name('cart');
-Route::get('cart/delete', 'HomeController@del_cart_item')->name('del_cart_item');
-Route::put('cart/update', 'HomeController@upd_cart_item')->name('upd_cart_item');
-Route::post('cart/add', 'CustomerController@add_cart_item')->name('add_cart_item');
-Route::get('info_cus/{id}', 'CustomerController@edit_info_cus')->name('edit_info_cus');
 Route::post('create_bill', 'HomeController@create_bill')->name('create_bill');
+Route::get('info_cus/{id}', 'CustomerController@edit_info_cus')->name('edit_info_cus');
+Route::get('shoppingcart', 'CustomerController@shopping_cart')->name('cart');
+Route::get('cart/delete', 'CustomerController@del_cart_item')->name('del_cart_item');
+Route::put('cart/update', 'CustomerController@upd_cart_item')->name('upd_cart_item');
+Route::post('cart/add', 'CustomerController@add_cart_item')->name('add_cart_item');
 /// Bill
-Route::get('list_bills/{id}', 'HomeController@list_bills')->name('list_bills');
+Route::get('list_bills', 'HomeController@list_bills')->name('list_bills');
 Route::get('bill_detail/{id}', 'HomeController@bill_detail')->name('bill_detail');
-// Route::get('bill_detail/{id}','HomeController@bill_detail')->name('bill_detail');
 Route::post('list_bills/feedback/add','HomeController@feedback_add');
 Route::get('feedback_index','HomeController@feedback_index');
-
 // End customer route}}}}}}}}}}}}}}}}}}}}
 
 // Manager routes
@@ -104,7 +90,7 @@ Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::get('/seller_send_mail', 'Seller\CustomerManagerController@seller_send_mail');
     Route::get('/frm_check_mail', 'CustomerController@frm_check_mail');
     Route::get('/check_mail', 'CustomerController@check_mail')->name('check_mail');
-    
+
     Route::resource('/customermanager', 'Seller\CustomerManagerController');
     Route::resource('/bill','BillController');
 
@@ -113,4 +99,3 @@ Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::resource('/feedback', 'FeedbackController');
 });
 
-Route::get('test','HomeController@test');

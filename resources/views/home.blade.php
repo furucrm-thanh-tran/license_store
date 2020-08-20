@@ -88,37 +88,20 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         @endforeach
     </div>
+<a class="cart-btn btn-success text-white" href="/shoppingcart"><i class="fa fa-shopping-cart "></i> <span class="badge badge-light" id="cart_count">{{Cart::count()}}</span></a>
 @endsection
 
 @section('script')
 
     <script>
-        $(".add_to_card").click(function() {
-            var id = $(this).data("id");
-            var name = $(this).data("name");
-            var price = $(this).data("price");
-            var qty = $(this).data("qty");
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: "cart/add",
-                type: 'POST',
-                data: {
-                    "id": id,
-                    "name": name,
-                    "price": price,
-                    "qty": qty
-                },
-                success: function(data) {
-                    console.log("it work !!");
-                }
-            });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
 
         // ADD View//////////
@@ -135,6 +118,7 @@
                     document.getElementById(id).innerHTML = data;
                 }
             });
+            console.log(id);
             var name_pro = $(this).data("name_pro");
             var description_pro = $(this).data("description_pro");
             var icon_pro = $(this).data("icon_pro");
@@ -145,7 +129,32 @@
             document.getElementById("price").innerHTML = "$" + price_license;
         });
 
+        $(".add_to_card").click(function() {
+            var id = $(this).data("id");
+            var name = $(this).data("name");
+            var price = $(this).data("price");
+            var qty = $(this).data("qty");
+            $.ajax({
+                url: "cart/add",
+                type: 'POST',
+                data: {
+                    "id": id,
+                    "name": name,
+                    "price": price,
+                    "qty": qty
+                },
+                success: function(data) {
+                    console.log(data.id + " " + data.name + " " + data.price + " " + data.qty+" "+data.cart_count);
+                    document.getElementById("cart_count").innerHTML =data.cart_count;
+                }
+
+            });
+        });
+
+        /////Product Detail//////
+
     </script>
+
     <script>
         function sortList(col) {
             colv = col.split(".");

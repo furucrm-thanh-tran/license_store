@@ -5,7 +5,7 @@
     <style>
         table {
             border-collapse: collapse;
-            width: 100%;
+            width: 50%;
         }
 
         th,
@@ -46,17 +46,34 @@
                     <th>PAYMENT METHOD</th>
                 </tr>
                 <tr>
-                    {{-- <td>${{ $details['total'] }}</td>
-                    --}}
-                    {{-- <td>{{ $details['date'] }}</td> --}}
-                    {{-- <td>VISA - {{ $details['card'] }}</td>
-                    --}}
                     <td>${{ $details['total'] }}</td>
                     <td>{{ $details['date'] }}</td>
                     <td>VISA - {{ $details['card'] }}</td>
                 </tr>
+
             </table>
-            <h5>STATUS: {{ $details['status'] }}</h5>
+
+
+            <h4 style="color: gray;">BILL DETAIL</h4>
+            <table style="background-color: #f2f2f2">
+
+                <tr>
+                    <th>Name</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Line Total</th>
+                </tr>
+                    @foreach ($details['bill_detail'] as $row)
+                    <tr>
+                        <td>{{$row->name}}</td>
+                        <td>{{$row->qty}}</td>
+                        <td>${{$row->price}}</td>
+                        <td>${{$row->subtotal}}</td>
+                    </tr>
+                    @endforeach
+            </table>
+
+            <h4>STATUS: {{ $details['status'] }}</h4>
 
 
     </div>

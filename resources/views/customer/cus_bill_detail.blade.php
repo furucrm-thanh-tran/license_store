@@ -10,7 +10,7 @@
                 <th>Qty</th>
                 <th>Line Total</th>
             </tr>
-            @foreach ($data as $d)
+                @foreach ($data as $d)
                 <tr>
                     <td class="name">{{$d->products->name_pro}}</td>
                     <td class="price" >${{$d->products->price_license}}</td>
