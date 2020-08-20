@@ -52,6 +52,22 @@
             border-radius: 4px;
         }
 
+        .button {
+            /* border-radius: 4px; */
+            /* background-color: #f4511e; */
+            color: #FFFFFF;
+
+            /* font-size: 28px; */
+            padding: 20px;
+            /* width: 200px; */
+            transition: all 0.5s;
+            outline: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button:active{
+            transform: translateY(10px);
+        }
 
     </style>
     <!-- Bootstrap core CSS -->
@@ -66,12 +82,12 @@
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
         @guest
             <a class="navbar-brand mr-md-auto" href="/">License Store</a>
-            @else
-                <a class="navbar-brand mr-md-auto" href="/home">Home</a>
+        @else
+            <a class="navbar-brand mr-md-auto" href="/home">Home</a>
         @endguest
 
         <nav class="nav navbar my-2 my-md-0 mr-md-3">
-            <a class="p-2 text-dark" href="{{route('list_bills')}}">History</a>
+            <a class="p-2 text-dark" href="{{ route('list_bills') }}">History</a>
             <a class="p-2 text-dark" href="/feedback_index">Q&A</a>
             <a class="p-2 text-dark" href="{{ route('cart') }}"><i class="fa fa-shopping-cart"></i> Cart</a>
             @guest
@@ -85,8 +101,9 @@
 
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('profile') }}">Profile</a>
-                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                                         document.getElementById('logout-form').submit();">
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                                                                 document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
                         </a>
 
