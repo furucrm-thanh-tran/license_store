@@ -76,7 +76,9 @@
                                 </div>
                         </div>
                         <div class="mt-3 text-center">
-                            <a href="/login" class="add_to_card btn btn-primary"><i class="fa fa-shopping-cart"></i></a>
+                            <button class="add_to_card btn btn-primary" id="card_add" data-id="{{ $p->id }}"
+                                data-price="{{ $p->price_license }}" data-name="{{ $p->name_pro }}" data-qty="1"><i
+                                    class="fa fa-shopping-cart"></i></button>
                             <button name="{{ $p->id }}" class="btn btn-primary btn-view" data-toggle="modal"
                                 data-target="#viewProduct" data-view="{{ $p->view }}" data-id="{{ $p->id }}"
                                 data-name_pro="{{ $p->name_pro }}" data-description_pro="{{ $p->description_pro }}"
@@ -115,6 +117,7 @@
                     document.getElementById(id).innerHTML = data;
                 }
             });
+            console.log(id);
             var name_pro = $(this).data("name_pro");
             var description_pro = $(this).data("description_pro");
             var icon_pro = $(this).data("icon_pro");
@@ -130,8 +133,6 @@
             var name = $(this).data("name");
             var price = $(this).data("price");
             var qty = $(this).data("qty");
-            var i =Storage;
-            console.log(i);
             $.ajax({
                 url: "cart/add",
                 type: 'POST',
@@ -142,7 +143,7 @@
                     "qty": qty
                 },
                 success: function(data) {
-                    console.log("it Work");
+                    console.log(data.id + " "+data.name+" "+data.price+" "+data.qty);
                 }
             });
         });

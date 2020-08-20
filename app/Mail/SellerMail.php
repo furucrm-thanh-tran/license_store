@@ -29,6 +29,6 @@ class SellerMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Mail from FuruCRM Project 2')->view('emails.SellerMail');
+        return $this->subject('Product ads')->view('emails.SellerMail');
     }
 }

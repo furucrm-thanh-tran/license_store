@@ -7,19 +7,12 @@ use App\Manager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Jobs\SendAssigningEmail;
-use App\Jobs\SendCustomerEmail;
 
 class AdminController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth:manager');
-    }
-
-    public function sellerManager()
-    {
-        return view('admin.seller_manager');
     }
 
     public function transactionManager()
@@ -40,26 +33,8 @@ class AdminController extends Controller
         ], 200);
     }
 
-    public function productManager()
-    {
-        return view('admin.product_manager');
-    }
-
     public function showProfile()
     {
         return view('admin.profile');
-    }
-
-    public function admin_send_mail(Request $request){
-        $details = [
-            'customer_email' => $request->customer_email,
-            'customer_name' => $request->customer_name,
-            'seller_email'=> $request->seller_email,
-            'seller_name'=> $request->seller_name,
-            'bill_code' => $request->bill_code
-        ];
-        dispatch(new SendAssigningEmail($details));
-        dispatch(new SendCustomerEmail($details));
-        return response()->json('Send mail to '.$details['seller_email'].' and '.$details['customer_email'].' complete');
     }
 }

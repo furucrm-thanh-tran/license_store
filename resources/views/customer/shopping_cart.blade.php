@@ -19,7 +19,7 @@
                                         </tr>
                                     </thead>
                                         <tbody id="cart_product">
-                                            @foreach(Cart::content() as $row)
+                                            @foreach($cart as $row)
                                             <tr id="{{$row->rowId}}">
                                                 <td class="pro_id" data-id="{{$row->rowId}}"><?php echo $row->name; ?></td>
                                                 <td>
@@ -106,7 +106,9 @@
             });
         });
     </script>
-    {{-- end delete --}}
+
+
+
 
 
     <script type = "text/javascript">
@@ -158,7 +160,6 @@
                 }
 
                 });
-                console.log(user_id);
 
     });
     </script>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Bill;
+use App\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -67,15 +68,18 @@ class CustomerManagerController extends Controller
     }
 
     public function seller_send_mail(Request $request){
+        $product = Product::orderBy('created_at','desc')->take(3)->get(['name_pro', 'description_pro', 'price_license']);
         $user_email = $request->email;
         $seller_email = Auth::guard('manager')->user()->email;
         $details = [
-            'title' => 'New Product !!!!',
+            'title' => 'Advertise new products',
             'user_email' => $user_email,
             'seller_email'=>$seller_email,
+            'product' => $product,
             'link'=>'http://127.0.0.1:8000/frm_check_mail'
         ];
         dispatch(new SendSellerEmail($details));
+        // return $product;
         return response()->json('Send mail to '.$user_email .' complete');        
     }
 

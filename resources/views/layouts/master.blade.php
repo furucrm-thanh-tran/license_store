@@ -28,6 +28,11 @@
             width: 61%;
         }
 
+        .null_seller {
+            pointer-events: none;
+            cursor: default
+        }
+
     </style>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -42,7 +47,7 @@
         <a class="navbar-brand mr-md-auto" href="/home">License Store</a>
         <nav class="nav navbar my-2 my-md-0 mr-md-3">
             <a class="p-2 text-dark" href="#">Features</a>
-            <a class="p-2 text-dark" href="#">Enterprise</a>
+            <a class="p-2 text-dark" href="/feedback_index">Q&A</a>
             <a class="p-2 text-dark" href="{{ route('cart')}}"><i class="fa fa-shopping-cart"></i> Cart</a>
             @guest
                 <a class="nav-link" href="{{ route('login') }}">Login</a>

@@ -186,18 +186,6 @@
 @endsection
 
 @section('script')
-    {{-- <script>
-        $(document).ready(function() {
-            var n = $("h6");
-            var re = /(\w+)\s(\w+)\s(\w+)\s(\w+)/;
-            for (i = 0; i < n.length + 1; i++) {
-                var str = document.getElementsByTagName("h6")[i].innerHTML;
-                var newstr = str.replace(re, "$1 **** **** $4");
-                document.getElementsByTagName("h6")[i].innerHTML = newstr;
-            }
-        });
-
-    </script> --}}
 
     <script>
         function edit_card(card) {
