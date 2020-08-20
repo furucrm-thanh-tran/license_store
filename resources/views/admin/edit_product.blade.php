@@ -11,7 +11,6 @@
             <div class="card-header">{{ __('Update Product Information') }}</div>
 
             <form id="update_product" action="{{ route('product_manager.update', $product->id) }}" method="POST" enctype="multipart/form-data">
-                <!-- <input type="hidden" name="product_id" id="product_id" disabled> -->
                 @method('PATCH')
                 @csrf
                 <!-- Card body -->

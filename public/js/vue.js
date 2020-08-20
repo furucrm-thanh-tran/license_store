@@ -2132,6 +2132,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2143,8 +2158,10 @@ __webpack_require__.r(__webpack_exports__);
       user_role: this.$userRole,
       seller: {
         seller_id: this.$userId,
-        seller_name: this.$userName
+        seller_name: this.$userName,
+        seller_email: this.$userEmail
       },
+      transaction: [],
       errors: [],
       headerTable: [{
         name: "Code bill",
@@ -2198,16 +2215,49 @@ __webpack_require__.r(__webpack_exports__);
       // this.selectTransaction = { ...transaction }
       transaction.isAssign = !transaction.isAssign;
     },
-    updateTransaction: function updateTransaction(trans) {
+    sendMail: function sendMail(transaction) {
       var _this2 = this;
 
+      axios.post("admin_send_mail", {
+        customer_email: transaction.users.email,
+        customer_name: transaction.users.full_name,
+        seller_email: this.seller.seller_email,
+        seller_name: this.seller.seller_name,
+        bill_code: transaction.id
+      }).then(function (response) {
+        console.log(response.data);
+      })["catch"](function (error) {
+        _this2.error = error.response.data.errors;
+      });
+    },
+    updateTransaction: function updateTransaction(trans) {
+      var _this3 = this;
+
+      var transaction = [];
+
       if (confirm("Are you sure?")) {
-        axios.put("transaction/" + trans.id, {
-          seller: this.seller.seller_id
-        }).then(function (response) {
-          _this2.getListTransaction();
+        axios.get("transaction/" + trans.id).then(function (response) {
+          transaction = response.data;
+          var checkSeller = transaction.seller_id;
+          console.log(checkSeller);
+
+          if (checkSeller === null) {
+            axios.put("transaction/" + trans.id, {
+              seller: _this3.seller.seller_id
+            }).then(function (response) {
+              _this3.getListTransaction();
+            })["catch"](function (error) {
+              _this3.errors = error.response.data.errors.name;
+            });
+
+            _this3.sendMail(trans);
+          } else {
+            alert("Can not Get. This bill has been assigned.");
+
+            _this3.getListTransaction();
+          }
         })["catch"](function (error) {
-          _this2.errors = error.response.data.errors.name;
+          _this3.errors = error.response.data.errors.name;
         });
       }
     },
@@ -2278,15 +2328,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     filtedList: function filtedList() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (!this.list_transaction.trans) {
         return;
       }
 
       return this.list_transaction.trans.filter(function (trans) {
-        // this.currentPage = 1;
-        return String(trans.id).toLowerCase().includes(_this3.search.toLowerCase()) || String(trans.users.full_name).toLowerCase().includes(_this3.search.toLowerCase());
+        return String(trans.id).toLowerCase().includes(_this4.search.toLowerCase()) || String(trans.users.full_name).toLowerCase().includes(_this4.search.trim().toLowerCase());
       });
     }
   }
@@ -41283,9 +41332,9 @@ var render = function() {
                   },
                   [
                     _vm._v(
-                      "\n                    " +
+                      "\n                        " +
                         _vm._s(header.name) +
-                        "\n                    "
+                        "\n                        "
                     ),
                     header.col == _vm.sortColumn
                       ? _c("span", {
@@ -41306,9 +41355,9 @@ var render = function() {
               _vm._l(_vm.headerTable, function(header) {
                 return _c("th", { key: header.key }, [
                   _vm._v(
-                    "\n                    " +
+                    "\n                        " +
                       _vm._s(header.name) +
-                      "\n                "
+                      "\n                    "
                   )
                 ])
               }),
@@ -41332,9 +41381,9 @@ var render = function() {
                   trans.seller_id
                     ? _c("div", [
                         _vm._v(
-                          "\n                        " +
+                          "\n                            " +
                             _vm._s(trans.managers.full_name) +
-                            "\n                    "
+                            "\n                        "
                         )
                       ])
                     : _c("div", [
@@ -41413,7 +41462,8 @@ var render = function() {
                                             value: {
                                               seller_id: best.seller_id,
                                               seller_name:
-                                                best.managers.full_name
+                                                best.managers.full_name,
+                                              seller_email: best.managers.email
                                             }
                                           }
                                         },
@@ -41445,7 +41495,8 @@ var render = function() {
                                           domProps: {
                                             value: {
                                               seller_id: long.id,
-                                              seller_name: long.full_name
+                                              seller_name: long.full_name,
+                                              seller_email: long.email
                                             }
                                           }
                                         },
@@ -41494,7 +41545,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                            Assign\n                        "
+                                  "\n                                Assign\n                            "
                                 )
                               ]
                             )
@@ -41517,7 +41568,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                            Cancel\n                        "
+                                  "\n                                Cancel\n                            "
                                 )
                               ]
                             )
@@ -41537,7 +41588,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                            Get\n                        "
+                              "\n                                Get\n                            "
                             )
                           ]
                         )
@@ -41574,7 +41625,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n            Prev\n        ")]
+            [_vm._v("\n                Prev\n            ")]
           ),
           _vm._v(" "),
           _vm._l(_vm.num_pages(), function(i) {
@@ -41590,7 +41641,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("\n            " + _vm._s(i) + "\n        ")]
+              [_vm._v("\n                " + _vm._s(i) + "\n            ")]
             )
           }),
           _vm._v(" "),
@@ -41605,7 +41656,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n            Next\n        ")]
+            [_vm._v("\n                Next\n            ")]
           )
         ],
         2
@@ -53950,6 +54001,7 @@ Vue.component('transaction-manager', __webpack_require__(/*! ./components/Transa
 Vue.prototype.$userRole = document.querySelector("meta[name='user_role']").getAttribute('content');
 Vue.prototype.$userId = document.querySelector("meta[name='user_id']").getAttribute('content');
 Vue.prototype.$userName = document.querySelector("meta[name='user_name']").getAttribute('content');
+Vue.prototype.$userEmail = document.querySelector("meta[name='user_email']").getAttribute('content');
 
 Vue.filter('formatDate', function (value) {
   if (value) {

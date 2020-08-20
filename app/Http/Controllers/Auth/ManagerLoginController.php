@@ -10,6 +10,7 @@ class ManagerLoginController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('guest')->except('logout');
         $this->middleware('guest:manager')->except('logout');
     }
 
@@ -31,19 +32,18 @@ class ManagerLoginController extends Controller
             'password' => 'required|min:8'
         ]);
 
-        if(Auth::guard('manager')->attempt(['user_name' => $request->user_name, 'password' => $request->password], $request->remember))
-        {
+        if (Auth::guard('manager')->attempt(['user_name' => $request->user_name, 'password' => $request->password], $request->remember)) {
             if (Auth::guard('manager')->user()->role == 1) {
                 return redirect()->route('admin');
-            }else{
+            } else {
                 return redirect()->intended(route('seller'));
             }
-        }else{
+        } else {
             return redirect()->route('manager.login')
-                ->with('error','User Name or Password Are Wrong.');
+                ->with('error', 'User Name or Password Are Wrong.');
         }
 
         // if unsuccessful
-        return redirect()->back()->withInput($request->only('user_name','remember'));
+        return redirect()->back()->withInput($request->only('user_name', 'remember'));
     }
 }

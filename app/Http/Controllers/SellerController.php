@@ -12,17 +12,6 @@ class SellerController extends Controller
         $this->middleware('auth:manager');
     }
 
-    public function customerManager()
-    {
-        return view('seller.customer');
-    }
-
-
-    public function productManager()
-    {
-        return view('seller.product');
-    }
-
     public function transactionManager()
     {
         return view('seller.transaction');

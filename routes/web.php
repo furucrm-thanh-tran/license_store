@@ -41,6 +41,9 @@ Route::post('list_bills/feedback/add','HomeController@feedback_add');
 Route::get('feedback_index','HomeController@feedback_index');
 // End customer route}}}}}}}}}}}}}}}}}}}}
 
+Route::get('/frm_check_mail', 'CustomerController@frm_check_mail');
+Route::get('/check_mail', 'CustomerController@check_mail')->name('check_mail');
+
 // Manager routes
 Route::prefix('manager')->group(function () {
     Route::get('/login', 'Auth\ManagerLoginController@showLoginForm')->name('manager.login');
@@ -62,6 +65,8 @@ Route::prefix('admin')->middleware('is_admin')->group(function () {
     Route::get('/bill/detail/{id}', 'ManagerController@billDetail')->name('admin.bill-detail');
     Route::post('/transactionmanager/{id}', 'AdminController@updateTransaction');
     Route::resource('/transaction', 'TransactionController');
+
+    Route::post('/admin_send_mail', 'TransactionController@send_mail');
 });
 
 //Licenses
@@ -88,14 +93,14 @@ Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::get('profile/{id}/edit', 'SellerController@edit');
 
     Route::get('/seller_send_mail', 'Seller\CustomerManagerController@seller_send_mail');
-    Route::get('/frm_check_mail', 'CustomerController@frm_check_mail');
-    Route::get('/check_mail', 'CustomerController@check_mail')->name('check_mail');
 
     Route::resource('/customermanager', 'Seller\CustomerManagerController');
-    Route::resource('/bill','BillController');
+    Route::resource('/bill', 'BillController');
 
     Route::get('/bill/detail/{id}', 'ManagerController@billDetail')->name('seller.bill-detail');
 
     Route::resource('/feedback', 'FeedbackController');
+
+    Route::post('/admin_send_mail', 'TransactionController@send_mail');
 });
 

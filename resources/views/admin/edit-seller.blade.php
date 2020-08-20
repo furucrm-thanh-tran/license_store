@@ -1,17 +1,6 @@
 @extends('layouts.dashboard')
 @section('style')
-<!-- Custom styles for this page -->
-<!-- <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<style>
-    .table td {
-        vertical-align: middle;
-    }
 
-    td:last-child {
-        text-align: center
-    }
-</style> -->
 @endsection
 
 @section('content')
@@ -22,7 +11,6 @@
             <div class="card-header">{{ __('Update Seller Information') }}</div>
 
             <form id="update_seller" action="{{ route('seller_manager.update', $sellermanager->id) }}" method="POST">
-                <!-- <input type="hidden" name="seller_id" id="seller_id" disabled> -->
                 @method('PATCH')
                 @csrf
                 <!-- Card body -->

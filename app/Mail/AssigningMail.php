@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SellerMail extends Mailable
+class AssigningMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $details;
@@ -29,6 +29,6 @@ class SellerMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Product ads')->view('emails.SellerMail');
+        return $this->subject('[License Store Bill#'.$this->details['bill_code'].'] You a new Bill!!!')->view('emails.AssigningMail');
     }
 }

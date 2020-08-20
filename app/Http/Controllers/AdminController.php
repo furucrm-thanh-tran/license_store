@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Bill;
 use App\Manager;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -12,11 +13,6 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth:manager');
-    }
-
-    public function sellerManager()
-    {
-        return view('admin.seller_manager');
     }
 
     public function transactionManager()
@@ -35,11 +31,6 @@ class AdminController extends Controller
         return response([
             'bill' => $bill
         ], 200);
-    }
-
-    public function productManager()
-    {
-        return view('admin.product_manager');
     }
 
     public function showProfile()
