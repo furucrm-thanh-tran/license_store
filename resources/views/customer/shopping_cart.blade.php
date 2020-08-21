@@ -209,6 +209,11 @@
 
     {{-- Create Billl --}}
     <script>
+         $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
         $(".action_payment").click(function(e){
             e.preventDefault();
             document.getElementById("amount").disabled = true;

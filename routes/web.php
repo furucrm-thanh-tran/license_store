@@ -40,6 +40,7 @@ Route::get('list_bills', 'HomeController@list_bills')->name('list_bills');
 Route::get('bill_detail/{id}', 'HomeController@bill_detail')->name('bill_detail');
 Route::post('feedback/add','HomeController@feedback_add');
 Route::get('feedback_index','HomeController@feedback_index');
+Route::get('test','HomeController@test');
 // End customer route}}}}}}}}}}}}}}}}}}}}
 
 Route::get('/frm_check_mail', 'CustomerController@frm_check_mail');
