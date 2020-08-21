@@ -91,7 +91,6 @@ class BillController extends Controller
         ];
 
         dispatch(new SendLicenseEmail($details));
-        return redirect()->back();
 
         $bill = Bill::findOrFail($id);
         $bill->status = 1;
