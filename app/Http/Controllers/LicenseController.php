@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\License;
 use App\Bill;
+use App\View\Components\product;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -50,21 +51,32 @@ class LicenseController extends Controller
             'expiration_date' => ['required', 'after:activation_date'],
             'pro_id' => ['required'],
             'user_id' => ['required'],
+            'bill_id' => ['required'],
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }
 
-        License::create([
+        $product = Bill_Product::where([['bill_id', $request->bill_id], ['pro_id', $request->pro_id]])->first();
+        $license = License::where([['bill_id', $request->bill_id], ['pro_id', $request->pro_id]])->get();
+        $license_count = $license->count();
+        if ($license_count < $product->value('amount_licenses')) {
+            License::create([
             'product_key' => $request->product_key,
             'activation_date' => $request->activation_date,
             'expiration_date' => $request->expiration_date,
             'pro_id' => $request->pro_id,
             'user_id' => $request->user_id,
             'seller_id' => $request->seller_id,
+            'bill_id' => $request->bill_id,
         ]);
         return response()->json(['success' => 'Product key saved successfully.']);
+        }else {
+            return response()->json(['errors' => ['The number of license is enough']]);
+        }
+
+
     }
 
     /**

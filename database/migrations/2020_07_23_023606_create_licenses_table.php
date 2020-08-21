@@ -18,7 +18,7 @@ class CreateLicensesTable extends Migration
             $table->string('product_key');
             $table->date('activation_date');
             $table->date('expiration_date');
-            
+
 
             //foreignKey
             $table->foreignId('pro_id')
@@ -29,6 +29,9 @@ class CreateLicensesTable extends Migration
                 ->onDelete('cascade');
             $table->foreignId('seller_id')->nullable()
                 ->constrained('managers')
+                ->onDelete('cascade');
+            $table->foreignId('bill_id')->nullable()
+                ->constrained('bills')
                 ->onDelete('cascade');
 
             $table->timestamps();
