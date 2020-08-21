@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Bill;
 use Illuminate\Support\Facades\Auth;
 use App\Bill_Product;
+use App\License;
+use App\Jobs\SendLicenseEmail;
 
 class BillController extends Controller
 {
@@ -80,6 +82,17 @@ class BillController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $email = Bill::with(['users', 'managers'])->where('id', $id)->first();
+        $licenses = License::with('products')->where('bill_id', $id)->orderBy('pro_id', 'asc')->get();
+
+        $details = [
+            'email' => $email,
+            'licenses' => $licenses
+        ];
+
+        dispatch(new SendLicenseEmail($details));
+        return redirect()->back();
+
         $bill = Bill::findOrFail($id);
         $bill->status = 1;
         $bill->save();

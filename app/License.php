@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class License extends Model
 {
     protected $fillable = [
-        'product_key', 'activation_date', 'expiration_date', 'pro_id', 'user_id', 'seller_id'
+        'product_key', 'activation_date', 'expiration_date', 'pro_id', 'user_id', 'seller_id', 'bill_id'
     ];
 
     public function products()
