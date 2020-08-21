@@ -50,6 +50,22 @@
 @section('content')
 <h1 class="h3 mb-2 text-gray-800">Bill manager</h1>
 
+<div class="col-sm-12">
+
+    @if(session()->get('success'))
+    <div class="alert alert-success" id="message-success">
+        {{ session()->get('success') }}
+    </div>
+    @endif
+
+    @if(session()->get('error'))
+    <div class="alert alert-danger" id="message-success">
+        {{ session()->get('error') }}
+    </div>
+    @endif
+
+</div>
+
 <!-- The Assign Seller -->
 <div class="modal fade" id="assignSeller" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -152,6 +168,12 @@
         $('.select2').select2({
             closeOnSelect: false,
         });
+    });
+</script>
+
+<script>
+    $(function() {
+        $('#message-success').delay(3000).fadeOut();
     });
 </script>
 @endsection

@@ -84,6 +84,13 @@ class BillController extends Controller
     {
         $email = Bill::with(['users', 'managers'])->where('id', $id)->first();
         $licenses = License::with('products')->where('bill_id', $id)->orderBy('pro_id', 'asc')->get();
+        $amount = Bill_Product::where('bill_id', $id)->sum('amount_licenses');
+        $count = $licenses->count();
+
+        if ($amount != $count) {
+            // return response()->json('Not enough keys!');
+            return redirect()->back()->with('error','Not enough keys!!!!');
+        }
 
         $details = [
             'email' => $email,
@@ -95,7 +102,7 @@ class BillController extends Controller
         $bill = Bill::findOrFail($id);
         $bill->status = 1;
         $bill->save();
-        return redirect()->back();
+        return redirect()->back()->with('success','Send license keys successfully');
     }
 
     /**

@@ -61,7 +61,7 @@ class LicenseController extends Controller
         $product = Bill_Product::where([['bill_id', $request->bill_id], ['pro_id', $request->pro_id]])->first();
         $license = License::where([['bill_id', $request->bill_id], ['pro_id', $request->pro_id]])->get();
         $license_count = $license->count();
-        if ($license_count < $product->value('amount_licenses')) {
+        if ($license_count < $product->amount_licenses) {
             License::create([
             'product_key' => $request->product_key,
             'activation_date' => $request->activation_date,
