@@ -29,8 +29,8 @@ class SellerController extends Controller
 
     public function edit($id)
     {
-        $sellermanager = Manager::findOrFail($id);
-        return response()->json($sellermanager);
+        $sellermanager = Manager::where([['id', $id],['role', 0]])->get();
+        return response()->json($sellermanager[0]);
     }
 
     public function update(Request $request, $id)
