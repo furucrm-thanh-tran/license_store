@@ -2,12 +2,12 @@
 @section('content')
 <div class="container">
     <form class="row" >
-        <div class=" col-md-9 col-md-offset-1">
+        <div class=" col-lg-9 col-md-offset-1">
             <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade active show" id="payments" role="tabpanel" aria-labelledby="payments-tab">
                         <h4 class="font-weight-bold mt-0 mb-4">Product</h4>
-                            <div class="row">
+                            <div class="row overflow-auto">
                                 <table  class="table table-borderless">
                                     <thead>
                                         <tr>
@@ -41,11 +41,12 @@
                                         </div>
                                     @endif
                             </div>
+
                             <div class="row">
                                 <div class=" update" style="display: none" >
                                     <button type="submit" class="get_item btn btn-primary" >Update</button>
                                 </div>
-                                <div class="delete" style="margin-left: 42rem">
+                                <div class="delete ml-auto mr-3">
                                     <button class="btn btn-danger" >Delete All</button>
                                 </div>
                             </div>
@@ -54,7 +55,7 @@
                 </div>
             </div>
         </div>
-        <div class=" col-md-3">
+        <div class=" col-lg-3">
             <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade active show" id="payments" role="tabpanel" aria-labelledby="payments-tab">
@@ -209,6 +210,11 @@
 
     {{-- Create Billl --}}
     <script>
+         $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
         $(".action_payment").click(function(e){
             e.preventDefault();
             document.getElementById("amount").disabled = true;

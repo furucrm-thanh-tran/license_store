@@ -125,9 +125,9 @@ class HomeController extends Controller
             $Stoken = Stripe\Token::create([
                 'card' => [
                     'number' => $data->number_card,
-                    'cvc' => $data->cvc,
                     'exp_month' => $data->exp_month,
                     'exp_year' => $data->exp_year,
+                    'cvc' => $data->cvc,
                 ],
             ]);
             $Scharge = Stripe\Charge::create([
@@ -179,7 +179,7 @@ class HomeController extends Controller
         } catch (\Stripe\Exception\InvalidRequestException $e) {
             // Invalid parameters were supplied to Stripe's API
             return response()->json([
-                'success' => "Cart is empty $amount"
+                'success' => "Payment Error !!!!!"
             ]);
         } catch (\Stripe\Exception\AuthenticationException $e) {
             // Authentication with Stripe's API failed
@@ -235,5 +235,18 @@ class HomeController extends Controller
         $user_id = Auth::user()->id;
         $data = Feedback::where('user_id', $user_id)->with(['managers', 'users'])->get();
         return view('customer.cus_feedback')->with('data', $data);
+    }
+
+    public function test(){
+        $stripe = new \Stripe\StripeClient(env("STRIPE_API_KEY"));
+          $test = $stripe->tokens->create([
+            'card' => [
+              'number' => '4242424242424242',
+              'exp_month' => 8,
+              'exp_year' => 2021,
+              'cvc' => '314',
+            ],
+          ]);
+          return $test;
     }
 }
