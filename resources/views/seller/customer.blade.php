@@ -74,7 +74,7 @@
     $('#btn_send').click(function() {
         $email = $(this).data('email')
         $.ajax({
-            url: "/seller/seller_send_mail",
+            url: "{{ route('seller.sendmail') }}",
             type: 'GET',
             data: {
                 'email': $email,

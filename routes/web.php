@@ -93,7 +93,7 @@ Route::prefix('seller')->middleware('is_seller')->group(function () {
     Route::put('profile/{id}', 'SellerController@update');
     Route::get('profile/{id}/edit', 'SellerController@edit');
 
-    Route::get('/seller_send_mail', 'Seller\CustomerManagerController@seller_send_mail');
+    Route::get('/seller_send_mail', 'Seller\CustomerManagerController@seller_send_mail')->name('seller.sendmail');
 
     Route::resource('/customermanager', 'Seller\CustomerManagerController');
     Route::resource('/bill', 'BillController');
