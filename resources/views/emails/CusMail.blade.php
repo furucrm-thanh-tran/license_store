@@ -38,42 +38,38 @@
 
 <body>
     <div class="container">
-
-            <table>
+        <h4 style="color: gray;">BILL DETAIL</h4>
+        <table style="background-color: #f2f2f2">
+            <tr>
+                <th>Name</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Line Total</th>
+            </tr>
+            @foreach ($details['bill_detail'] as $row)
                 <tr>
-                    <th>AMOUNT PAID</th>
-                    <th>DATE PAID</th>
-                    <th>PAYMENT METHOD</th>
+                    <td>{{ $row->name }}</td>
+                    <td>{{ $row->qty }}</td>
+                    <td>${{ $row->price }}</td>
+                    <td>${{ $row->subtotal }}</td>
                 </tr>
-                <tr>
-                    <td>${{ $details['total'] }}</td>
-                    <td>{{ $details['date'] }}</td>
-                    <td>VISA - {{ $details['card'] }}</td>
-                </tr>
+            @endforeach
+        </table>
 
-            </table>
+        <table>
+            <tr>
+                <th>AMOUNT PAID</th>
+                <th>DATE PAID</th>
+                <th>PAYMENT METHOD</th>
+            </tr>
+            <tr>
+                <td>${{ $details['total'] }}</td>
+                <td>{{ $details['date'] }}</td>
+                <td>VISA - {{ $details['card'] }}</td>
+            </tr>
+        </table>
 
-
-            <h4 style="color: gray;">BILL DETAIL</h4>
-            <table style="background-color: #f2f2f2">
-
-                <tr>
-                    <th>Name</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                    <th>Line Total</th>
-                </tr>
-                    @foreach ($details['bill_detail'] as $row)
-                    <tr>
-                        <td>{{$row->name}}</td>
-                        <td>{{$row->qty}}</td>
-                        <td>${{$row->price}}</td>
-                        <td>${{$row->subtotal}}</td>
-                    </tr>
-                    @endforeach
-            </table>
-
-            <h4>STATUS: {{ $details['status'] }}</h4>
+        <h4>STATUS: {{ $details['status'] }}</h4>
 
 
     </div>

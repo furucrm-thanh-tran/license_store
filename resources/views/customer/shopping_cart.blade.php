@@ -41,9 +41,15 @@
                                         </div>
                                     @endif
                             </div>
-                            <div class="row hidden" style="display: none" >
-                                <button type="submit" class="get_item btn btn-primary" >Update</button>
+                            <div class="row">
+                                <div class=" update" style="display: none" >
+                                    <button type="submit" class="get_item btn btn-primary" >Update</button>
+                                </div>
+                                <div class="delete" style="margin-left: 42rem">
+                                    <button class="btn btn-danger" >Delete All</button>
+                                </div>
                             </div>
+
                     </div>
                 </div>
             </div>
@@ -103,7 +109,21 @@
 </div>
 @endsection
 
+
 @section('script')
+
+    {{-- alredy function --}}
+    <script>
+        var str = document.getElementById("amount").value;
+        var result = str.replace(str, "Payment for $"+str);
+        document.getElementById("amount").value = result;
+
+        var tbody = $("#cart_product");
+        if (tbody.children().length == 0){
+            $(".delete").hide();
+        }
+    </script>
+
     {{-- Delete Cart Item --}}
     <script>
         $(".remove_item").click(function(){
@@ -175,10 +195,23 @@
         });
     </script>
 
+    {{-- Destroy Cart --}}
+    <script>
+        $(".delete").click(function(e){
+            $.ajax({
+                    url: "cart/destroy",
+                    type: 'GET',
+                });
+                alert('Delete Complete !!!! !!!!');
+                $(".delete").hide();
+            })
+    </script>
+
     {{-- Create Billl --}}
     <script>
         $(".action_payment").click(function(e){
             e.preventDefault();
+            document.getElementById("amount").disabled = true;
             var card_number = document.getElementById("card_number").value
             var user_name = document.getElementById("navbarDropdown")
             if(card_number == "null" && user_name == null){
@@ -202,24 +235,14 @@
 
     </script>
 
-    <script>
-        var str = document.getElementById("amount").value;
-        var result = str.replace(str, "Payment for $"+str);
-        document.getElementById("amount").value = result;
 
-    </script>
 
     {{-- show button update --}}
     <script>
         function focusFunction() {
-            $(".hidden").show();
+            $(".update").show();
+            $(".delete").hide();
         }
-    </script>
-
-    <script>
-        // $("#amount").click(function(){
-        //     document.getElementById("amount").disabled = true;
-        // })
     </script>
 
 @endsection

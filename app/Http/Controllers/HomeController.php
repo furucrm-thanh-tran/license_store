@@ -70,13 +70,9 @@ class HomeController extends Controller
 
     public function profile()
     {
-        try {
-            $id = Auth::user()->id;
-            $data = payment::where('user_id', '=', $id)->select(DB::raw('RIGHT(number_card,4) as number_card'), 'id', 'exp_month', 'exp_year')->get();
-            return view('customer.profile')->with('data', $data);
-        } catch (Error $e) {
-            return redirect()->route('frm_insertcard');
-        }
+        $id = Auth::user()->id;
+        $data = payment::where('user_id', '=', $id)->select(DB::raw('RIGHT(number_card,4) as number_card'), 'id', 'exp_month', 'exp_year')->get();
+        return view('customer.profile')->with('data', $data);
     }
     public function paymentprofile_delete($id)
     {

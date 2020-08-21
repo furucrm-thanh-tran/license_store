@@ -34,10 +34,11 @@ Route::get('shoppingcart', 'CustomerController@shopping_cart')->name('cart');
 Route::get('cart/delete', 'CustomerController@del_cart_item')->name('del_cart_item');
 Route::put('cart/update', 'CustomerController@upd_cart_item')->name('upd_cart_item');
 Route::post('cart/add', 'CustomerController@add_cart_item')->name('add_cart_item');
+Route::get('cart/destroy','CustomerController@del_cart')->name('destroy_cart');
 /// Bill
 Route::get('list_bills', 'HomeController@list_bills')->name('list_bills');
 Route::get('bill_detail/{id}', 'HomeController@bill_detail')->name('bill_detail');
-Route::post('list_bills/feedback/add','HomeController@feedback_add');
+Route::post('feedback/add','HomeController@feedback_add');
 Route::get('feedback_index','HomeController@feedback_index');
 // End customer route}}}}}}}}}}}}}}}}}}}}
 

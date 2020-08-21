@@ -106,27 +106,9 @@ class CustomerController extends Controller
         $rowId = $id;
         Cart::remove($rowId);
     }
-    // public function test()
-    // {
-    //     $data = Cart::content();
-    //     $cart = Cart::get("027c91341fd5cf4d2579b49c4b6a90da");
-    //     return $cart;
-    // }
-
-    // public function shopping_cart(Request $request)
-    // {
-    //     try{
-    //         $id = Auth::user()->id;
-    //         $cart = Cart::content();
-    //         $data = payment::where('user_id', '=', $id)
-    //         ->select(DB::raw('RIGHT(number_card,4) as number_card'))->get();
-    //         return view('customer.shopping_cart')->with([
-    //             'data'=> $data,
-    //             'cart'=>$cart]);
-    //     }catch(Exception $e){
-    //         return $e;
-    //     }
-
-    // }
+    public function del_cart()
+    {
+        Cart::destroy();
+    }
 
 }

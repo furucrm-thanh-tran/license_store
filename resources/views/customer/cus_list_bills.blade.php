@@ -43,7 +43,7 @@
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <h5 id="modal_title" class="modal-title">Modal Heading</h6>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                 <!-- Modal body -->
@@ -60,7 +60,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button id="action_send_question" class="btn btn-primary">Submit</button>
+                    <button type="button" id="action_send_question" class="btn btn-primary">Submit</button>
                 </div>
 
             </div>
@@ -88,19 +88,20 @@
                     // console.log(class_list[i]);
                     class_list[i].setAttribute("class", "null_seller");
                 } else {
-                    console.log(datalist_seller[i]);
+                    console.log(datalist_seller[i]+" "+i);
                 }
             }
 
+
         });
 
-        $("#send_question").click(function() {
+        $(".check_seller").click(function() {
             var seller_id = $(this).data("seller");
             console.log(seller_id);
             $("#action_send_question").click(function() {
                 var title = $("#title").val();
                 var des = $("#des").val();
-                // console.log(seller_id+" "+title+" "+des);
+                console.log(seller_id+" "+title+" "+des);
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -122,7 +123,7 @@
                     }
                     // console.log(id+exp_month+exp_year);
                 });
-            })
+            });
         });
     </script>
 
