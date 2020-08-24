@@ -32,7 +32,7 @@ class ManagerLoginController extends Controller
             'password' => 'required|min:8'
         ]);
 
-        if (Auth::guard('manager')->attempt(['user_name' => $request->user_name, 'password' => $request->password], $request->remember)) {
+        if (Auth::guard('manager')->attempt(['user_name' => $request->user_name, 'password' => $request->password])) {
             if (Auth::guard('manager')->user()->role == 1) {
                 return redirect()->route('admin');
             } else {
